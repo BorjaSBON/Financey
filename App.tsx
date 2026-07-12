@@ -1,10 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import BalanceResume from './src/components/balance-resume'
 
 export default function App() {
 	return (
-		<View style={styles.container}>
-			<Text>Welcome Borchax!</Text>
+		<View style={ styles.container }>
+			<BalanceResume />
+
+			<Text style={ styles.welcome }>Welcome Borchax!</Text>
 			<StatusBar style="auto" />
 		</View>
 	);
@@ -16,5 +19,11 @@ const styles = StyleSheet.create({
 		backgroundColor: '#FFFFFF',
 		alignItems: 'center',
 		justifyContent: 'center',
+		paddingLeft: 25,
+		paddingRight: 25,
 	},
+
+	welcome: {
+		fontSize: 20,
+	}
 });
