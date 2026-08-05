@@ -16,37 +16,37 @@ export default function BalanceResume({ incomes, expenses, squareEnable=false }:
 
     // Calculate the balance
     const balance = Number((incomes - expenses).toFixed(2));
-    const balanceColor = balance >= 0 ? styles.balancePositive : styles.balanceNegative;
+    const balanceColor = balance >= 0 ? styles.positive : styles.negative;
 
     return (
         <View style={ styles.balanceResume }>
             <View style={ styles.block }>
-                <ThemedText style={ styles.title }>Balance</ThemedText>
+                <ThemedText style={ styles.title } weight='regular'>Balance</ThemedText>
                 <ThemedText style={ styles.data } numberOfLines={ 1 } adjustsFontSizeToFit>
-                    <ThemedText style={ balanceColor }>{ ReadableNumber(balance) }</ThemedText>
-                    <ThemedText style={[ styles.currency, balanceColor ]}> €</ThemedText>
+                    <ThemedText style={ balanceColor } weight='light'>{ ReadableNumber(balance) }</ThemedText>
+                    <ThemedText style={[ styles.currency, balanceColor ]} weight='light'> €</ThemedText>
                 </ThemedText>
             </View>
 
             <View style={ styles.block }>
                 <View style= { styles.titleRow }>
                     { squareEnable === true && <View style={[ styles.square, styles.incomes ]} /> }
-                    <ThemedText style={ styles.title }>Incomes</ThemedText>
+                    <ThemedText style={ styles.title } weight='regular'>Incomes</ThemedText>
                 </View>
                 <ThemedText style={ styles.data } numberOfLines={ 1 } adjustsFontSizeToFit>
-                    <ThemedText>{ ReadableNumber(incomes) }</ThemedText>
-                    <ThemedText style={ styles.currency }> €</ThemedText>
+                    <ThemedText  weight='light'>{ ReadableNumber(incomes) }</ThemedText>
+                    <ThemedText style={ styles.currency }  weight='light'> €</ThemedText>
                 </ThemedText>
             </View>
 
             <View style={ styles.block }>
                 <View style= { styles.titleRow }>
                     { squareEnable === true && <View style={[ styles.square, styles.expenses ]} /> }
-                    <ThemedText style={ styles.title }>Expenses</ThemedText>
+                    <ThemedText style={ styles.title } weight='regular'>Expenses</ThemedText>
                 </View>
                 <ThemedText style={ styles.data } numberOfLines={ 1 } adjustsFontSizeToFit>
-                    <ThemedText>{ ReadableNumber(expenses) }</ThemedText>
-                    <ThemedText style={ styles.currency }> €</ThemedText>
+                    <ThemedText weight='light'>{ ReadableNumber(expenses) }</ThemedText>
+                    <ThemedText style={ styles.currency } weight='light'> €</ThemedText>
                 </ThemedText>
             </View>
         </View>
@@ -75,7 +75,6 @@ const styles = StyleSheet.create({
 
     title: {
         fontSize: 15,
-        fontWeight: 700,
         textAlign: 'center',
     },
 
@@ -86,30 +85,26 @@ const styles = StyleSheet.create({
     },
 
     currency: {
-        fontSize: 10,
+        fontSize: 9,
     },
 
-    balancePositive: {
+    positive: {
         color: Colors.positive,
-        fontWeight: 700,
     },
-
-    balanceNegative: {
+    negative: {
         color: Colors.negative,
-        fontWeight: 700,
     },
 
     square: {
         width: 10,
         height: 10,
         borderRadius: 3,
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
 
     incomes: {
         backgroundColor: Colors.positive,
     },
-
     expenses: {
         backgroundColor: Colors.negative,
     },

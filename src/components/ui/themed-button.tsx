@@ -32,8 +32,8 @@ export function ThemedButton({ label, type, onPress, onLongPress }: Props) {
 const styles = StyleSheet.create({
     button: {
         borderRadius: 30,
-        paddingTop: 6,
-        paddingBottom: 5,
+        paddingTop: 5,
+        paddingBottom: 6,
         paddingStart: 25,
         paddingEnd: 25,
         minWidth: 125,
@@ -52,8 +52,7 @@ const styles = StyleSheet.create({
 
     text: {
         color: Colors.fontSecondary,
-        fontFamily: 'Montserrat',
+        fontFamily: 'Montserrat-Medium',
         fontSize: 15,
-        fontWeight: 400,
     }
 });

@@ -1,4 +1,5 @@
 import { StyleSheet, View } from 'react-native';
+
 import { ThemedButton } from './ui/themed-button';
 
 export default function TypeButtons() {
