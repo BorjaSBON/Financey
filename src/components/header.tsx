@@ -2,6 +2,7 @@ import { StyleSheet, View, Image } from 'react-native';
 import { ThemedText } from './ui/themed-text';
 
 import Logo from '../../assets/svg/return.svg';
+import { Values } from '../constants/values';
 
 export default function Header() {
     return (
@@ -19,6 +20,8 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         width: '100%',
+        paddingStart: Values.paddingApp,
+        paddingEnd: Values.paddingApp,
     },
 
     title: {

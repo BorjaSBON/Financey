@@ -14,4 +14,6 @@ export const Colors = {
     buttonPrimary: '#111A30',
     buttonSecondary: '#111A3080',
     buttonWarning: '#F15A29',
+
+    hoverElement: '#D9D9D933',
 } as const;

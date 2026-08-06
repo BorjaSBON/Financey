@@ -2,7 +2,7 @@ import { Pressable, Text, StyleSheet } from 'react-native';
 import { Colors } from '../../constants/colors';
 
 interface Props {
-    // Variabls
+    // Variables
     label: string;
     type?: 'default' | 'clear' | 'delete';
 
