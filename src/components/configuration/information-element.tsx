@@ -1,9 +1,8 @@
-import { Platform } from 'react-native';
-import { StyleSheet, Pressable } from 'react-native';
+import { StyleSheet, Pressable, Platform } from 'react-native';
 
-import { ThemedText } from './ui/themed-text';
-import { Colors } from '../constants/colors';
-import { Values } from '../constants/values';
+import { ThemedText } from '@ui/themed-text';
+import { Colors } from '@constants/colors';
+import { Values } from '@constants/values';
 
 interface Props {
     // Variables
@@ -44,12 +43,12 @@ const styles = StyleSheet.create({
 
     title: {
         width: '100%',
-        fontSize: 16,
+        fontSize: 15,
     },
 
     data: {
         width: '100%',
         textAlign: Platform.OS == 'android' ? 'left' :'justify',
-        fontSize: 13,
+        fontSize: 12,
     },
 });

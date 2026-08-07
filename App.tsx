@@ -2,23 +2,24 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import { useFonts } from 'expo-font';
 
-import { Colors } from './src/constants/colors';
-import Header from './src/components/header';
+import { Colors } from '@constants/colors';
+import Header from '@components/layout/header';
 
-import AccountInformation from './src/components/account-information';
-import AppInformation from './src/components/app-information';
+import AccountInformation from '@components/configuration/account-information';
+import AppInformation from '@components/configuration/app-information';
+import DataList from '@components/data/data-list';
 
 export default function App() {
 	const [loaded] = useFonts({
-		MontserratThin: require('./assets/fonts/Montserrat-Thin.otf'),
-		MontserratExtraLight: require('./assets/fonts/Montserrat-ExtraLight.otf'),
-		MontserratLight: require('./assets/fonts/Montserrat-Light.otf'),
-		MontserratRegular: require('./assets/fonts/Montserrat-Regular.otf'),
-		MontserratMedium: require('./assets/fonts/Montserrat-Medium.otf'),
-		MontserratSemiBold: require('./assets/fonts/Montserrat-SemiBold.otf'),
-		MontserratBold: require('./assets/fonts/Montserrat-Bold.otf'),
-		MontserratExtraBold: require('./assets/fonts/Montserrat-ExtraBold.otf'),
-		MontserratBlack: require('./assets/fonts/Montserrat-Black.otf'),
+		MontserratThin: require('@fonts/Montserrat-Thin.otf'),
+		MontserratExtraLight: require('@fonts/Montserrat-ExtraLight.otf'),
+		MontserratLight: require('@fonts/Montserrat-Light.otf'),
+		MontserratRegular: require('@fonts/Montserrat-Regular.otf'),
+		MontserratMedium: require('@fonts/Montserrat-Medium.otf'),
+		MontserratSemiBold: require('@fonts/Montserrat-SemiBold.otf'),
+		MontserratBold: require('@fonts/Montserrat-Bold.otf'),
+		MontserratExtraBold: require('@fonts/Montserrat-ExtraBold.otf'),
+		MontserratBlack: require('@fonts/Montserrat-Black.otf'),
 	});
 
 	if (!loaded) {
@@ -29,7 +30,7 @@ export default function App() {
 		<View style={ styles.container }>
 			<Header />
 			
-			<AppInformation />
+			<DataList />
 
 			<StatusBar style="auto" />
 		</View>

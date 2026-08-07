@@ -1,18 +1,13 @@
 import { StyleSheet, View, ScrollView } from 'react-native';
 
-import { ThemedText } from '@ui/themed-text';
-import { ThemedButton } from '@ui/themed-button';
-
 import BalanceResume from '@components/data/balance-resume';
 import ListElement from '@components/data/list-element';
-import TypeButtons from '@components/data/type-buttons';
 
-export default function Testing() {
+export default function DataList() {
     return (
-        <View style={ styles.testing }>
-            <ThemedText style={ styles.welcome }>Welcome Borchax!</ThemedText>
-
+        <View style={ styles.dataList }>
             <BalanceResume incomes={ 12000.58 } expenses={ 5000.36 } squareEnable={ false } />
+
             <View style={ styles.listElements }>
                 <ScrollView>
                     <ListElement type={ 'expense' } category={ 'Supermercado' } value={ 32.17 } date={ '06 / 08 / 2026' } />
@@ -38,27 +33,20 @@ export default function Testing() {
                     <ListElement type={ 'expense' } category={ 'Transporte' } value={ 10.5 } date={ '15 / 06 / 2026' } />
                 </ScrollView>
             </View>
-
-            <TypeButtons/>
-            <ThemedButton label='Delete' type='delete'/>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    testing: {
+    dataList: {
+        flex: 1,
+        top: 100,
         width: '100%',
-        alignItems: 'center',
-    },
-
-    welcome: {
-        fontSize: 20,
+        paddingBottom: 125
     },
 
     listElements: {
-        width: '100%',
-        height: 350,
-        marginTop: 20,
-        marginBottom: 20,
+        marginTop: 15,
+        paddingBottom: 50,
     },
 });

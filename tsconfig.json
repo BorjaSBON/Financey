@@ -1,6 +1,26 @@
 {
-  "extends": "expo/tsconfig.base",
-  "compilerOptions": {
-    "strict": true
-  }
+	"extends": "expo/tsconfig.base",
+	"compilerOptions": {
+		"strict": true,
+		"paths": {
+			"@ui/*": [
+				"./src/components/ui/*"
+			],
+			"@components/*": [
+				"./src/components/*"
+			],
+			"@constants/*": [
+				"./src/constants/*"
+			],
+			"@assets/*": [
+				"./assets/svg/*"
+			],
+			"@fonts/*": [
+				"./assets/fonts/*"
+			],
+			"@/*": [
+				"./*"
+			],
+		}
+	}
 }

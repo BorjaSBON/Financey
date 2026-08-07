@@ -1,5 +1,6 @@
 import { Text, StyleSheet, type TextProps } from 'react-native';
-import { Colors } from '../../constants/colors';
+
+import { Colors } from '@constants/colors';
 
 export type ThemedTextProps = TextProps & {
     weight?: 'thin' | 'extraLight' | 'light' | 'regular' | 'medium' | 'semiBold' | 'bold' | 'extraBold' | 'black';

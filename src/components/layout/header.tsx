@@ -1,8 +1,9 @@
 import { StyleSheet, View, Image } from 'react-native';
-import { ThemedText } from './ui/themed-text';
 
-import Logo from '../../assets/svg/return.svg';
-import { Values } from '../constants/values';
+import { ThemedText } from '@ui/themed-text';
+import { Values } from '@constants/values';
+
+import Logo from '@assets/return.svg';
 
 export default function Header() {
     return (

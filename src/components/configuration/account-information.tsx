@@ -1,6 +1,6 @@
 import { StyleSheet, View, ScrollView } from 'react-native';
 
-import InformationElement from './information-element';
+import InformationElement from '@components/configuration/information-element';
 
 export default function AccountInformation() {
     return (

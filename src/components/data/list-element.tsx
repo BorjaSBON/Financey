@@ -1,8 +1,8 @@
 import { StyleSheet, Pressable } from 'react-native';
 
-import { ThemedText } from './ui/themed-text';
-import { Colors } from '../constants/colors';
-import { Values } from '../constants/values';
+import { ThemedText } from '@ui/themed-text';
+import { Colors } from '@constants/colors';
+import { Values } from '@constants/values';
 
 interface Props {
     // Variables
@@ -21,6 +21,7 @@ export default function ListElement({ type, category, value, date, onPress }: Pr
         return value.toLocaleString('de-DE').replace(',', '\'');
     }
 
+    // Color of the money depending on the type of data
     const valueColor = type=='income' ? styles.positive : styles.negative;
 
     return (

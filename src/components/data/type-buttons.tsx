@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 
-import { ThemedButton } from './ui/themed-button';
+import { ThemedButton } from '@ui/themed-button';
 
 export default function TypeButtons() {
     return (

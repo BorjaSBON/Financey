@@ -2,10 +2,11 @@ import { Platform, Linking } from 'react-native';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import * as Application from 'expo-application';
 
-import InformationElement from './information-element';
+import InformationElement from '@components/configuration/information-element';
 
 export default function AppInformation() {
     const appVersion = Application.nativeApplicationVersion;
+    const buildVersion = Application.nativeBuildVersion;
     const os = Platform.OS;
     const url = 'https://github.com/BorjaSBON/Financey';
 
@@ -13,7 +14,7 @@ export default function AppInformation() {
         <View style={ styles.appInformation }>
             <ScrollView>
                 <InformationElement title='Application name' data='Financey' />
-                <InformationElement title='Version' data={ 'v' + String(appVersion) } />
+                <InformationElement title='Version' data={ 'v' + String(appVersion) + ' (' + String(buildVersion) + ')' } />
                 <InformationElement title='Operating system' data={ os.charAt(0).toUpperCase() + os.slice(1) } />
                 <InformationElement title='Creator' data='Borja Sanz de Bremond' />
                 <InformationElement title='Team' data='Hobbit Holes' />

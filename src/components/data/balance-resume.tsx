@@ -1,6 +1,8 @@
 import { StyleSheet, View } from 'react-native';
-import { ThemedText } from './ui/themed-text';
-import { Colors } from '../constants/colors';
+
+import { ThemedText } from '@ui/themed-text';
+import { Colors } from '@constants/colors';
+import { Values } from '@constants/values';
 
 interface Props {
     incomes: number,
@@ -59,6 +61,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
+        paddingStart: Values.paddingApp,
+        paddingEnd: Values.paddingApp,
     },
 
     block: {
