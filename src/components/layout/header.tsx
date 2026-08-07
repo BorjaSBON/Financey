@@ -1,4 +1,4 @@
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@ui/themed-text';
 import { Values } from '@constants/values';

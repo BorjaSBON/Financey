@@ -8,6 +8,7 @@ import Header from '@components/layout/header';
 import AccountInformation from '@components/configuration/account-information';
 import AppInformation from '@components/configuration/app-information';
 import DataList from '@components/data/data-list';
+import Filter from '@components/data/filter';
 
 export default function App() {
 	const [loaded] = useFonts({
@@ -30,7 +31,7 @@ export default function App() {
 		<View style={ styles.container }>
 			<Header />
 			
-			<DataList />
+			<Filter />
 
 			<StatusBar style="auto" />
 		</View>

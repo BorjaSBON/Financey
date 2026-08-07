@@ -15,5 +15,9 @@ export const Colors = {
     buttonSecondary: '#111A3080',
     buttonWarning: '#F15A29',
 
+    inputBackground: '#D9D9D933',
+
     hoverElement: '#D9D9D933',
+
+    shadow: '#111A3040',
 } as const;
