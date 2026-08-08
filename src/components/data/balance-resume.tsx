@@ -61,8 +61,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
-        paddingStart: Values.paddingApp,
-        paddingEnd: Values.paddingApp,
+        paddingHorizontal: Values.paddingApp,
     },
 
     block: {

@@ -37,8 +37,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         paddingTop: 5,
         paddingBottom: 7,
-        paddingStart: Values.paddingApp,
-        paddingEnd: Values.paddingApp,
+        paddingHorizontal: Values.paddingApp,
     },
 
     title: {

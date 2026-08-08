@@ -52,8 +52,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         paddingTop: 3,
         paddingBottom: 6,
-        paddingStart: Values.paddingApp,
-        paddingEnd: Values.paddingApp,
+        paddingHorizontal: Values.paddingApp,
     },
 
     category: {

@@ -21,8 +21,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         width: '100%',
-        paddingStart: Values.paddingApp,
-        paddingEnd: Values.paddingApp,
+        paddingHorizontal: Values.paddingApp,
     },
 
     title: {

@@ -10,7 +10,7 @@ interface Props {
     value?: string;
     placeholder?: string;
 
-    type?: 'text' | 'select' | 'number' | 'date';
+    type?: 'text' | 'number' | 'date';
 }
 
 export default function Input({ title, value='', placeholder='', type='text' }: Props) {
@@ -27,8 +27,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         rowGap: 6,
-        paddingStart: Values.paddingApp,
-        paddingEnd: Values.paddingApp,
+        paddingHorizontal: Values.paddingApp,
         
     },
 

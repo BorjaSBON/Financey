@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { View, TextInput, StyleSheet, InputModeOptions } from 'react-native';
+import { DropDownSelect } from 'react-native-simple-dropdown-select';
 
 import { Colors } from '@constants/colors';
 
@@ -10,7 +11,7 @@ interface Props {
     value?: string;
     placeholder?: string;
 
-    type?: 'text' | 'select' | 'number' | 'date';
+    type?: 'text' | 'number' | 'date';
 }
 
 export function ThemedInput({ value='', placeholder='', type='text' }: Props) {
@@ -23,14 +24,14 @@ export function ThemedInput({ value='', placeholder='', type='text' }: Props) {
     }
 
     return (
-        <View style={ styles.inputView }>
+        <View style={ styles.container }>
             <TextInput
-                style={ styles.input }
-                value={ text }
-                placeholder={ placeholder }
-                onChangeText={ setText }
-                inputMode={ inputMode }
-                autoComplete='off'
+            style={ styles.input }
+            value={ text }
+            placeholder={ placeholder }
+            onChangeText={ setText }
+            inputMode={ inputMode }
+            autoComplete='off'
             />
             <Logo style={ styles.icon } />
         </View>
@@ -38,13 +39,15 @@ export function ThemedInput({ value='', placeholder='', type='text' }: Props) {
 }
 
 const styles = StyleSheet.create({
-    inputView: {
+    container: {
         position: 'relative',
+        width: '100%',
+        height: 40,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
-        height: 40,
+        zIndex: 10,
+        elevation: 10,
     },
 
     input: {
@@ -52,13 +55,13 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.inputBackground,
         color: Colors.fontPrimary,
         paddingStart: 15,
-        paddingEnd: 50,
+        paddingEnd: 35,
         borderRadius: 12,
     },
 
     icon: {
         position: 'absolute',
-        right: 25,
+        right: 15,
         width: 20
     },
 });

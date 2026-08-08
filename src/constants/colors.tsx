@@ -16,6 +16,7 @@ export const Colors = {
     buttonWarning: '#F15A29',
 
     inputBackground: '#D9D9D933',
+    inputTextUnselected: '#0F172A80',
 
     hoverElement: '#D9D9D933',
 
