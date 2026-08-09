@@ -24,14 +24,9 @@ export function ThemedSelectInput({ data, value, onSelect }: DropdownProps ) {
 
     return (
         <View style={ styles.container } pointerEvents="box-none">
-            <Pressable
-                style={ styles.select }
-                onPress={() => setOpen(prev => !prev)}
-            >
-                <Text style={styles.selectedText}>{selectedItem?.label ?? 'Seleccionar...'}</Text>
-                <Text style={styles.arrow}>
-                    {open ? '▲' : '▼'}
-                </Text>
+            <Pressable style={ styles.select } onPress={() => setOpen(prev => !prev)}>
+                <Text style={styles.selectedText}>{selectedItem?.label ?? 'Select'}</Text>
+                <Text style={styles.arrow}>{open ? '▲' : '▼'}</Text>
             </Pressable>
 
             { open && (
@@ -42,23 +37,13 @@ export function ThemedSelectInput({ data, value, onSelect }: DropdownProps ) {
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item }) => (
                             <Pressable
-                                style={[
-                                    styles.option,
-                                    item.value === value && styles.selectedOption,
-                                ]}
+                                style={[ styles.option, item.value === value && styles.selectedOption ]}
                                 onPress={() => {
                                     onSelect(item);
                                     setOpen(false);
                                 }}
                             >
-                                <Text
-                                    style={[
-                                        styles.optionText,
-                                        item.value === value && styles.selectedOptionText,
-                                    ]}
-                                >
-                                    {item.label}
-                                </Text>
+                                <Text style={[ styles.optionText, item.value === value && styles.selectedOptionText ]}>{item.label}</Text>
                             </Pressable>
                         )}
                     />
@@ -79,9 +64,7 @@ const styles = StyleSheet.create({
     select: {
         height: 40,
         width: '100%',
-
         paddingHorizontal: 15,
-
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',

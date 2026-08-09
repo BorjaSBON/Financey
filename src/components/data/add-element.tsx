@@ -6,8 +6,8 @@ import { Values } from '@constants/values';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedButton } from '@ui/themed-button';
-import { ThemedInput } from '@ui/themed-input';
 import { ThemedSelectInput } from '@ui/themed-select-input';
+import { ThemedDateInput } from '@ui/themed-date-input';
 
 import TypeButtons from '@components/data/type-buttons';
 
@@ -57,6 +57,7 @@ export default function AddElement() {
     ]
 
     const [amount, setAmount] = useState('');
+    const [date, setDate] = useState<Date | null>(null);
     
     return (
         <View style={ styles.addElement }>
@@ -82,7 +83,7 @@ export default function AddElement() {
 
                 <View style={ styles.input }>
                     <ThemedText style={ styles.title } weight='regular'>Date</ThemedText>
-                    <ThemedInput placeholder='DD/MM/YYYY' />
+                    <ThemedDateInput value={ date } onChange={ setDate } />
                 </View>
             </View>
 
