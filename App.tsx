@@ -9,6 +9,7 @@ import AccountInformation from '@components/configuration/account-information';
 import AppInformation from '@components/configuration/app-information';
 import DataList from '@components/data/data-list';
 import Filter from '@components/data/filter';
+import AddElement from '@components/data/add-element';
 
 export default function App() {
 	const [loaded] = useFonts({
@@ -31,7 +32,7 @@ export default function App() {
 		<View style={ styles.container }>
 			<Header />
 			
-			<Filter />
+			<AddElement />
 
 			<StatusBar style="auto" />
 		</View>

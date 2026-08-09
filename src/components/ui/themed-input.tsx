@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { View, TextInput, StyleSheet, InputModeOptions } from 'react-native';
-import { DropDownSelect } from 'react-native-simple-dropdown-select';
 
 import { Colors } from '@constants/colors';
 
@@ -26,12 +25,12 @@ export function ThemedInput({ value='', placeholder='', type='text' }: Props) {
     return (
         <View style={ styles.container }>
             <TextInput
-            style={ styles.input }
-            value={ text }
-            placeholder={ placeholder }
-            onChangeText={ setText }
-            inputMode={ inputMode }
-            autoComplete='off'
+                style={ styles.input }
+                value={ text }
+                placeholder={ placeholder }
+                onChangeText={ setText }
+                inputMode={ inputMode }
+                autoComplete='off'
             />
             <Logo style={ styles.icon } />
         </View>

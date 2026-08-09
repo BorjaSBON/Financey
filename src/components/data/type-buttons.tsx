@@ -15,8 +15,9 @@ const styles = StyleSheet.create({
     typeButtons: {
         display: 'flex',
         flexDirection: 'row',
+        alignItems: 'center',
         columnGap: 20,
-        paddingTop: 5,
-        paddingBottom: 5,
+        marginHorizontal: 'auto',
+        paddingVertical: 5,
     },
 });
