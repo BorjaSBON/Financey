@@ -1,14 +1,10 @@
 import { useState } from 'react';
 import { StyleSheet, View, TextInput } from 'react-native';
 
-import { Colors } from '@constants/colors';
-import { Values } from '@constants/values';
-
 import { ThemedText } from '@ui/themed-text';
 import { ThemedButton } from '@ui/themed-button';
-import { ThemedSelectInput } from '@ui/themed-select-input';
-import { ThemedDateInput } from '@ui/themed-date-input';
 
+import Input from '@components/common/input';
 import TypeButtons from '@components/data/type-buttons';
 
 export default function AddElement() {
@@ -76,15 +72,8 @@ export default function AddElement() {
             </View>
 
             <View style={ styles.inputs }>
-                <View style={ styles.input }>
-                    <ThemedText style={ styles.title } weight='regular'>Category</ThemedText>
-                    <ThemedSelectInput data={ dropDownList } value={ selectValue } onSelect={(item) => { setSelectValue(item.value); }} />
-                </View>
-
-                <View style={ styles.input }>
-                    <ThemedText style={ styles.title } weight='regular'>Date</ThemedText>
-                    <ThemedDateInput value={ date } onChange={ setDate } />
-                </View>
+                <Input name='Category' type='select' selectData={ dropDownList } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
+                <Input name='Date' type='date' dateValue={ date } onChange={ setDate } />
             </View>
 
             <View style={ styles.add }>
@@ -125,18 +114,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         rowGap: 10,
         marginVertical: 10,
-    },
-
-    input: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 6,
-        paddingHorizontal: Values.paddingApp,
-        width: '100%',
-    },
-
-    title: {
-        fontSize: 15,
     },
 
     pairButtons: {

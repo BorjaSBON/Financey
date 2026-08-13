@@ -9,27 +9,21 @@ interface Props {
     // Variables
     value?: string;
     placeholder?: string;
+    type?: InputModeOptions;
 
-    type?: 'text' | 'number' | 'date';
+    // Methods
+    onChange?: (value:string) => void;
 }
 
-export function ThemedInput({ value='', placeholder='', type='text' }: Props) {
-    const [text, setText] = useState(value);
-
-    let inputMode = 'text' as InputModeOptions;
-    switch (type) {
-        case 'number':
-            inputMode = 'decimal';
-    }
-
+export function ThemedInput({ value='', placeholder='', type='text', onChange=()=>{} }: Props) {
     return (
         <View style={ styles.container }>
             <TextInput
                 style={ styles.input }
-                value={ text }
+                value={ value }
                 placeholder={ placeholder }
-                onChangeText={ setText }
-                inputMode={ inputMode }
+                onChangeText={ onChange }
+                inputMode={ type }
                 autoComplete='off'
             />
             <Logo style={ styles.icon } />

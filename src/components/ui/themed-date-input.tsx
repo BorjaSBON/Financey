@@ -3,7 +3,8 @@ import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Colors } from '@constants/colors';
-import { ThemedText } from './themed-text';
+
+import { ThemedText } from '@ui/themed-text';
 
 import Logo from '@assets/calendar.svg';
 
@@ -16,11 +17,11 @@ type DateInputProps = {
 };
 
 export function ThemedDateInput({ value, onChange }: DateInputProps) {
-    const [showPicker, setShowPicker] = useState(false);
+    const [open, setOpen] = useState(false);
     const formattedDate = value ? value.toLocaleDateString('en-GB') : 'DD/MM/YYYY';
 
     const handleChange = (_: any, selectedDate?: Date,) => {
-        setShowPicker(false);
+        setOpen(false);
 
         if (selectedDate) {
             onChange(selectedDate);
@@ -29,12 +30,12 @@ export function ThemedDateInput({ value, onChange }: DateInputProps) {
 
     return (
         <View>
-            <Pressable style={ styles.input } onPress={ () => setShowPicker(true) }>
+            <Pressable style={ styles.input } onPress={ () => setOpen(true) }>
                 <ThemedText style={[ styles.text, !value && styles.placeholder ]} weight='light'>{ formattedDate }</ThemedText>
                 <Logo style={ styles.icon } />
             </Pressable>
 
-            { showPicker && (
+            { open && (
                 <DateTimePicker
                     value={ value ?? new Date() }
                     mode="date"

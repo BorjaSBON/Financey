@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { ThemedText } from '@ui/themed-text';
-import { ThemedInput } from '@ui/themed-input';
-import { ThemedSelectInput } from '@ui/themed-select-input';
-
-import Input from '@components/common/input';
-
 import { Colors } from '@constants/colors';
 import { Values } from '@constants/values';
 
+import { ThemedText } from '@ui/themed-text';
+import { ThemedInput } from '@ui/themed-input';
+import { ThemedDateInput } from '@ui/themed-date-input';
+
+import Input from '@components/common/input';
+
 export default function Filter() {
-    const [selectValue, setSelectValue] = useState('date_new');
-    const dropDownList = [
+    const [selectValueOrder, setSelectValueOrder] = useState('date_new');
+    const dropDownListOrder = [
         {
             label: 'Date (New to Old)',
             value: 'date_new',
@@ -31,36 +31,87 @@ export default function Filter() {
         },
     ]
 
+    const [selectValueType, setSelectValueType] = useState('');
+    const dropDownListType = [
+        {
+            label: 'Income',
+            value: 'income',
+        },
+        {
+            label: 'Expense',
+            value: 'expense',
+        },
+    ]
+
+    const [selectValueCategory, setSelectValueCategory] = useState('');
+    const dropDownListCategory = [
+        {
+            label: 'Category 01',
+            value: 'category_01',
+        },
+        {
+            label: 'Category 02',
+            value: 'category_02',
+        },
+        {
+            label: 'Category 03',
+            value: 'category_03',
+        },
+        {
+            label: 'Category 04',
+            value: 'category_04',
+        },
+        {
+            label: 'Category 05',
+            value: 'category_05',
+        },
+        {
+            label: 'Category 06',
+            value: 'category_06',
+        },
+        {
+            label: 'Category 07',
+            value: 'category_07',
+        },
+        {
+            label: 'Category 08',
+            value: 'category_08',
+        },
+        {
+            label: 'Category 09',
+            value: 'category_09',
+        },
+        {
+            label: 'Category 10',
+            value: 'category_10',
+        },
+    ]
+
+    const [amountValueStart, setAmountValueStart] = useState('');
+    const [amountValueEnd, setAmountValueEnd] = useState('');
+
+    const [dateValueStart, onChangeStart] = useState<Date | null>(null);
+    const [dateValueEnd, onChangeEnd] = useState<Date | null>(null);
+
     return (
         <View style={ styles.filter }>
-            <View style={ styles.input }>
-                <ThemedText style={ styles.title } weight='regular'>Order by</ThemedText>
-                <ThemedSelectInput data={ dropDownList } value={ selectValue } onSelect={(item) => { setSelectValue(item.value); }} />
-            </View>
-
-            <View style={ styles.input }>
-                <ThemedText style={ styles.title } weight='regular'>Type</ThemedText>
-                <ThemedInput type='text' placeholder='Type' value='' />
-            </View>
-            
-            <View style={ styles.input }>
-                <ThemedText style={ styles.title } weight='regular'>Category</ThemedText>
-                <ThemedInput type='text' placeholder='Category' value='' />
-            </View>
+            <Input name='Order by' type='select' selectData={ dropDownListOrder } selectValue={ selectValueOrder } onSelect={ (item) => { setSelectValueOrder(item.value); }} />
+            <Input name='Type' type='select' selectData={ dropDownListType } selectValue={ selectValueType } onSelect={ (item) => { setSelectValueType(item.value); }} />
+            <Input name='Category' type='select' selectData={ dropDownListCategory } selectValue={ selectValueCategory } onSelect={ (item) => { setSelectValueCategory(item.value); }} />
 
             <View style={ styles.input }>
                 <ThemedText style={ styles.title } weight='regular'>Amount</ThemedText>
                 <View style={ styles.pairButtons }>
-                    <ThemedInput type='number' placeholder='000.0' value='' />
-                    <ThemedInput type='number' placeholder='000.0' value='' />
+                    <ThemedInput type='decimal' placeholder='000.0' value={ amountValueStart } onChange={ setAmountValueStart } />
+                    <ThemedInput type='decimal' placeholder='000.0' value={ amountValueEnd } onChange={ setAmountValueEnd } />
                 </View>
             </View>
 
             <View style={ styles.input }>
                 <ThemedText style={ styles.title } weight='regular'>Date</ThemedText>
                 <View style={ styles.pairButtons }>
-                    <ThemedInput type='date' placeholder='DD/MM/YYYY' value='' />
-                    <ThemedInput type='date' placeholder='DD/MM/YYYY' value='' />
+                    <ThemedDateInput value={ dateValueStart } onChange={ onChangeStart } />
+                    <ThemedDateInput value={ dateValueEnd } onChange={ onChangeEnd } />
                 </View>
             </View>
         </View>

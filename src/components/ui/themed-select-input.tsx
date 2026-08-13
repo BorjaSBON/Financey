@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
+import { View, Pressable, FlatList, StyleSheet } from 'react-native';
 
 import { Colors } from '@constants/colors';
+
+import { ThemedText } from '@ui/themed-text';
 
 type DropdownItem = {
     label: string;
@@ -25,8 +27,8 @@ export function ThemedSelectInput({ data, value, onSelect }: DropdownProps ) {
     return (
         <View style={ styles.container } pointerEvents="box-none">
             <Pressable style={ styles.select } onPress={() => setOpen(prev => !prev)}>
-                <Text style={styles.selectedText}>{selectedItem?.label ?? 'Select'}</Text>
-                <Text style={styles.arrow}>{open ? '▲' : '▼'}</Text>
+                <ThemedText style={styles.selectedText} weight='light'>{selectedItem?.label ?? 'Select'}</ThemedText>
+                <ThemedText style={styles.arrow} weight='light'>{open ? '▲' : '▼'}</ThemedText>
             </Pressable>
 
             { open && (
@@ -43,7 +45,7 @@ export function ThemedSelectInput({ data, value, onSelect }: DropdownProps ) {
                                     setOpen(false);
                                 }}
                             >
-                                <Text style={[ styles.optionText, item.value === value && styles.selectedOptionText ]}>{item.label}</Text>
+                                <ThemedText style={[ styles.optionText, item.value === value && styles.selectedOptionText ]} weight='light'>{item.label}</ThemedText>
                             </Pressable>
                         )}
                     />
