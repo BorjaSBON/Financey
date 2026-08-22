@@ -21,4 +21,5 @@ export const Colors = {
     hoverElement: '#D9D9D933',
 
     shadow: '#111A3040',
+    divider: '#111A3018',
 } as const;

@@ -5,8 +5,8 @@ import { ThemedButton } from '@ui/themed-button';
 export default function TypeButtons() {
     return (
         <View style={ styles.typeButtons }>
-            <ThemedButton label='Expense' type='default'/>
-            <ThemedButton label='Income' type='clear'/>
+            <ThemedButton label='Expense' type='default' />
+            <ThemedButton label='Income' type='clear' />
         </View>
     );
 }

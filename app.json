@@ -1,7 +1,8 @@
 {
   "expo": {
     "name": "Financey",
-    "slug": "Financey",
+    "slug": "financey",
+    "scheme": "financey",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

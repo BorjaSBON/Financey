@@ -5,16 +5,17 @@ import { Values } from '@constants/values';
 
 import { ThemedText } from '@ui/themed-text';
 
+import Logo from '@assets/more.svg';
+
 interface Props {
     // Variables
     title: string;
-    data: string;
 
     // Methods
     onPress?: () => void;
 }
 
-export default function InformationElement({ title, data, onPress }: Props) {
+export default function ConfElement({ title, onPress }: Props) {
     return (
         <Pressable 
             style={({ pressed }) => [
@@ -23,8 +24,8 @@ export default function InformationElement({ title, data, onPress }: Props) {
             ]}
             onPress={ onPress }
         >
-            <ThemedText style={ styles.title } weight='regular'>{ title }</ThemedText>
-            <ThemedText style={ styles.data } weight='light'>{ data }</ThemedText>
+            <ThemedText style={ styles.title } weight='light'>{ title }</ThemedText>
+            <Logo style={ styles.icon } />
         </Pressable>
     );
 }
@@ -32,23 +33,20 @@ export default function InformationElement({ title, data, onPress }: Props) {
 const styles = StyleSheet.create({
     informationElement: {
         display: 'flex',
-        flexDirection: 'column',
-        rowGap: 0,
+        flexDirection: 'row',
         width: '100%',
-        alignItems: 'flex-start',
-        paddingTop: 5,
-        paddingBottom: 7,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingTop: 6,
+        paddingBottom: 8,
         paddingHorizontal: Values.paddingApp,
     },
 
     title: {
-        width: '100%',
-        fontSize: 15,
+        fontSize: 14,
     },
 
-    data: {
-        width: '100%',
-        textAlign: Platform.OS == 'android' ? 'left' :'justify',
-        fontSize: 12,
+    icon: {
+        transform: [{rotate: '-90deg'}],
     },
 });
