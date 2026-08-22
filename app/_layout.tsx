@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, Fragment } from 'react';
 import { useFonts } from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
 import { Slot, SplashScreen } from 'expo-router';
 
 SplashScreen.preventAutoHideAsync();
@@ -25,7 +26,12 @@ const RootLayout = () => {
 
     if (!fontsLoaded && !error) return null;
 
-    return <Slot />;
+    return (
+		<Fragment>
+			<Slot />
+			<StatusBar style="auto" />
+		</Fragment>
+	);
 };
 
 export default RootLayout;

@@ -11,9 +11,9 @@ const HomeScreen = () => {
         
         <View style={ styles.buttons}>
             <ThemedButton label='Configuration' type='default' onPress={ () => router.push('/configuration') } />
-            <ThemedButton label='Add' type='default' onPress={ () => router.push('/products') } />
-            <ThemedButton label='List' type='default' onPress={ () => router.push('/products') } />
-            <ThemedButton label='Charts' type='default' onPress={ () => router.push('/products') } />
+            <ThemedButton label='Add' type='default' onPress={ () => router.push('/data/add') } />
+            <ThemedButton label='List' type='default' onPress={ () => router.push('/data/list') } />
+            <ThemedButton label='Charts' type='default' onPress={ () => router.push('/data/charts') } />
         </View>
     </View>
   );

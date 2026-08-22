@@ -1,11 +1,13 @@
 import { StyleSheet, View, ScrollView } from 'react-native';
 
+import { Values } from '@constants/values';
+
 import BalanceResume from '@components/data/balance-resume';
 import ListElement from '@components/data/list-element';
 
-export default function DataList() {
+const DataList = () => {
     return (
-        <View style={ styles.dataList }>
+        <View style={ styles.container }>
             <BalanceResume incomes={ 12000.58 } expenses={ 5000.36 } squareEnable={ false } />
 
             <View style={ styles.listElements }>
@@ -35,12 +37,14 @@ export default function DataList() {
             </View>
         </View>
     );
-}
+};
+
+export default DataList;
 
 const styles = StyleSheet.create({
-    dataList: {
+    container: {
         flex: 1,
-        top: 100,
+        top: Values.topNotHeader,
         width: '100%',
         paddingBottom: 125
     },

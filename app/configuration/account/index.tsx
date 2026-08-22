@@ -1,5 +1,7 @@
 import { StyleSheet, View, ScrollView } from 'react-native';
 
+import { Values } from '@constants/values';
+
 import InformationElement from '@components/configuration/information-element';
 
 export default function AccountInformation() {
@@ -20,7 +22,7 @@ export default function AccountInformation() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        top: 100,
+        top: Values.topIfHeader,
         width: '100%',
         paddingBottom: 125
     },

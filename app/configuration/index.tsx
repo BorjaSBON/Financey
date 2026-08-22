@@ -5,7 +5,6 @@ import { Colors } from '@constants/colors';
 import { Values } from '@constants/values';
 
 import { ThemedText } from '@ui/themed-text';
-import { ThemedButton } from '@ui/themed-button';
 
 import ConfElement from '@components/configuration/conf-element';
 
@@ -50,7 +49,7 @@ const ConfigurationScreen = () => {
         <View style={ styles.section}>
             <ThemedText style={ styles.sectionTitle }>Application</ThemedText>
             <View style={ styles.smallDivider } />
-            
+
             <ConfElement title='Information of the app' onPress={ () => router.push('/configuration/application') } />
         </View>
 
@@ -64,7 +63,7 @@ export default ConfigurationScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        top: 100,
+        top: Values.topIfHeader,
         width: '100%',
         paddingBottom: 125
     },
