@@ -2,11 +2,23 @@ import { StyleSheet, View } from 'react-native';
 
 import { ThemedButton } from '@ui/themed-button';
 
-export default function TypeButtons() {
+interface Props {
+    // Variables
+    expenseActive?: boolean,
+
+    // Methods
+    expenseOnPress?: () => void;
+    expenseOnLongPress?: () => void;
+
+    incomeOnPress?: () => void;
+    incomeOnLongPress?: () => void;
+}
+
+export default function TypeButtons({ expenseActive, expenseOnPress, expenseOnLongPress, incomeOnPress, incomeOnLongPress }: Props) {
     return (
         <View style={ styles.typeButtons }>
-            <ThemedButton label='Expense' type='default' />
-            <ThemedButton label='Income' type='clear' />
+            <ThemedButton label='Expense' type={ expenseActive ? 'default' : 'clear' } onPress={ expenseOnPress } onLongPress={ expenseOnLongPress } />
+            <ThemedButton label='Income' type={ !expenseActive ? 'default' : 'clear' } onPress={ incomeOnPress } onLongPress={ incomeOnLongPress } />
         </View>
     );
 }

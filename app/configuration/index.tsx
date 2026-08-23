@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View  } from 'react-native';
 import { router } from 'expo-router';
 
 import { Colors } from '@constants/colors';
@@ -27,6 +27,11 @@ const ConfigurationScreen = () => {
         setResetAccount(false);
     }
 
+    // Export data
+    const exportData = async () => {
+        console.log('Exporting document');
+    };
+
     return (
         <View style={ styles.container }>
             <View style={ styles.sections }>
@@ -48,9 +53,9 @@ const ConfigurationScreen = () => {
                         <View style={ styles.smallDivider } />
 
                         <ConfElement title='Currency' iconDisplay={ false } />
-                        <ConfElement title='Categories' />
+                        <ConfElement title='Categories' onPress={ () => router.push('/configuration/data/categories') } />
                         <ConfElement title='Import data' />
-                        <ConfElement title='Export data' iconDisplay={ false } />
+                        <ConfElement title='Export data' iconDisplay={ false } onPress={ exportData } />
                     </View>
 
                     <View style={ styles.divider } />

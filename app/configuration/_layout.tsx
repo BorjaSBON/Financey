@@ -12,6 +12,10 @@ const ConfigurationLayout = () => {
                 return 'Information of the account';
             case '/configuration/application':
                 return 'Information of the application';
+            case '/configuration/data/categories':
+                return 'Categories';
+            case '/configuration/data/import':
+                return 'Import data';
             default:
                 return 'Configuration';
         }
