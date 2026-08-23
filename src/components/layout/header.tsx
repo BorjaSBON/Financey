@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 
     title: {
         fontSize: 17,
-        marginStart: 10,
+        marginStart: 5,
         marginVertical: 'auto',
     },
 

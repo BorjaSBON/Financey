@@ -94,7 +94,7 @@ export default function Filter() {
     const [dateValueEnd, onChangeEnd] = useState<Date | null>(null);
 
     return (
-        <View style={ styles.filter }>
+        <View style={ styles.popup }>
             <Input name='Order by' type='select' selectData={ dropDownListOrder } selectValue={ selectValueOrder } onSelect={ (item) => { setSelectValueOrder(item.value); }} />
             <Input name='Type' type='select' selectData={ dropDownListType } selectValue={ selectValueType } onSelect={ (item) => { setSelectValueType(item.value); }} />
             <Input name='Category' type='select' selectData={ dropDownListCategory } selectValue={ selectValueCategory } onSelect={ (item) => { setSelectValueCategory(item.value); }} />
@@ -119,7 +119,7 @@ export default function Filter() {
 }
 
 const styles = StyleSheet.create({
-    filter: {
+    popup: {
         flex: 1,
         display: 'flex',
         flexDirection: 'column',

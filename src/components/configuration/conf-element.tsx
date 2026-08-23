@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, Platform } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 
 import { Colors } from '@constants/colors';
 import { Values } from '@constants/values';
@@ -10,12 +10,14 @@ import Logo from '@assets/more.svg';
 interface Props {
     // Variables
     title: string;
+    colorText?: string;
+    iconDisplay?: boolean;
 
     // Methods
     onPress?: () => void;
 }
 
-export default function ConfElement({ title, onPress }: Props) {
+export default function ConfElement({ title, colorText=Colors.fontPrimary, iconDisplay=true, onPress }: Props) {
     return (
         <Pressable 
             style={({ pressed }) => [
@@ -24,8 +26,8 @@ export default function ConfElement({ title, onPress }: Props) {
             ]}
             onPress={ onPress }
         >
-            <ThemedText style={ styles.title } weight='light'>{ title }</ThemedText>
-            <Logo style={ styles.icon } />
+            <ThemedText style={[ styles.title, { color:colorText } ]} weight='light'>{ title }</ThemedText>
+            <Logo style={[ styles.icon, iconDisplay ? { display: 'flex'} : { display: 'none'} ]} />
         </Pressable>
     );
 }

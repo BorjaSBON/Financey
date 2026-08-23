@@ -1,9 +1,6 @@
-import { useState } from 'react';
 import { View, TextInput, StyleSheet, InputModeOptions } from 'react-native';
 
 import { Colors } from '@constants/colors';
-
-import Logo from '@assets/calendar.svg';
 
 interface Props {
     // Variables
@@ -26,7 +23,6 @@ export function ThemedInput({ value='', placeholder='', type='text', onChange=()
                 inputMode={ type }
                 autoComplete='off'
             />
-            <Logo style={ styles.icon } />
         </View>
     );
 }
