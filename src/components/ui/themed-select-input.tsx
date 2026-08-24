@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Pressable, FlatList, StyleSheet } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { View, Pressable, FlatList, StyleSheet, Modal } from 'react-native';
 
 import { Colors } from '@constants/colors';
 
@@ -10,7 +10,7 @@ type DropdownItem = {
     value: string;
 };
 
-interface DropdownProps  {
+interface DropdownProps {
     // Variables
     data: DropdownItem[];
     value: string;
@@ -19,48 +19,93 @@ interface DropdownProps  {
     onSelect: (item: DropdownItem) => void;
 }
 
-export function ThemedSelectInput({ data, value, onSelect }: DropdownProps ) {
+export function ThemedSelectInput({ data, value, onSelect }: DropdownProps) {
     const [open, setOpen] = useState(false);
 
-    const selectedItem = data.find(item => item.value === value);
+    const [dropdownPosition, setDropdownPosition] = useState({
+        x: 0,
+        y: 0,
+        width: 0,
+    });
+
+    const selectRef = useRef<View>(null);
+
+    const selectedItem = data.find(
+        item => item.value === value
+    );
+
+    const openDropdown = () => {
+        selectRef.current?.measureInWindow(
+            (x, y, width, height) => {
+                setDropdownPosition({
+                    x,
+                    y: y + height + 5,
+                    width,
+                });
+
+                setOpen(true);
+            }
+        );
+    };
+
+    const closeDropdown = () => {
+        setOpen(false);
+    };
+
+    const handleSelect = (item: DropdownItem) => {
+        onSelect(item);
+        closeDropdown();
+    };
 
     return (
-        <View style={ styles.container } pointerEvents="box-none">
-            <Pressable style={ styles.select } onPress={() => setOpen(prev => !prev)}>
-                <ThemedText style={styles.selectedText} weight='light'>{selectedItem?.label ?? 'Select'}</ThemedText>
-                <ThemedText style={styles.arrow} weight='light'>{open ? '▲' : '▼'}</ThemedText>
-            </Pressable>
+        <View>
+            <View style={styles.container}>
+                <Pressable ref={ selectRef } style={ styles.select } onPress={ openDropdown }>
+                    <ThemedText style={styles.selectedText} weight='light'>{ selectedItem?.label ?? 'Select' }</ThemedText>
+                    <ThemedText style={styles.arrow} weight="light">{ open ? '▲' : '▼' }</ThemedText>
+                </Pressable>
+            </View>
 
-            { open && (
-                <View style={styles.dropdown} pointerEvents="auto">
-                    <FlatList
-                        data={data}
-                        keyExtractor={(item) => item.value}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) => (
-                            <Pressable
-                                style={[ styles.option, item.value === value && styles.selectedOption ]}
-                                onPress={() => {
-                                    onSelect(item);
-                                    setOpen(false);
-                                }}
-                            >
-                                <ThemedText style={[ styles.optionText, item.value === value && styles.selectedOptionText ]} weight='light'>{item.label}</ThemedText>
-                            </Pressable>
-                        )}
-                    />
+            <Modal
+                visible={ open }
+                transparent
+                animationType="none"
+                onRequestClose={ closeDropdown }
+            >
+                <View style={ styles.modalContainer }>
+                    <Pressable style={ StyleSheet.absoluteFill } onPress={ closeDropdown } />
+
+                    <View
+                        style={[
+                            styles.dropdown,
+                            {
+                                top: dropdownPosition.y,
+                                left: dropdownPosition.x,
+                                width: dropdownPosition.width,
+                            },
+                        ]}
+                    >
+                        <FlatList
+                            data={ data }
+                            keyExtractor={ item => item.value }
+                            showsVerticalScrollIndicator
+                            keyboardShouldPersistTaps="handled"
+                            renderItem={({ item }) => (
+                                <Pressable style={[ styles.option, item.value === value && styles.selectedOption ]} onPress={ () => handleSelect(item) }>
+                                    <ThemedText style={[ styles.optionText, item.value === value && styles.selectedOptionText ]} weight='light'>{ item.label }</ThemedText>
+                                </Pressable>
+                            )}
+                        />
+                    </View>
                 </View>
-            )}
+            </Modal>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        position: 'relative',
         width: '100%',
-        zIndex: 100,
-        elevation: 100,
     },
 
     select: {
@@ -85,18 +130,26 @@ const styles = StyleSheet.create({
         color: Colors.fontPrimary,
     },
 
+    modalContainer: {
+        flex: 1,
+    },
+
     dropdown: {
         position: 'absolute',
-        zIndex: 100,
-        elevation: 100,
-        top: 45,
-        width: '100%',
-        maxHeight: 400,
+        maxHeight: 390,
         backgroundColor: Colors.backgroundPrimary,
         borderWidth: 1,
         borderColor: Colors.inputBackground,
         borderRadius: 12,
-        overflow: 'hidden',
+        elevation: 10,
+
+        shadowColor: Colors.primaryColor,
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.15,
+        shadowRadius: 8,
     },
 
     option: {

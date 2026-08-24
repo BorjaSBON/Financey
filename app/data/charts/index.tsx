@@ -4,7 +4,7 @@ import { Values } from '@constants/values';
 
 import { ThemedText } from '@ui/themed-text';
 
-const DataAdd = () => {
+const DataCharts = () => {
     return (
         <View style={ styles.container }>
             <ThemedText>Charts</ThemedText>
@@ -12,7 +12,7 @@ const DataAdd = () => {
     );
 };
 
-export default DataAdd;
+export default DataCharts;
 
 const styles = StyleSheet.create({
     container: {

@@ -1,0 +1,74 @@
+[
+    {
+        "label": "Alquiler",
+        "value": "alquiler"
+    },
+    {
+        "label": "Agua",
+        "value": "agua"
+    },
+    {
+        "label": "Luz",
+        "value": "luz"
+    },
+    {
+        "label": "Gas",
+        "value": "gas"
+    },
+    {
+        "label": "Comida",
+        "value": "comida"
+    },
+    {
+        "label": "Servicios",
+        "value": "servicios"
+    },
+    {
+        "label": "Wifi",
+        "value": "wifi"
+    },
+    {
+        "label": "Ocio",
+        "value": "ocio"
+    },
+    {
+        "label": "Deporte",
+        "value": "deporte"
+    },
+    {
+        "label": "Farmacia",
+        "value": "farmacia"
+    },
+    {
+        "label": "Electrónica",
+        "value": "electrónica"
+    },
+    {
+        "label": "Juegos",
+        "value": "juegos"
+    },
+    {
+        "label": "Regalos",
+        "value": "regalos"
+    },
+    {
+        "label": "Ropa",
+        "value": "ropa"
+    },
+    {
+        "label": "Transporte",
+        "value": "transporte"
+    },
+    {
+        "label": "Coche",
+        "value": "coche"
+    },
+    {
+        "label": "Viajes",
+        "value": "viajes"
+    },
+    {
+        "label": "Otros",
+        "value": "otros"
+    }
+]

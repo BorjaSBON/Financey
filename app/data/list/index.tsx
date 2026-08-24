@@ -1,4 +1,5 @@
 import { StyleSheet, View, FlatList } from 'react-native';
+import { router } from 'expo-router';
 
 import { Values } from '@constants/values';
 
@@ -77,7 +78,14 @@ const DataList = () => {
                 <FlatList
                     data={items}
                     keyExtractor={(item) => item.category + String(item.value) + item.date}
-                    renderItem={({ item }) => <ListElement type={ item.type } category={ item.category } value={ item.value } date={ item.date } />}
+                    renderItem={({ item }) => <ListElement type={ item.type } category={ item.category } value={ item.value } date={ item.date } onPress={ () =>
+                        router.push({
+                            pathname: '/data/modify/[id]',
+                            params: {
+                                id: '1',
+                            },
+                        })
+                    } />}
                 />
             </View>
         </View>

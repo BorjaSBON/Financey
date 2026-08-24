@@ -9,12 +9,17 @@ import TypeButtons from '@components/data/type-buttons';
 import CategoryElement from '@components/configuration/category-element';
 import Logo from '@assets/add.svg';
 
-const Categories = () => {
-    // Categories
-    const expense_categories = ['Alquiler', 'Agua', 'Luz', 'Gas', 'Comida', 'Servicios', 'Wifi', 'Ocio', 'Deporte', 'Farmacia', 'Electrónica', 'Juegos', 'Regalos', 'Ropa', 'Transporte', 'Coche', 'Viajes', 'Otros'];
-    const income_categories = ['Nómina', 'Otros'];
+type Category = {
+    value: string;
+    label: string;
+};
 
-    // Active category
+const Categories = () => {
+    // Get the categories
+    const expense_categories:Category[] = require('@/docs/expense_categories.json');
+    const income_categories:Category[] = require('@/docs/income_categories.json');
+
+    // Active type
     const [expenseActive, setExpenseActive] = useState(true);
     let categories = expenseActive ? expense_categories : income_categories;
 
@@ -40,7 +45,7 @@ const Categories = () => {
                     <ScrollView>
                         {
                             categories.map((category) => (
-                                <CategoryElement key={ category } title={ category } />
+                                <CategoryElement key={ category.value } title={ category.label } />
                             )) 
                         }
                     </ScrollView>
