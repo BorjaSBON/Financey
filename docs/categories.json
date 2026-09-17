@@ -1,0 +1,83 @@
+[
+    {
+        "name": "Payroll",
+        "type": "income"
+    },
+    {
+        "name": "Other",
+        "type": "income"
+    },
+
+    {
+        "name": "Rental",
+        "type": "expense"
+    },
+    {
+        "name": "Water",
+        "type": "expense"
+    },
+    {
+        "name": "Light",
+        "type": "expense"
+    },
+    {
+        "name": "Gas",
+        "type": "expense"
+    },
+    {
+        "name": "Food",
+        "type": "expense"
+    },
+    {
+        "name": "Services",
+        "type": "expense"
+    },
+    {
+        "name": "Wifi",
+        "type": "expense"
+    },
+    {
+        "name": "Leisure",
+        "type": "expense"
+    },
+    {
+        "name": "Sport",
+        "type": "expense"
+    },
+    {
+        "name": "Health",
+        "type": "expense"
+    },
+    {
+        "name": "Electronics",
+        "type": "expense"
+    },
+    {
+        "name": "Games",
+        "type": "expense"
+    },
+    {
+        "name": "Presents",
+        "type": "expense"
+    },
+    {
+        "name": "Clothes",
+        "type": "expense"
+    },
+    {
+        "name": "Transport",
+        "type": "expense"
+    },
+    {
+        "name": "Car",
+        "type": "expense"
+    },
+    {
+        "name": "Travel",
+        "type": "expense"
+    },
+    {
+        "name": "Other",
+        "type": "expense"
+    }
+]

@@ -9,12 +9,19 @@ import { ThemedButton } from '@ui/themed-button';
 import Input from '@components/common/input';
 import TypeButtons from '@components/data/type-buttons';
 
+import { useTransactions } from '@/src/hooks/useTransactions';
+
 type Category = {
     value: string;
     label: string;
 };
 
 const DataAdd = () => {
+    const {
+        createTransaction,
+        loading,
+    } = useTransactions();
+
     // Get the categories
     const expense_categories:Category[] = require('@/docs/expense_categories.json');
     const income_categories:Category[] = require('@/docs/income_categories.json');
@@ -37,7 +44,25 @@ const DataAdd = () => {
     // Amount and date value
     const [amount, setAmount] = useState('');
     const [date, setDate] = useState<Date | null>(null);
-    
+
+    // Add button
+    async function addTransaction() {
+        if (!amount || !selectValue) {
+            return;
+        }
+
+        const amountInCents = Math.round(Number(amount) * 100);
+
+        const id = await createTransaction({
+            type: expenseActive ? 'expense' : 'income',
+            amount: amountInCents,
+            categoryId: 1,
+            date: date ? date.toISOString() : new Date().toISOString(),
+        });
+
+        console.log('Creada:', id);
+    };
+
     return (
         <View style={ styles.container }>
             <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
@@ -60,7 +85,7 @@ const DataAdd = () => {
             </View>
 
             <View style={ styles.add }>
-                <ThemedButton label='Add' type='default'/>
+                <ThemedButton label='Add' type='default' onPress={ addTransaction } />
             </View>
         </View>
     );

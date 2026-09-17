@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 
 import { Values } from '@constants/values';
 
@@ -7,6 +7,7 @@ import { ThemedText } from '@ui/themed-text';
 
 import TypeButtons from '@components/data/type-buttons';
 import CategoryElement from '@components/configuration/category-element';
+import { useCategories } from '@/src/hooks/useCategories';
 import Logo from '@assets/add.svg';
 
 type Category = {
@@ -15,13 +16,11 @@ type Category = {
 };
 
 const Categories = () => {
-    // Get the categories
-    const expense_categories:Category[] = require('@/docs/expense_categories.json');
-    const income_categories:Category[] = require('@/docs/income_categories.json');
+    const { categories } = useCategories();
 
     // Active type
     const [expenseActive, setExpenseActive] = useState(true);
-    let categories = expenseActive ? expense_categories : income_categories;
+    const categories_selected = categories.filter(item => item.type === (expenseActive ? 'expense' : 'income'));
 
     const expenseActivation = () => {
         setExpenseActive(true);
@@ -44,8 +43,8 @@ const Categories = () => {
                 <View style={ styles.list }>
                     <ScrollView>
                         {
-                            categories.map((category) => (
-                                <CategoryElement key={ category.value } title={ category.label } />
+                            categories_selected.map((category) => (
+                                <CategoryElement key={ category.name } title={ category.name } />
                             )) 
                         }
                     </ScrollView>

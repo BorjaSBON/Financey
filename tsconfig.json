@@ -12,6 +12,9 @@
 			"@constants/*": [
 				"./src/constants/*"
 			],
+			"@db/*": [
+				"./src/db/*"
+			],
 			"@assets/*": [
 				"./assets/svg/*"
 			],

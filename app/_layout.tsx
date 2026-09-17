@@ -3,9 +3,24 @@ import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { Slot, SplashScreen } from 'expo-router';
 
+import { initializeAppDatabase } from '@db/init';
+
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
+	useEffect(() => {
+		const initialize = async () => {
+			try {
+				await initializeAppDatabase();
+				console.log('Database initialized successfully');
+			} catch (error) {
+				console.error('Error while initializing DB:', error);
+			}
+		};
+
+		initialize();
+	}, []);
+
     const [fontsLoaded, error] = useFonts({
 		MontserratThin: require('@fonts/Montserrat-Thin.otf'),
 		MontserratExtraLight: require('@fonts/Montserrat-ExtraLight.otf'),
