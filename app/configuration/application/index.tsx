@@ -21,9 +21,9 @@ export default function AppInformation() {
                 <InformationElement title='Operating system' data={ os.charAt(0).toUpperCase() + os.slice(1) } />
                 <InformationElement title='Creator' data='Borja Sanz de Bremond' onPress={ () => {Linking.openURL(urlCreator);} } />
                 <InformationElement title='Team' data='Hobbit Holes' />
-                <InformationElement title='Description' data='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.' />
-                <InformationElement title='Security' data='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' />
-                <InformationElement title='Respository' data={ urlRepository } onPress={ () => {Linking.openURL(urlRepository);} } />
+                <InformationElement title='Description' data='Application that allows you to view your day-to-day income and expenditure clearly and simply. Thanks to the charts and statistics generated from the information collected, you will gain a clearer understanding of how your money is being spent.' />
+                <InformationElement title='Security' data='None of the data collected can be viewed or processed by external parties, as this app has no internet connection and there is no intention to extract the data for analysis.' />
+                <InformationElement title='Repository' data={ urlRepository } onPress={ () => {Linking.openURL(urlRepository);} } />
             </ScrollView>
         </View>
     );

@@ -1,9 +1,12 @@
 import { StyleSheet, View } from 'react-native';
+import { router } from 'expo-router';
 
 import { Colors } from '@constants/colors';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedButton } from '@ui/themed-button';
+
+import { useTransactions } from '@/src/hooks/useTransactions';
 
 interface Props {
     // Variables
@@ -14,15 +17,24 @@ interface Props {
 }
 
 export default function ResetAccount({ active=false, cancelAction }: Props) {
+    // Database
+    const { deleteTransactions } = useTransactions();
+    
+    // Reset account
+    const resetAccountAction = async () => {
+        await deleteTransactions();
+        router.push('/');
+    }
+
     return (
         <View style={[ 
             styles.popup,
             active ? { display: 'flex' } : { display: 'none' }
         ]}>
-            <ThemedText style={ styles.message } weight='light' >Are you sure you want to reset the account?</ThemedText>
+            <ThemedText style={ styles.message } weight='light'>Are you sure you want to reset the account?</ThemedText>
 
             <View style={ styles.buttons }>
-                <ThemedButton label='Reset' type='delete' />
+                <ThemedButton label='Reset' type='delete' onPress={ resetAccountAction } />
                 <ThemedButton label='Cancel' type='default' onPress={ cancelAction } />
             </View>
         </View>

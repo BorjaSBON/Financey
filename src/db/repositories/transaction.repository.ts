@@ -39,18 +39,7 @@ export async function getAll(): Promise<Transaction[]> {
         ORDER BY t.date DESC, t.id DESC
     `);
 
-    console.log(rows);
-
-    return rows.map((row: any) => ({
-        id: row.id,
-        type: row.type,
-        amount: row.amount,
-        categoryId: row.category_id,
-        categoryName: row.category_name,
-        date: row.date,
-        createdAt: row.created_at,
-        updatedAt: row.updated_at,
-    }));
+    return rows.map(mapTransaction);
 }
 
 // Get a transaction by ID
@@ -137,6 +126,17 @@ export async function remove(id: number): Promise<void> {
     );
 }
 
+// Delete all transactions
+export async function removeAll(): Promise<void> {
+    const db = await dbPromise;
+
+    await db.runAsync(
+        `
+            DELETE FROM transactions
+        `
+    );
+}
+
 // Get the balance for a given date range
 export async function getBalance(from: string, to: string): Promise<number> {
     const db = await dbPromise;
@@ -167,8 +167,11 @@ export async function getBalance(from: string, to: string): Promise<number> {
 // Export the repository functions
 export const transactionsRepository = {
     getAll,
-    getBalance,
+    getById,
     create,
     modify,
     remove,
+    removeAll,
+
+    getBalance,
 };

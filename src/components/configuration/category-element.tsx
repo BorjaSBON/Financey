@@ -9,12 +9,13 @@ import Logo from '@assets/trash.svg';
 interface Props {
     // Variables
     title: string;
+    type: string;
 
     // Methods
     onPress?: () => void;
 }
 
-export default function CategoryElement({ title, onPress }: Props) {
+export default function CategoryElement({ title, type, onPress }: Props) {
     return (
         <Pressable 
             style={({ pressed }) => [
@@ -24,7 +25,7 @@ export default function CategoryElement({ title, onPress }: Props) {
             onPress={ onPress }
         >
             <View style={ styles.name }>
-                <View style={ styles.color } />
+                <View style={[ styles.color, type === 'expense' ? { backgroundColor: Colors.negative } : { backgroundColor: Colors.positive } ]} />
                 <ThemedText style={ styles.title } weight='light'>{ title }</ThemedText>
             </View>
             <Logo style={ styles.icon } />
@@ -54,7 +55,6 @@ const styles = StyleSheet.create({
         width: 10,
         height: 10,
         borderRadius: 2,
-        backgroundColor: Colors.negative,
         marginTop: 7,
     },
 

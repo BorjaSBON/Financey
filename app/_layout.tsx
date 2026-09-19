@@ -12,9 +12,9 @@ const RootLayout = () => {
 		const initialize = async () => {
 			try {
 				await initializeAppDatabase();
-				console.log('Database initialized successfully');
 			} catch (error) {
 				console.error('Error while initializing DB:', error);
+				return null;
 			}
 		};
 

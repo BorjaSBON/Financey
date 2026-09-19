@@ -15,10 +15,7 @@ type Item = {
 }
 
 const DataList = () => {
-    const {
-        transactions,
-        loading,
-    } = useTransactions();
+    const { transactions, loading } = useTransactions();
 
     if (loading) {
         return <ActivityIndicator />;

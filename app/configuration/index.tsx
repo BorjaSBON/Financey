@@ -16,7 +16,7 @@ const ConfigurationScreen = () => {
     const [resetAccount, setResetAccount] = useState(false);
     const [changeUsername, setChangeUsername] = useState(false);
 
-    // Functions
+    // Functions popups
     const activeResetAccount = () => {
         setResetAccount(prev => !prev);
         setChangeUsername(false);
@@ -31,6 +31,8 @@ const ConfigurationScreen = () => {
     const exportData = async () => {
         console.log('Exporting document');
     };
+
+    
 
     return (
         <View style={ styles.container }>

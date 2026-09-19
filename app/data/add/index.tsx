@@ -10,6 +10,7 @@ import Input from '@components/common/input';
 import TypeButtons from '@components/data/type-buttons';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
+import { useCategories } from '@/src/hooks/useCategories';
 
 type Category = {
     value: string;
@@ -17,18 +18,21 @@ type Category = {
 };
 
 const DataAdd = () => {
-    const {
-        createTransaction,
-        loading,
-    } = useTransactions();
-
     // Get the categories
-    const expense_categories:Category[] = require('@/docs/expense_categories.json');
-    const income_categories:Category[] = require('@/docs/income_categories.json');
+    const { categories, loading } = useCategories();
+
+    // Get the function to create a transaction
+    const { createTransaction } = useTransactions();
 
     // Active type
     const [expenseActive, setExpenseActive] = useState(true);
-    let categories = expenseActive ? expense_categories : income_categories;
+    let categories_selected = categories.filter(item => item.type === (expenseActive ? 'expense' : 'income'));
+    let categories_formatted = categories_selected.map((item) => {
+        return {
+            value: item.name.toLowerCase(),
+            label: item.name,
+        };
+    });
 
     const expenseActivation = () => {
         setExpenseActive(true);
@@ -56,12 +60,16 @@ const DataAdd = () => {
         const id = await createTransaction({
             type: expenseActive ? 'expense' : 'income',
             amount: amountInCents,
-            categoryId: 1,
+            categoryId: categories_selected.find(item => item.name.toLowerCase() === selectValue)?.id || 0,
             date: date ? date.toISOString() : new Date().toISOString(),
         });
 
         console.log('Creada:', id);
     };
+
+    if (loading) {
+        return <View></View>;
+    }
 
     return (
         <View style={ styles.container }>
@@ -80,7 +88,7 @@ const DataAdd = () => {
             </View>
 
             <View style={ styles.inputs }>
-                <Input name='Category' type='select' selectData={ categories } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
+                <Input name='Category' type='select' selectData={ categories_formatted } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
                 <Input name='Date' type='date' dateValue={ date } onChange={ setDate } />
             </View>
 

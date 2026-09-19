@@ -5,8 +5,21 @@ export async function initializeDatabase() {
 
     // DROP TABLE IF EXISTS categories;
 
+    // INSERT INTO profile (username, creation_date, last_action_date, data_added, data_modified, data_deleted)
+    // VALUES ('Borchax', '19/09/2026', '19/09/2026', 0, 0, 0);
+
     await db.execAsync(`
         PRAGMA journal_mode = WAL;
+
+        CREATE TABLE IF NOT EXISTS profile (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE,
+            creation_date TEXT NOT NULL,
+            last_action_date TEXT NOT NULL,
+            data_added TEXT NOT NULL,
+            data_modified TEXT NOT NULL,
+            data_deleted TEXT NOT NULL
+        );
 
         CREATE TABLE IF NOT EXISTS categories (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

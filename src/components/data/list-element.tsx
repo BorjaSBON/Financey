@@ -18,8 +18,11 @@ interface Props {
 export default function ListElement({ type, category, value, date, onPress }: Props) {
     // Function to transform the values in readable text
     function ReadableNumber(value: number) {
-        return value.toLocaleString('de-DE').replace(',', '\'');
+        return (value / 100).toLocaleString('de-DE').replace(',', '\'');
     }
+
+    // Get the formatted date
+    const dateFormatted = new Date(date).toLocaleDateString('en-GB');
 
     // Color of the money depending on the type of data
     const valueColor = type=='income' ? styles.positive : styles.negative;
@@ -38,7 +41,7 @@ export default function ListElement({ type, category, value, date, onPress }: Pr
                 <ThemedText style={[ styles.unit, valueColor ]} weight='light'>€</ThemedText>
             </ThemedText>
 
-            <ThemedText style={ styles.date } weight='light'>{ date }</ThemedText>
+            <ThemedText style={ styles.date } weight='light'>{ dateFormatted }</ThemedText>
         </Pressable>
     );
 }

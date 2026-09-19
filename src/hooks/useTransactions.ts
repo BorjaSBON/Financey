@@ -40,8 +40,7 @@ export function useTransactions() {
             setLoading(true);
             setError(null);
 
-            const id =
-            await transactionsRepository.create(data);
+            const id = await transactionsRepository.create(data);
 
             // Actualizamos el listado
             await getTransactions();
@@ -49,12 +48,8 @@ export function useTransactions() {
             return id;
         } catch (err) {
             const error =
-            err instanceof Error
-                ? err
-                : new Error('Error creando la transacción');
-
+            err instanceof Error ? err : new Error('Error creando la transacción');
             setError(error);
-
             throw error;
         } finally {
             setLoading(false);
@@ -112,6 +107,22 @@ export function useTransactions() {
         }
     }, [getTransactions]);
 
+    // ELIMINAR
+    const deleteTransactions = useCallback(async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            await transactionsRepository.removeAll();
+        } catch (err) {
+            const error = err instanceof Error ? err : new Error('Error eliminando la transacción');
+            setError(error);
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
     useEffect(() => {
         getTransactions();
     }, [getTransactions]);
@@ -126,5 +137,6 @@ export function useTransactions() {
         createTransaction,
         modifyTransaction,
         deleteTransaction,
+        deleteTransactions,
     };
 }
