@@ -6,6 +6,7 @@ export type Profile = {
     data_added: string;
     data_modified: string;
     data_deleted: string;
+    active: number;
 };
 
 export type CreateProfile = {

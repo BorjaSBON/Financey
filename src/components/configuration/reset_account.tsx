@@ -7,6 +7,8 @@ import { ThemedText } from '@ui/themed-text';
 import { ThemedButton } from '@ui/themed-button';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
+import { useCategories } from '@/src/hooks/useCategories';
+import { useProfile } from '@/src/hooks/useProfile';
 
 interface Props {
     // Variables
@@ -19,10 +21,12 @@ interface Props {
 export default function ResetAccount({ active=false, cancelAction }: Props) {
     // Database
     const { deleteTransactions } = useTransactions();
+    const { removeProfile } = useProfile();
     
     // Reset account
     const resetAccountAction = async () => {
         await deleteTransactions();
+        await removeProfile();
         router.push('/');
     }
 

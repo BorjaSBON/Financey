@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { router } from 'expo-router';
 
 import { Colors } from '@constants/colors';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedInput } from '@ui/themed-input';
 import { ThemedButton } from '@ui/themed-button';
+
+import { useProfile } from '@/src/hooks/useProfile';
 
 interface Props {
     // Variables
@@ -16,19 +19,40 @@ interface Props {
 }
 
 export default function ChangeUsername({ active=false, cancelAction }: Props) {
+    // Database
+    const { profile, modifyProfileUsername, loading, error } = useProfile();
+
     // New username
-    const [username, setUsername] = useState('Borchax');
+    const [username, setUsername] = useState(profile?.username || '');
+
+    // If loading, return an empty view
+    useEffect(() => {
+        if (!loading) {
+            setUsername(profile?.username || '');
+        }
+    }, [loading, profile?.username]);
+
+    // Function to modify the username
+    const modifyUsername = async () => {
+        await modifyProfileUsername({'username': username, 'last_action_date': new Date().toISOString()});
+
+        if (error) {
+            console.error(error);
+        }
+
+        router.push('/');
+    }
 
     return (
         <View style={[ 
             styles.popup,
             active ? { display: 'flex' } : { display: 'none' }
         ]}>
-            <ThemedText style={ styles.message } weight='light' >New username</ThemedText>
+            <ThemedText style={ styles.message } weight='light'>New username</ThemedText>
             <ThemedInput value={ username } placeholder='New username' type='text' onChange={ setUsername } />
 
             <View style={ styles.buttons }>
-                <ThemedButton label='Change' type='default' />
+                <ThemedButton label='Change' type='default' onPress={ modifyUsername } />
                 <ThemedButton label='Cancel' type='default' onPress={ cancelAction } />
             </View>
         </View>

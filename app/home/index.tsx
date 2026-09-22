@@ -4,19 +4,32 @@ import { router } from 'expo-router';
 import { ThemedText } from '@ui/themed-text';
 import { ThemedButton } from '@ui/themed-button';
 
+import { useProfile } from '@/src/hooks/useProfile';
+
 const HomeScreen = () => {
-  return (
-    <View style={ styles.container }>
-        <ThemedText weight='light'>Welcome Borchax!</ThemedText>
-        
-        <View style={ styles.buttons}>
-            <ThemedButton label='Configuration' type='default' onPress={ () => router.push('/configuration') } />
-            <ThemedButton label='Add' type='default' onPress={ () => router.push('/data/add') } />
-            <ThemedButton label='List' type='default' onPress={ () => router.push('/data/list') } />
-            <ThemedButton label='Charts' type='default' onPress={ () => router.push('/data/charts') } />
+    // Get the profile and loading state
+    const { profiles, profile, loading } = useProfile();
+
+    if (loading) {
+        return <View></View>;
+    }
+
+    console.log('Profiles:', profiles);
+
+    return (
+        <View style={ styles.container }>
+            <ThemedText weight='light' style={ styles.welcome }>
+                Welcome <ThemedText weight='regular'>{ profile?.username || 'username' }</ThemedText>!
+            </ThemedText>
+            
+            <View style={ styles.buttons}>
+                <ThemedButton label='Configuration' type='default' onPress={ () => router.push('/configuration') } />
+                <ThemedButton label='Add' type='default' onPress={ () => router.push('/data/add') } />
+                <ThemedButton label='List' type='default' onPress={ () => router.push('/data/list') } />
+                <ThemedButton label='Charts' type='default' onPress={ () => router.push('/data/charts') } />
+            </View>
         </View>
-    </View>
-  );
+    );
 };
 
 export default HomeScreen;
@@ -25,6 +38,10 @@ const styles = StyleSheet.create({
     container: {
         marginHorizontal: 'auto',
         marginTop: 75,
+    },
+
+    welcome: {
+        textAlign: 'center',
     },
 
     buttons: {

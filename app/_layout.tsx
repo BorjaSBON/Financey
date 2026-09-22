@@ -8,6 +8,7 @@ import { initializeAppDatabase } from '@db/init';
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
+	// Initialize the database
 	useEffect(() => {
 		const initialize = async () => {
 			try {
@@ -21,6 +22,7 @@ const RootLayout = () => {
 		initialize();
 	}, []);
 
+	// Load custom fonts
     const [fontsLoaded, error] = useFonts({
 		MontserratThin: require('@fonts/Montserrat-Thin.otf'),
 		MontserratExtraLight: require('@fonts/Montserrat-ExtraLight.otf'),
@@ -33,7 +35,8 @@ const RootLayout = () => {
 		MontserratBlack: require('@fonts/Montserrat-Black.otf'),
 	});
 
-	 useEffect(() => {
+	// Handle font loading and errors
+	useEffect(() => {
         if (error) throw error;
 
         if (fontsLoaded) SplashScreen.hideAsync();

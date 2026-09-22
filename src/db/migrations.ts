@@ -4,6 +4,7 @@ export async function initializeDatabase() {
     const db = await dbPromise;
 
     // DROP TABLE IF EXISTS categories;
+    // DROP TABLE IF EXISTS profile;
 
     // INSERT INTO profile (username, creation_date, last_action_date, data_added, data_modified, data_deleted)
     // VALUES ('Borchax', '19/09/2026', '19/09/2026', 0, 0, 0);
@@ -18,7 +19,8 @@ export async function initializeDatabase() {
             last_action_date TEXT NOT NULL,
             data_added TEXT NOT NULL,
             data_modified TEXT NOT NULL,
-            data_deleted TEXT NOT NULL
+            data_deleted TEXT NOT NULL,
+            active INTEGER NOT NULL DEFAULT 1
         );
 
         CREATE TABLE IF NOT EXISTS categories (

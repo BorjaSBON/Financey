@@ -12,11 +12,6 @@ import TypeButtons from '@components/data/type-buttons';
 import { useTransactions } from '@/src/hooks/useTransactions';
 import { useCategories } from '@/src/hooks/useCategories';
 
-type Category = {
-    value: string;
-    label: string;
-};
-
 const DataAdd = () => {
     // Get the categories
     const { categories, loading } = useCategories();
