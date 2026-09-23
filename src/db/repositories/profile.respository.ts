@@ -15,9 +15,12 @@ function mapProfile(row: any): Profile {
         username: row.username,
         creation_date: row.creation_date,
         last_action_date: row.last_action_date,
-        data_added: row.data_added,
-        data_modified: row.data_modified,
-        data_deleted: row.data_deleted,
+        last_action: row.last_action,
+        number_actions: row.number_actions,
+        number_transactions: row.number_transactions,
+        number_transactions_added: row.number_transactions_added,
+        number_transactions_modified: row.number_transactions_modified,
+        number_transactions_deleted: row.number_transactions_deleted,
         active: row.active,
     };
 }
@@ -77,12 +80,15 @@ export async function create(profile: CreateProfile): Promise<number> {
 
     const result = await db.runAsync(
         `
-            INSERT INTO profile (username, creation_date, last_action_date, data_added, data_modified, data_deleted, active)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO profile (username, creation_date, last_action_date, last_action, number_actions, number_transactions, number_transactions_added, number_transactions_modified, number_transactions_deleted, active)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `,
         profile.username,
         profile.creation_date,
         profile.creation_date,
+        'Create account',
+        1,
+        0,
         0,
         0,
         0,
@@ -99,13 +105,21 @@ export async function modifyUsername(data: UpdateProfileUsername): Promise<void>
     await db.runAsync(
         `
             UPDATE profile
-            SET username = ?, last_action_date = ?
-            WHERE active = 1
-            ORDER BY id ASC
-            LIMIT 1
+            SET username = ?, 
+                last_action_date = ?, 
+                last_action = ?, 
+                number_actions = number_actions + 1
+            WHERE id = (
+                SELECT id
+                FROM profile
+                WHERE active = 1
+                ORDER BY id ASC
+                LIMIT 1
+            )
         `,
         data.username,
         data.last_action_date,
+        'Modify username',
     );
 }
 
@@ -116,13 +130,17 @@ export async function modifyDataAdded(data: UpdateProfileDataAdded): Promise<voi
     await db.runAsync(
         `
             UPDATE profile
-            SET data_added = ?, last_action_date = ?
-            WHERE active = 1
-            ORDER BY id ASC
-            LIMIT 1
+            SET last_action_date = ?, last_action = ?, number_actions = number_actions + 1, number_transactions = number_transactions + 1, number_transactions_added = number_transactions_added + 1
+            WHERE id = (
+                SELECT id
+                FROM profile
+                WHERE active = 1
+                ORDER BY id ASC
+                LIMIT 1
+            )
         `,
-        data.data_added,
         data.last_action_date,
+        'Add new transaction'
     );
 }
 
@@ -133,13 +151,17 @@ export async function modifyDataModified(data: UpdateProfileDataModified): Promi
     await db.runAsync(
         `
             UPDATE profile
-            SET data_modified = ?, last_action_date = ?
-            WHERE active = 1
-            ORDER BY id ASC
-            LIMIT 1
+            SET last_action_date = ?, last_action = ?, number_actions = number_actions + 1, number_transactions_modified = number_transactions_modified + 1
+            WHERE id = (
+                SELECT id
+                FROM profile
+                WHERE active = 1
+                ORDER BY id ASC
+                LIMIT 1
+            )
         `,
-        data.data_modified,
         data.last_action_date,
+        'Modify transaction'
     );
 }
 
@@ -150,13 +172,17 @@ export async function modifyDataDeleted(data: UpdateProfileDataDeleted): Promise
     await db.runAsync(
         `
             UPDATE profile
-            SET data_deleted = ?, last_action_date = ?
-            WHERE active = 1
-            ORDER BY id ASC
-            LIMIT 1
+            SET last_action_date = ?, last_action = ?, number_actions = number_actions + 1, number_transactions = number_transactions - 1, number_transactions_deleted = number_transactions_deleted + 1
+            WHERE id = (
+                SELECT id
+                FROM profile
+                WHERE active = 1
+                ORDER BY id ASC
+                LIMIT 1
+            )
         `,
-        data.data_deleted,
         data.last_action_date,
+        'Delete transaction'
     );
 }
 
@@ -167,9 +193,13 @@ export async function remove(): Promise<void> {
     await db.runAsync(
         `
             DELETE FROM profile
-            WHERE active = 1
-            ORDER BY id ASC
-            LIMIT 1
+            WHERE id = (
+                SELECT id
+                FROM profile
+                WHERE active = 1
+                ORDER BY id ASC
+                LIMIT 1
+            )
         `,
     );
 }

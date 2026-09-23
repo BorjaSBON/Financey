@@ -3,9 +3,12 @@ export type Profile = {
     username: string;
     creation_date: string;
     last_action_date: string;
-    data_added: string;
-    data_modified: string;
-    data_deleted: string;
+    last_action: string;
+    number_actions: number;
+    number_transactions: number;
+    number_transactions_added: number;
+    number_transactions_modified: number;
+    number_transactions_deleted: number;
     active: number;
 };
 
@@ -21,15 +24,12 @@ export type UpdateProfileUsername = {
 
 export type UpdateProfileDataAdded = {
     last_action_date: string;
-    data_added: string;
 };
 
 export type UpdateProfileDataModified = {
     last_action_date: string;
-    data_modified: string;
 };
 
 export type UpdateProfileDataDeleted = {
     last_action_date: string;
-    data_deleted: string;
 };

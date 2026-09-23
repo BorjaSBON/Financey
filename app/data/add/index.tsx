@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, View, TextInput } from 'react-native';
+import { router } from 'expo-router';
 
 import { Values } from '@constants/values';
 
@@ -11,6 +12,7 @@ import TypeButtons from '@components/data/type-buttons';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
 import { useCategories } from '@/src/hooks/useCategories';
+import { useProfile } from '@/src/hooks/useProfile';
 
 const DataAdd = () => {
     // Get the categories
@@ -18,6 +20,9 @@ const DataAdd = () => {
 
     // Get the function to create a transaction
     const { createTransaction } = useTransactions();
+
+    // Get the function to update the profile
+    const { modifyProfileDataAdded } = useProfile();
 
     // Active type
     const [expenseActive, setExpenseActive] = useState(true);
@@ -59,7 +64,9 @@ const DataAdd = () => {
             date: date ? date.toISOString() : new Date().toISOString(),
         });
 
-        console.log('Creada:', id);
+        await modifyProfileDataAdded({ last_action_date: new Date().toISOString() });
+
+        router.push('/data/list');
     };
 
     if (loading) {

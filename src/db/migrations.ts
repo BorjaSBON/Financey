@@ -17,9 +17,12 @@ export async function initializeDatabase() {
             username TEXT NOT NULL UNIQUE,
             creation_date TEXT NOT NULL,
             last_action_date TEXT NOT NULL,
-            data_added TEXT NOT NULL,
-            data_modified TEXT NOT NULL,
-            data_deleted TEXT NOT NULL,
+            last_action TEXT NOT NULL,
+            number_actions INTEGER NOT NULL,
+            number_transactions INTEGER NOT NULL,
+            number_transactions_added INTEGER NOT NULL,
+            number_transactions_modified INTEGER NOT NULL,
+            number_transactions_deleted INTEGER NOT NULL,
             active INTEGER NOT NULL DEFAULT 1
         );
 

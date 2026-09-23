@@ -11,11 +11,7 @@ export default function AccountInformation() {
     const { profile } = useProfile();
 
     const formatDate = (date: Date) => {
-        return date.toLocaleDateString('en-US', {
-            month: 'long',
-            day: '2-digit',
-            year: 'numeric',
-        });
+        return date.toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' });
     };
 
     // Get the dates formatted
@@ -27,10 +23,13 @@ export default function AccountInformation() {
             <ScrollView>
                 <InformationElement title='Username' data={ profile?.username || 'Username' } />
                 <InformationElement title='Creation date' data={ formattedCreationDate } />
-                <InformationElement title='Number of data added' data={ profile?.data_added || '000' } />
-                <InformationElement title='Number of data modified' data={ profile?.data_modified || '000' } />
-                <InformationElement title='Number of data deleted' data={ profile?.data_deleted || '000' } />
-                <InformationElement title='Last action' data={ formattedLastActionDate } />
+                <InformationElement title='Last action date' data={ formattedLastActionDate } />
+                <InformationElement title='Last action' data={ profile?.last_action || 'Action name' } />
+                <InformationElement title='Number of actions' data={ String(profile?.number_actions) || '000' } />
+                <InformationElement title='Current number of transactions' data={ String(profile?.number_transactions) || '000' } />
+                <InformationElement title='Number of transactions added' data={ String(profile?.number_transactions_added) || '000' } />
+                <InformationElement title='Number of transactions modified' data={ String(profile?.number_transactions_modified) || '000' } />
+                <InformationElement title='Number of transactions deleted' data={ String(profile?.number_transactions_deleted) || '000' } />
             </ScrollView>
         </View>
     );

@@ -18,13 +18,13 @@ interface Props {
     cancelAction?: () => void;
 }
 
-export default function ResetAccount({ active=false, cancelAction }: Props) {
+export default function DeleteAccount({ active=false, cancelAction }: Props) {
     // Database
     const { deleteTransactions } = useTransactions();
     const { removeProfile } = useProfile();
     
-    // Reset account
-    const resetAccountAction = async () => {
+    // Delete account
+    const deleteAccountAction = async () => {
         await deleteTransactions();
         await removeProfile();
         router.push('/');
@@ -35,10 +35,10 @@ export default function ResetAccount({ active=false, cancelAction }: Props) {
             styles.popup,
             active ? { display: 'flex' } : { display: 'none' }
         ]}>
-            <ThemedText style={ styles.message } weight='light'>Are you sure you want to reset the account?</ThemedText>
+            <ThemedText style={ styles.message } weight='light'>Are you sure you want to delete the account? All the information will be permanently lost</ThemedText>
 
             <View style={ styles.buttons }>
-                <ThemedButton label='Reset' type='delete' onPress={ resetAccountAction } />
+                <ThemedButton label='Delete' type='delete' onPress={ deleteAccountAction } />
                 <ThemedButton label='Cancel' type='default' onPress={ cancelAction } />
             </View>
         </View>
