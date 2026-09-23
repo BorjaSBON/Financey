@@ -3,6 +3,7 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import * as Application from 'expo-application';
 
 import { Values } from '@constants/values';
+import { Colors } from '@constants/colors';
 
 import InformationElement from '@components/configuration/information-element';
 

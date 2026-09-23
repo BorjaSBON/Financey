@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { profilesRepository } from '../db/repositories/profile.respository';
+import { loginById, profilesRepository } from '../db/repositories/profile.respository';
 
 import type {
     Profile,
@@ -211,6 +211,46 @@ export function useProfile() {
         }
     }, []);
 
+    // LOGIN
+    const loginById = useCallback(async (id:number) => {
+        try {
+            // Set loading and error states
+            setLoading(true);
+            setError(null);
+
+            // Remove the profile
+            await profilesRepository.loginById(id);
+        } catch (err) {
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error removing profile');
+            setError(error);
+            throw error;
+        } finally {
+            // Reset loading state
+            setLoading(false);
+        }
+    }, []);
+
+    // LOGOUT
+    const logout = useCallback(async () => {
+        try {
+            // Set loading and error states
+            setLoading(true);
+            setError(null);
+
+            // Remove the profile
+            await profilesRepository.logout();
+        } catch (err) {
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error removing profile');
+            setError(error);
+            throw error;
+        } finally {
+            // Reset loading state
+            setLoading(false);
+        }
+    }, []);
+
     useEffect(() => {
         getProfiles();
     }, [getProfiles]);
@@ -233,6 +273,8 @@ export function useProfile() {
         modifyProfileDataAdded,
         modifyProfileDataModified,
         modifyProfileDataDeleted,
-        removeProfile
+        removeProfile,
+        loginById,
+        logout,
     };
 }

@@ -204,6 +204,32 @@ export async function remove(): Promise<void> {
     );
 }
 
+// Delete a profile by ID
+export async function loginById(id: number): Promise<void> {
+    const db = await dbPromise;
+
+    await db.runAsync(
+        `
+            UPDATE profile
+            SET active = 1
+            WHERE id = ?
+        `,
+        id
+    );
+}
+
+// Delete a profile by ID
+export async function logout(): Promise<void> {
+    const db = await dbPromise;
+
+    await db.runAsync(
+        `
+            UPDATE profile
+            SET active = 0
+        `,
+    );
+}
+
 // Export the repository functions
 export const profilesRepository = {
     getAll,
@@ -218,4 +244,7 @@ export const profilesRepository = {
     modifyDataDeleted,
 
     remove,
+
+    loginById,
+    logout,
 };

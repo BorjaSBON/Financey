@@ -10,6 +10,8 @@ const ConfigurationLayout = () => {
         switch (pathname) {
             case '/configuration/account':
                 return 'Information of the account';
+            case '/configuration/change_account':
+                return 'Change account';
             case '/configuration/application':
                 return 'Information of the application';
             case '/configuration/data/categories':

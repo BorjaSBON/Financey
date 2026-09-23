@@ -1,6 +1,7 @@
 import { StyleSheet, View, ScrollView } from 'react-native';
 
 import { Values } from '@constants/values';
+import { Colors } from '@constants/colors';
 
 import InformationElement from '@components/configuration/information-element';
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 import { router } from 'expo-router';
 
 import { Colors } from '@constants/colors';
@@ -7,6 +7,7 @@ import { Colors } from '@constants/colors';
 import { ThemedText } from '@ui/themed-text';
 import { ThemedInput } from '@ui/themed-input';
 import { ThemedButton } from '@ui/themed-button';
+import { AccountElement } from '@components/configuration/account-element';
 
 import { useProfile } from '@/src/hooks/useProfile';
 
@@ -15,7 +16,7 @@ const LoginScreen = () => {
     const [username, setUsername] = useState('');
 
     // Get the function to create a profile and the error state
-    const { createProfile, error } = useProfile();
+    const { profiles, createProfile, loginById, error } = useProfile();
     
     // Validate username and create account
     const validateUsername = async () => {
@@ -37,7 +38,7 @@ const LoginScreen = () => {
                 <ThemedText weight='medium' style={ styles.title }>Financey</ThemedText>
                 <View style={ styles.image } />
                 <ThemedText weight='light' style={ styles.description }>
-                    Welcome! What would you like us to call you?
+                    What would you like us to call you?
                 </ThemedText>
             </View>
 
@@ -47,6 +48,17 @@ const LoginScreen = () => {
 
             <View style={ styles.button }>
                 <ThemedButton label='Enter' type='default' onPress={ validateUsername } />
+            </View>
+
+            <View style={ styles.accounts }>
+                <FlatList
+                    data={ profiles }
+                    keyExtractor={ (profile) => profile.id.toString() }
+                    renderItem={({ item }) => <AccountElement username={ item?.username || 'Username' } last_action_date={ item?.last_action_date || 'DD/MM/YYYY' } active={ item?.active || 0 } onPress={ async () => {
+                        await loginById(item.id);
+                        router.push('/');
+                    } } />}
+                />
             </View>
         </View>
     );
@@ -95,6 +107,10 @@ const styles = StyleSheet.create({
 
     button: {
         marginHorizontal: 'auto',
-        marginBottom: 100,
     },
+
+    accounts: {
+        maxHeight: 135,
+        marginBottom: 50,
+    }
 });

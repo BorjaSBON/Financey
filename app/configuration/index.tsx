@@ -67,6 +67,7 @@ const ConfigurationScreen = () => {
                         <View style={ styles.smallDivider } />
 
                         <ConfElement title='Information of the account' onPress={ () => router.push('/configuration/account') } />
+                        <ConfElement title='Change account' onPress={ () => router.push('/configuration/change_account') } />
                         <ConfElement title='Change username' iconDisplay={ false } onPress={ activeChangeUsername } />
                         <ConfElement title='Delete account' colorText={ Colors.negative } iconDisplay={ false } onPress={ activeDeleteAccount } />
                     </View>
