@@ -36,55 +36,45 @@ const ConfigurationScreen = () => {
 
     return (
         <View style={ styles.container }>
-            <View style={ styles.sections }>
-                <ScrollView>
-                    <View style={ styles.divider } />
-
-                    <View style={ styles.section}>
-                        <ThemedText style={ styles.sectionTitle }>General</ThemedText>
-                        <View style={ styles.smallDivider } />
-
-                        <ConfElement title='Theme' iconDisplay={ false } />
-                        <ConfElement title='Language' iconDisplay={ false } />
+            <ScrollView>
+                <View style={ styles.sections }>
+                    <View style={ styles.section }>
+                        <ThemedText style={ styles.title } weight='regular'>General</ThemedText>
+                        <View style={ styles.elements }>
+                            <ConfElement title='Theme' iconDisplay={ false } />
+                            <ConfElement title='Language' iconDisplay={ false } />
+                        </View>
                     </View>
 
-                    <View style={ styles.divider } />
-
-                    <View style={ styles.section}>
-                        <ThemedText style={ styles.sectionTitle }>Data</ThemedText>
-                        <View style={ styles.smallDivider } />
-
-                        <ConfElement title='Currency' iconDisplay={ false } />
-                        <ConfElement title='Categories' onPress={ () => router.push('/configuration/data/categories') } />
-                        <ConfElement title='Import data' />
-                        <ConfElement title='Export data' iconDisplay={ false } onPress={ exportData } />
+                    <View style={ styles.section }>
+                        <ThemedText style={ styles.title } weight='regular'>Data</ThemedText>
+                        <View style={ styles.elements }>
+                            <ConfElement title='Currency' iconDisplay={ false } />
+                            <ConfElement title='Categories' onPress={ () => router.push('/configuration/data/categories') } />
+                            <ConfElement title='Import data' onPress={ () => router.push('/configuration/data/import_data') } />
+                            <ConfElement title='Export data' iconDisplay={ false } onPress={ exportData } />
+                        </View>
                     </View>
-
-                    <View style={ styles.divider } />
-
-                    <View style={ styles.section}>
-                        <ThemedText style={ styles.sectionTitle }>Account</ThemedText>
-                        <View style={ styles.smallDivider } />
-
-                        <ConfElement title='Information of the account' onPress={ () => router.push('/configuration/account') } />
-                        <ConfElement title='Change account' onPress={ () => router.push('/configuration/change_account') } />
-                        <ConfElement title='Change username' iconDisplay={ false } onPress={ activeChangeUsername } />
-                        <ConfElement title='Delete account' colorText={ Colors.negative } iconDisplay={ false } onPress={ activeDeleteAccount } />
+                    
+                    <View style={ styles.section }>
+                        <ThemedText style={ styles.title } weight='regular'>Account</ThemedText>
+                        <View style={ styles.elements }>
+                            <ConfElement title='Information of the account' onPress={ () => router.push('/configuration/account/information') } />
+                            <ConfElement title='Change account' onPress={ () => router.push('/configuration/account/change_account') } />
+                            <ConfElement title='Change username' iconDisplay={ false } onPress={ activeChangeUsername } />
+                            <ConfElement title='Delete account' colorText={ Colors.negative } iconDisplay={ false } onPress={ activeDeleteAccount } />
+                        </View>
                     </View>
-
-                    <View style={ styles.divider } />
-
-                    <View style={ styles.section}>
-                        <ThemedText style={ styles.sectionTitle }>Application</ThemedText>
-                        <View style={ styles.smallDivider } />
-
-                        <ConfElement title='Information of the app' onPress={ () => router.push('/configuration/application') } />
-                        <ConfElement title='Reset application' colorText={ Colors.negative } iconDisplay={ false } onPress={ activeDeleteAccount } />
+                    
+                    <View style={ styles.section }>
+                        <ThemedText style={ styles.title } weight='regular'>Application</ThemedText>
+                        <View style={ styles.elements }>
+                            <ConfElement title='Information of the app' onPress={ () => router.push('/configuration/application') } />
+                            <ConfElement title='Reset application' colorText={ Colors.negative } iconDisplay={ false } onPress={ activeDeleteAccount } />
+                        </View>
                     </View>
-
-                    <View style={ styles.divider } />
-                </ScrollView>
-            </View>
+                </View>
+            </ScrollView>
 
             <DeleteAccount active={ deleteAccount } cancelAction={ activeDeleteAccount } />
             <ChangeUsername active={ changeUsername } cancelAction={ activeChangeUsername } />
@@ -100,33 +90,29 @@ const styles = StyleSheet.create({
         flex: 1,
         top: Values.topIfHeader,
         width: '100%',
-        paddingBottom: 125
     },
 
     sections: {
-        flex: 1,
-        paddingBottom: 25,
+        display: 'flex',
+        flexDirection: 'column',
+        rowGap: 15,
+        paddingHorizontal: Values.paddingApp,
+        paddingBottom: 125,
     },
 
     section: {
         display: 'flex',
         flexDirection: 'column',
+        rowGap: 8,
     },
 
-    sectionTitle: {
-        paddingHorizontal: Values.paddingApp,
-        fontSize: 16,
-        paddingVertical: 5,
-        backgroundColor: Colors.hoverElement,
+    title: {
+        fontSize: 13,
     },
 
-    divider: {
-        height: 2,
-        backgroundColor: Colors.divider,
-    },
-
-    smallDivider: {
-        height: 0.5,
-        backgroundColor: Colors.divider,
+    elements: {
+        backgroundColor: Colors.backgroundPrimary,
+        borderRadius: 8,
+        overflow: 'hidden',
     },
 });

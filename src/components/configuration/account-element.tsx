@@ -5,7 +5,9 @@ import { Values } from '@constants/values';
 
 import { ThemedText } from '@ui/themed-text';
 
-interface Props {
+import Add from '@assets/add.svg';
+
+interface AccountProps {
     // Variables
     username: string;
     last_action_date: string;
@@ -35,7 +37,7 @@ export const stringToPastelColor = (username: string) => {
     return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 };
 
-export function AccountElement({ username, last_action_date, active, onPress }: Props) {
+export function AccountElement({ username, last_action_date, active, onPress }: AccountProps) {
     const activeText = active === 1 ? <ThemedText style={ styles.active } weight='light'>(Active)</ThemedText> : '';
     const dateFormatted = new Date(last_action_date).toLocaleDateString('en-GB');
 
@@ -67,10 +69,8 @@ export function NewAccount({ onPress }: NewAccountProp) {
             ]}
             onPress={ onPress }
         >
-            <View style={ styles.icon }>
-                <ThemedText style={ styles.letter } weight='medium'>+</ThemedText>
-            </View>
-            <ThemedText style={ styles.title } weight='regular'>New account</ThemedText>
+            <Add style={ styles.actionIcon } />
+            <ThemedText style={ styles.title } weight='light'>Create new account</ThemedText>
         </Pressable>
     );
 }
@@ -81,10 +81,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         columnGap: 15,
         width: '100%',
+        minHeight: 48,
         alignItems: 'flex-start',
-        paddingTop: 5,
-        paddingBottom: 7,
-        paddingHorizontal: Values.paddingApp,
+        paddingTop: 6,
+        paddingBottom: 8,
+        paddingHorizontal: Values.paddingElement,
     },
 
     icon: {
@@ -106,13 +107,13 @@ const styles = StyleSheet.create({
 
     title: {
         width: '100%',
-        fontSize: 15,
+        fontSize: 14,
         marginVertical: 'auto',
     },
 
     username: {
         width: '100%',
-        fontSize: 15,
+        fontSize: 14,
     },
 
     active: {
@@ -123,5 +124,10 @@ const styles = StyleSheet.create({
         width: '100%',
         textAlign: Platform.OS == 'android' ? 'left' :'justify',
         fontSize: 12,
+    },
+
+    actionIcon: {
+        marginTop: 3,
+        transform: [{ scale: 1.1 }]
     },
 });

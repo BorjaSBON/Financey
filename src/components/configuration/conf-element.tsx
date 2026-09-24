@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 6,
         paddingBottom: 8,
-        paddingHorizontal: Values.paddingApp,
+        paddingHorizontal: Values.paddingElement,
     },
 
     title: {
@@ -49,6 +49,6 @@ const styles = StyleSheet.create({
     },
 
     icon: {
-        transform: [{rotate: '-90deg'}],
+        transform: [{ rotate: '-90deg' }, { scale: 0.9 }],
     },
 });

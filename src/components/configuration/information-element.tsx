@@ -36,14 +36,14 @@ const styles = StyleSheet.create({
         rowGap: 0,
         width: '100%',
         alignItems: 'flex-start',
-        paddingTop: 5,
-        paddingBottom: 7,
-        paddingHorizontal: Values.paddingApp,
+        paddingTop: 6,
+        paddingBottom: 8,
+        paddingHorizontal: Values.paddingElement,
     },
 
     title: {
         width: '100%',
-        fontSize: 15,
+        fontSize: 14,
     },
 
     data: {

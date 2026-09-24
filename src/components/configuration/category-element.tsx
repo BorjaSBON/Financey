@@ -1,12 +1,14 @@
 import { StyleSheet, Pressable, View } from 'react-native';
 
+import { Values } from '@constants/values';
 import { Colors } from '@constants/colors';
 
 import { ThemedText } from '@ui/themed-text';
 
 import Logo from '@assets/trash.svg';
+import Add from '@assets/add.svg';
 
-interface Props {
+interface CategoryProps {
     // Variables
     title: string;
     type: string;
@@ -15,11 +17,16 @@ interface Props {
     onPress?: () => void;
 }
 
-export default function CategoryElement({ title, type, onPress }: Props) {
+interface NewCategoryProp {
+    // Methods
+    onPress?: () => void;
+}
+
+export function CategoryElement({ title, type, onPress }: CategoryProps) {
     return (
         <Pressable 
             style={({ pressed }) => [
-                styles.informationElement,
+                styles.categoryElement,
                 pressed ? { backgroundColor: Colors.hoverElement } : { backgroundColor: 'transparent' },
             ]}
             onPress={ onPress }
@@ -28,20 +35,59 @@ export default function CategoryElement({ title, type, onPress }: Props) {
                 <View style={[ styles.color, type === 'expense' ? { backgroundColor: Colors.negative } : { backgroundColor: Colors.positive } ]} />
                 <ThemedText style={ styles.title } weight='light'>{ title }</ThemedText>
             </View>
-            <Logo style={ styles.icon } />
+            <Logo style={ styles.trashIcon } />
+        </Pressable>
+    );
+}
+
+export function NewCategory({ onPress }: NewCategoryProp) {
+    return (
+        <Pressable 
+            style={({ pressed }) => [
+                styles.actionElement,
+                pressed ? { backgroundColor: Colors.hoverElement } : { backgroundColor: 'transparent' },
+            ]}
+            onPress={ onPress }
+        >
+            <Add style={ styles.actionIcon } />
+            <ThemedText style={ styles.title } weight='light'>Create new category</ThemedText>
         </Pressable>
     );
 }
 
 const styles = StyleSheet.create({
-    informationElement: {
+    categoryElement: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingTop: 5,
-        paddingBottom: 7,
-        paddingHorizontal: 40,
+        width: '100%',
+        minHeight: 32,
+        paddingVertical: 8,
+        paddingHorizontal: Values.paddingElement,
+    },
+
+    actionElement: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+        minHeight: 30,
+        paddingVertical: 2,
+        paddingHorizontal: 10,
+        columnGap: 5,
+    },
+    
+    icon: {
+        width: 20,
+        height: 20,
+        borderRadius: 50,
+        marginVertical: 'auto',
+        backgroundColor: Colors.backgroundSecondary,
+    },
+
+    letter: {
+        margin: 'auto',
+        fontSize: 14,
     },
 
     name: {
@@ -49,6 +95,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         columnGap: 10,
         alignItems: 'flex-start',
+        verticalAlign: 'auto',
     },
 
     color: {
@@ -59,11 +106,15 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        fontSize: 15,
+        fontSize: 14,
     },
     
-    icon: {
-        transform: [{ scale: 1.15 }],
+    trashIcon: {
+        transform: [{ scale: 1.1 }],
         marginTop: 4,
+    },
+
+    actionIcon: {
+        transform: [{ scale: 0.75 }]
     },
 });

@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { Values } from '@constants/values';
+import { Colors } from '@constants/colors';
 
 import { ThemedText } from '@ui/themed-text';
 
 import TypeButtons from '@components/data/type-buttons';
-import CategoryElement from '@components/configuration/category-element';
+import { CategoryElement, NewCategory } from '@components/configuration/category-element';
 import Logo from '@assets/add.svg';
 
 import { useCategories } from '@/src/hooks/useCategories';
@@ -33,24 +34,29 @@ const Categories = () => {
     
     return (
         <View style={ styles.container }>
-            <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
+            <ScrollView>
+                <View style={ styles.sections }>
+                    <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
+                        
+                    <View style={ styles.section }>
+                        <ThemedText style={ styles.title } weight='regular'>New category</ThemedText>
+                        <View style={ styles.elements }>
+                            <NewCategory />
+                        </View>
+                    </View>
 
-            <View style={ styles.categories }>
-                <View style={ styles.title }>
-                    <ThemedText style={ styles.text } weight='regular'>Categories</ThemedText>
-                    <Logo style={ styles.icon } />
+                    <View style={ styles.section }>
+                        <ThemedText style={ styles.title } weight='regular'>Categories</ThemedText>
+                        <View style={ styles.elements }>
+                            {
+                                categories_selected.map((category) => (
+                                    <CategoryElement key={ category.name } title={ category.name } type={ category.type } />
+                                )) 
+                            }
+                        </View>
+                    </View>
                 </View>
-
-                <View style={ styles.list }>
-                    <ScrollView>
-                        {
-                            categories_selected.map((category) => (
-                                <CategoryElement key={ category.name } title={ category.name } type={ category.type } />
-                            )) 
-                        }
-                    </ScrollView>
-                </View>
-            </View>
+            </ScrollView>
         </View>
     );
 };
@@ -63,31 +69,29 @@ const styles = StyleSheet.create({
         top: Values.topIfHeader,
         width: '100%',
         marginTop: 10,
+    },
+        
+    sections: {
+        display: 'flex',
+        flexDirection: 'column',
+        rowGap: 15,
+        paddingHorizontal: Values.paddingApp,
         paddingBottom: 125,
     },
 
-    categories: {
-        marginTop: 20,
+    section: {
+        display: 'flex',
+        flexDirection: 'column',
+        rowGap: 8,
     },
 
     title: {
-        display: 'flex',
-        flexDirection: 'row',
-        columnGap: 10,
-        paddingHorizontal: Values.paddingApp,
+        fontSize: 13,
     },
 
-    text: {
-        fontSize: 16,
-    },
-
-    icon: {
-        transform: [{ scale: 1.5 }],
-        marginTop: 5,
-    },
-
-    list: {
-        marginTop: 5,
-        paddingBottom: 75,
+    elements: {
+        backgroundColor: Colors.backgroundPrimary,
+        borderRadius: 10,
+        overflow: 'hidden',
     },
 });

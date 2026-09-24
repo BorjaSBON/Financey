@@ -21,50 +21,62 @@ export default function BalanceResume({ incomes, expenses, squareEnable=false }:
     const balanceColor = balance >= 0 ? styles.positive : styles.negative;
 
     return (
-        <View style={ styles.balanceResume }>
-            <View style={ styles.block }>
-                <ThemedText style={ styles.title } weight='regular'>Balance</ThemedText>
-                <ThemedText style={ styles.data } numberOfLines={ 1 } adjustsFontSizeToFit>
-                    <ThemedText style={ balanceColor } weight='light'>{ ReadableNumber(balance) }</ThemedText>
-                    <ThemedText style={[ styles.currency, balanceColor ]} weight='light'> €</ThemedText>
-                </ThemedText>
-            </View>
-
-            <View style={ styles.block }>
-                <View style= { styles.titleRow }>
-                    { squareEnable === true && <View style={[ styles.square, styles.incomes ]} /> }
-                    <ThemedText style={ styles.title } weight='regular'>Incomes</ThemedText>
+        <View style={ styles.container }>
+            <View style={ styles.sections }>
+                <View style={ styles.section }>
+                    <View style= { styles.titleRow }>
+                        { squareEnable === true && <View style={[ styles.square, styles.incomes ]} /> }
+                        <ThemedText style={ styles.title } weight='regular'>Incomes</ThemedText>
+                    </View>
+                    <ThemedText style={ styles.data } weight='light' numberOfLines={ 1 } adjustsFontSizeToFit>
+                        { ReadableNumber(incomes) }
+                        <ThemedText style={ styles.currency }  weight='light'> €</ThemedText>
+                    </ThemedText>
                 </View>
-                <ThemedText style={ styles.data } numberOfLines={ 1 } adjustsFontSizeToFit>
-                    <ThemedText  weight='light'>{ ReadableNumber(incomes) }</ThemedText>
-                    <ThemedText style={ styles.currency }  weight='light'> €</ThemedText>
-                </ThemedText>
-            </View>
 
-            <View style={ styles.block }>
-                <View style= { styles.titleRow }>
-                    { squareEnable === true && <View style={[ styles.square, styles.expenses ]} /> }
-                    <ThemedText style={ styles.title } weight='regular'>Expenses</ThemedText>
+                <View style={ styles.section }>
+                    <ThemedText style={ styles.title } weight='regular'>Balance</ThemedText>
+                    <ThemedText style={[ styles.data, balanceColor ]} weight='regular' numberOfLines={ 1 } adjustsFontSizeToFit>
+                        { ReadableNumber(balance) }
+                        <ThemedText style={[ styles.currency, balanceColor ]} weight='light'> €</ThemedText>
+                    </ThemedText>
                 </View>
-                <ThemedText style={ styles.data } numberOfLines={ 1 } adjustsFontSizeToFit>
-                    <ThemedText weight='light'>{ ReadableNumber(expenses) }</ThemedText>
-                    <ThemedText style={ styles.currency } weight='light'> €</ThemedText>
-                </ThemedText>
+
+                <View style={ styles.section }>
+                    <View style= { styles.titleRow }>
+                        { squareEnable === true && <View style={[ styles.square, styles.expenses ]} /> }
+                        <ThemedText style={ styles.title } weight='regular'>Expenses</ThemedText>
+                    </View>
+                    <ThemedText style={ styles.data } weight='light' numberOfLines={ 1 } adjustsFontSizeToFit>
+                        { ReadableNumber(expenses) }
+                        <ThemedText style={ styles.currency } weight='light'> €</ThemedText>
+                    </ThemedText>
+                </View>
             </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    balanceResume: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+    container: {
         width: '100%',
         paddingHorizontal: Values.paddingApp,
     },
 
-    block: {
+    sections: {
+        display: 'flex',
+        flexDirection: 'row',
+        columnGap: 3,
+        justifyContent: 'space-between',
+        width: '100%',
+        backgroundColor: Colors.backgroundPrimary,
+        borderRadius: 10,
+        paddingVertical: 6,
+        paddingHorizontal: 10,
+        overflow: 'hidden',
+    },
+
+    section: {
         width: '33%',
     },
 
@@ -77,13 +89,12 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        fontSize: 15,
+        fontSize: 14,
         textAlign: 'center',
     },
 
     data: {
-        fontSize: 13,
-        width: '100%',
+        fontSize: 12,
         textAlign: 'center',
     },
 

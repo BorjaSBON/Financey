@@ -40,7 +40,7 @@ export function ThemedDateInput({ value, onChange }: DateInputProps) {
                     value={ value ?? new Date() }
                     mode="date"
                     display={ Platform.OS === 'android' ? 'calendar' : 'spinner' }
-                    onChange={ handleChange }
+                    onValueChange={ handleChange }
                 />
             )}
         </View>

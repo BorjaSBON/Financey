@@ -5,6 +5,7 @@ export const Colors = {
     fontPrimary: '#0F172A',
     fontSecondary: '#FFFFFF',
 
+    background: '#F7F7F7',
     backgroundPrimary: '#FFFFFF',
     backgroundSecondary: '#D9D9D980',
 
@@ -18,7 +19,7 @@ export const Colors = {
     inputBackground: '#D9D9D933',
     inputTextUnselected: '#0F172A80',
 
-    hoverElement: '#D9D9D933',
+    hoverElement: '#B1B1B133',
 
     shadow: '#111A3040',
     divider: '#111A3018',

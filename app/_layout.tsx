@@ -1,9 +1,12 @@
 import { useEffect, Fragment } from 'react';
+import { View } from 'react-native';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { Slot, SplashScreen } from 'expo-router';
 
 import { initializeAppDatabase } from '@db/init';
+
+import { Colors } from '@constants/colors';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -45,10 +48,10 @@ const RootLayout = () => {
     if (!fontsLoaded && !error) return null;
 
     return (
-		<Fragment>
+		<View style={{ flex: 1, backgroundColor: Colors.background }}>
 			<Slot />
 			<StatusBar style="auto" />
-		</Fragment>
+		</View>
 	);
 };
 

@@ -110,7 +110,10 @@ const styles = StyleSheet.create({
     },
 
     accounts: {
-        maxHeight: 135,
+        backgroundColor: Colors.backgroundPrimary,
+        borderRadius: 10,
+        overflow: 'hidden',
+        maxHeight: 175,
         marginBottom: 50,
     }
 });
