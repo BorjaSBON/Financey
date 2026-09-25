@@ -31,7 +31,7 @@ export async function getAll(): Promise<Profile[]> {
 
     const rows = await db.getAllAsync(`
         SELECT *
-        FROM profile
+        FROM profiles
         ORDER BY username ASC
     `);
 
@@ -44,16 +44,16 @@ export async function get(): Promise<Profile | null> {
 
     const rows = await db.getAllAsync(`
         SELECT *
-        FROM profile
+        FROM profiles
         WHERE active = 1
     `);
 
     if (rows.length > 1) {
         await db.runAsync(
             `
-                UPDATE profile
+                UPDATE profiles
                 SET active = 0
-                WHERE active = 1 AND id != (SELECT id FROM profile WHERE active = 1 ORDER BY id ASC LIMIT 1)
+                WHERE active = 1 AND id != (SELECT id FROM profiles WHERE active = 1 ORDER BY id ASC LIMIT 1)
             `,
         );
     }
@@ -61,13 +61,13 @@ export async function get(): Promise<Profile | null> {
     return rows[0] ? mapProfile(rows[0]) : null;
 }
 
-// Get a profile by ID
+// Get a profiles by ID
 export async function getById(id: number): Promise<Profile | null> {
     const db = await dbPromise;
 
     const row = await db.getFirstAsync(`
         SELECT *
-        FROM profile
+        FROM profiles
         WHERE id = ?
     `, id);
 
@@ -80,7 +80,7 @@ export async function create(profile: CreateProfile): Promise<number> {
 
     const result = await db.runAsync(
         `
-            INSERT INTO profile (username, creation_date, last_action_date, last_action, number_actions, number_transactions, number_transactions_added, number_transactions_modified, number_transactions_deleted, active)
+            INSERT INTO profiles (username, creation_date, last_action_date, last_action, number_actions, number_transactions, number_transactions_added, number_transactions_modified, number_transactions_deleted, active)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `,
         profile.username,
@@ -104,14 +104,14 @@ export async function modifyUsername(data: UpdateProfileUsername): Promise<void>
 
     await db.runAsync(
         `
-            UPDATE profile
+            UPDATE profiles
             SET username = ?, 
                 last_action_date = ?, 
                 last_action = ?, 
                 number_actions = number_actions + 1
             WHERE id = (
                 SELECT id
-                FROM profile
+                FROM profiles
                 WHERE active = 1
                 ORDER BY id ASC
                 LIMIT 1
@@ -129,11 +129,11 @@ export async function modifyDataAdded(data: UpdateProfileDataAdded): Promise<voi
 
     await db.runAsync(
         `
-            UPDATE profile
+            UPDATE profiles
             SET last_action_date = ?, last_action = ?, number_actions = number_actions + 1, number_transactions = number_transactions + 1, number_transactions_added = number_transactions_added + 1
             WHERE id = (
                 SELECT id
-                FROM profile
+                FROM profiles
                 WHERE active = 1
                 ORDER BY id ASC
                 LIMIT 1
@@ -150,11 +150,11 @@ export async function modifyDataModified(data: UpdateProfileDataModified): Promi
 
     await db.runAsync(
         `
-            UPDATE profile
+            UPDATE profiles
             SET last_action_date = ?, last_action = ?, number_actions = number_actions + 1, number_transactions_modified = number_transactions_modified + 1
             WHERE id = (
                 SELECT id
-                FROM profile
+                FROM profiles
                 WHERE active = 1
                 ORDER BY id ASC
                 LIMIT 1
@@ -171,11 +171,11 @@ export async function modifyDataDeleted(data: UpdateProfileDataDeleted): Promise
 
     await db.runAsync(
         `
-            UPDATE profile
+            UPDATE profiles
             SET last_action_date = ?, last_action = ?, number_actions = number_actions + 1, number_transactions = number_transactions - 1, number_transactions_deleted = number_transactions_deleted + 1
             WHERE id = (
                 SELECT id
-                FROM profile
+                FROM profiles
                 WHERE active = 1
                 ORDER BY id ASC
                 LIMIT 1
@@ -192,10 +192,10 @@ export async function remove(): Promise<void> {
 
     await db.runAsync(
         `
-            DELETE FROM profile
+            DELETE FROM profiles
             WHERE id = (
                 SELECT id
-                FROM profile
+                FROM profiles
                 WHERE active = 1
                 ORDER BY id ASC
                 LIMIT 1
@@ -210,7 +210,7 @@ export async function loginById(id: number): Promise<void> {
 
     await db.runAsync(
         `
-            UPDATE profile
+            UPDATE profiles
             SET active = 1
             WHERE id = ?
         `,
@@ -224,7 +224,7 @@ export async function logout(): Promise<void> {
 
     await db.runAsync(
         `
-            UPDATE profile
+            UPDATE profiles
             SET active = 0
         `,
     );

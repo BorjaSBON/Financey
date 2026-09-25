@@ -12,7 +12,7 @@ import TypeButtons from '@components/data/type-buttons';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
 import { useCategories } from '@/src/hooks/useCategories';
-import { useProfile } from '@/src/hooks/useProfile';
+import { useProfiles } from '@/src/hooks/useProfiles';
 
 const DataAdd = () => {
     // Get the categories
@@ -22,7 +22,7 @@ const DataAdd = () => {
     const { createTransaction } = useTransactions();
 
     // Get the function to update the profile
-    const { modifyProfileDataAdded } = useProfile();
+    const { profile, modifyProfileDataAdded } = useProfiles();
 
     // Active type
     const [expenseActive, setExpenseActive] = useState(true);
@@ -57,10 +57,11 @@ const DataAdd = () => {
 
         const amountInCents = Math.round(Number(amount) * 100);
 
-        const id = await createTransaction({
+        await createTransaction({
             type: expenseActive ? 'expense' : 'income',
             amount: amountInCents,
-            categoryId: categories_selected.find(item => item.name.toLowerCase() === selectValue)?.id || 0,
+            profileId: profile?.id || 1,
+            categoryId: categories_selected.find(item => item.name.toLowerCase() === selectValue)?.id || 1,
             date: date ? date.toISOString() : new Date().toISOString(),
         });
 

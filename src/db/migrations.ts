@@ -4,15 +4,15 @@ export async function initializeDatabase() {
     const db = await dbPromise;
 
     // DROP TABLE IF EXISTS categories;
-    // DROP TABLE IF EXISTS profile;
+    // DROP TABLE IF EXISTS profiles;
 
-    // INSERT INTO profile (username, creation_date, last_action_date, data_added, data_modified, data_deleted)
+    // INSERT INTO profiles (username, creation_date, last_action_date, data_added, data_modified, data_deleted)
     // VALUES ('Borchax', '19/09/2026', '19/09/2026', 0, 0, 0);
 
     await db.execAsync(`
         PRAGMA journal_mode = WAL;
 
-        CREATE TABLE IF NOT EXISTS profile (
+        CREATE TABLE IF NOT EXISTS profiles (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT NOT NULL UNIQUE,
             creation_date TEXT NOT NULL,
@@ -36,14 +36,21 @@ export async function initializeDatabase() {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             type TEXT NOT NULL CHECK (type IN ('income', 'expense')),
             amount INTEGER NOT NULL,
+            profile_id INTEGER NOT NULL,
             category_id INTEGER NOT NULL,
             date TEXT NOT NULL,
             created_at TEXT NOT NULL,
             updated_at TEXT NOT NULL,
 
             FOREIGN KEY (category_id)
-                REFERENCES categories(id)
+                REFERENCES categories(id),
+
+            FOREIGN KEY (profile_id)
+                REFERENCES profiles(id)
         );
+
+        CREATE INDEX IF NOT EXISTS idx_transactions_profile
+            ON transactions(profile_id);
 
         CREATE INDEX IF NOT EXISTS idx_transactions_date
             ON transactions(date);

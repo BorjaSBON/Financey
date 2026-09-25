@@ -8,7 +8,7 @@ import { ThemedButton } from '@ui/themed-button';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
 import { useCategories } from '@/src/hooks/useCategories';
-import { useProfile } from '@/src/hooks/useProfile';
+import { useProfiles } from '@/src/hooks/useProfiles';
 
 interface Props {
     // Variables
@@ -21,7 +21,7 @@ interface Props {
 export default function DeleteAccount({ active=false, cancelAction }: Props) {
     // Database
     const { deleteTransactions } = useTransactions();
-    const { removeProfile } = useProfile();
+    const { removeProfile } = useProfiles();
     
     // Delete account
     const deleteAccountAction = async () => {

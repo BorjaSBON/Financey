@@ -4,11 +4,11 @@ import { router } from 'expo-router';
 import { ThemedText } from '@ui/themed-text';
 import { ThemedButton } from '@ui/themed-button';
 
-import { useProfile } from '@/src/hooks/useProfile';
+import { useProfiles } from '@/src/hooks/useProfiles';
 
 const HomeScreen = () => {
     // Get the profile and loading state
-    const { profiles, profile, loading } = useProfile();
+    const { profiles, profile, loading } = useProfiles();
 
     if (loading) {
         return <View></View>;

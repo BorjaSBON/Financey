@@ -9,13 +9,18 @@ import type {
 } from '../types/transaction';
 
 export function useTransactions() {
+    // Transactions information
     const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [transaction, setTransaction] = useState<Transaction>();
+
+    // Loading and error states
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
 
-    // CONSULTAR TODAS
+    // GET ALL TRANSACTIONS
     const getTransactions = useCallback(async () => {
         try {
+            // Set loading and error states
             setLoading(true);
             setError(null);
 
@@ -26,99 +31,116 @@ export function useTransactions() {
             // Return the transactions
             return data;
         } catch (err) {
-            const error = err instanceof Error ? err : new Error('Error obteniendo transacciones');
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error obtaining transactions');
             setError(error);
             throw error;
         } finally {
+            // Reset loading state
             setLoading(false);
         }
     }, []);
 
-    // CREAR
+    // GET TRANSACTION BY ID
+    const getTransaction = useCallback(async (id: number) => {
+        try {
+            // Set loading and error states
+            setLoading(true);
+            setError(null);
+
+            // Get the transactions
+            const data = await transactionsRepository.getById(id);
+            setTransaction(data);
+
+            // Return the transaction
+            return data;
+        } catch (err) {
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error obtaining a transaction');
+            setError(error);
+            throw error;
+        } finally {
+            // Reset loading state
+            setLoading(false);
+        }
+    }, []);
+
+    // CREATE
     const createTransaction = useCallback(async (data: CreateTransaction) => {
         try {
+            // Set loading and error states
             setLoading(true);
             setError(null);
 
-            const id = await transactionsRepository.create(data);
-
-            // Actualizamos el listado
-            await getTransactions();
-
-            return id;
+            // Create the transaction
+            await transactionsRepository.create(data);
         } catch (err) {
-            const error =
-            err instanceof Error ? err : new Error('Error creando la transacción');
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error creating a transaction');
             setError(error);
             throw error;
         } finally {
+            // Reset loading state
             setLoading(false);
         }
     }, [getTransactions]);
 
-    // MODIFICAR
-    const modifyTransaction = useCallback(async (id: number, data: UpdateTransaction) => {
+    // MODIFY
+    const modifyTransaction = useCallback(async (data: UpdateTransaction) => {
         try {
+            // Set loading and error states
             setLoading(true);
             setError(null);
 
-            await transactionsRepository.modify(
-            id,
-            data
-            );
-
-            // Actualizamos el listado
-            await getTransactions();
+            // Modify a transaction
+            await transactionsRepository.modify(data);
         } catch (err) {
-            const error =
-            err instanceof Error
-                ? err
-                : new Error('Error modificando la transacción');
-
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error modifying a transaction');
             setError(error);
-
             throw error;
         } finally {
+            // Reset loading state
             setLoading(false);
         }
     }, [getTransactions]);
 
-    // ELIMINAR
-    const deleteTransaction = useCallback(async (id: number) => {
+    // REMOVE
+    const removeTransaction = useCallback(async (id: number) => {
         try {
+            // Set loading and error states
             setLoading(true);
             setError(null);
 
+            // Remove a transaction
             await transactionsRepository.remove(id);
-
-            // Actualizamos el listado
-            await getTransactions();
         } catch (err) {
-            const error =
-            err instanceof Error
-                ? err
-                : new Error('Error eliminando la transacción');
-
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error removin a transaction');
             setError(error);
-
             throw error;
         } finally {
+            // Reset loading state
             setLoading(false);
         }
     }, [getTransactions]);
 
     // ELIMINAR
-    const deleteTransactions = useCallback(async () => {
+    const removeTransactions = useCallback(async (id: number) => {
         try {
+            // Set loading and error states
             setLoading(true);
             setError(null);
 
-            await transactionsRepository.removeAll();
+            // Remove all transactions
+            await transactionsRepository.removeAll(id);
         } catch (err) {
+            // Error handling
             const error = err instanceof Error ? err : new Error('Error eliminando la transacción');
             setError(error);
             throw error;
         } finally {
+            // Reset loading state
             setLoading(false);
         }
     }, []);
@@ -129,14 +151,16 @@ export function useTransactions() {
 
     return {
         transactions,
+        transaction,
 
         loading,
         error,
 
         getTransactions,
+        getTransaction,
         createTransaction,
         modifyTransaction,
-        deleteTransaction,
-        deleteTransactions,
+        removeTransaction,
+        removeTransactions
     };
 }

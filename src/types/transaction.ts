@@ -4,6 +4,7 @@ export type Transaction = {
     id: number;
     type: TransactionType;
     amount: number;
+    profileId: number;
     categoryId: number;
     categoryName: string;
     date: string;
@@ -14,11 +15,13 @@ export type Transaction = {
 export type CreateTransaction = {
     type: TransactionType;
     amount: number;
+    profileId: number;
     categoryId: number;
     date: string;
 };
 
 export type UpdateTransaction = {
+    id: number,
     type: TransactionType;
     amount: number;
     categoryId: number;

@@ -8,7 +8,7 @@ import { ThemedText } from '@ui/themed-text';
 import { ThemedInput } from '@ui/themed-input';
 import { ThemedButton } from '@ui/themed-button';
 
-import { useProfile } from '@/src/hooks/useProfile';
+import { useProfiles } from '@/src/hooks/useProfiles';
 
 interface Props {
     // Variables
@@ -20,7 +20,7 @@ interface Props {
 
 export default function ChangeUsername({ active=false, cancelAction }: Props) {
     // Database
-    const { profile, modifyProfileUsername, loading, error } = useProfile();
+    const { profile, modifyProfileUsername, loading, error } = useProfiles();
 
     // New username
     const [username, setUsername] = useState(profile?.username || '');

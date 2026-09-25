@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { StyleSheet, View, TextInput } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, View, TextInput, ActivityIndicator } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 
 import { Values } from '@constants/values';
@@ -11,28 +11,40 @@ import Input from '@components/common/input';
 import TypeButtons from '@components/data/type-buttons';
 import DeleteElement from '@components/data/delete_element';
 
-type Category = {
-    value: string;
-    label: string;
-};
+import { useTransactions } from '@/src/hooks/useTransactions';
+import { useCategories } from '@/src/hooks/useCategories';
+import { useProfiles } from '@/src/hooks/useProfiles';
 
 const DataModify = () => {
+    // Get the categories
+    const { categories } = useCategories();
+
+    // Get the transactions
+    const { transaction, getTransaction, modifyTransaction, loading } = useTransactions();
+
+    // Get the function to update the profile
+    const { modifyProfileDataModified } = useProfiles();
+
     // ID of the element
     const { id } = useLocalSearchParams<{ id: string }>();
 
-    // Get the data of the element
-    const typeElement = 'income';
-    const categoryElement = 'nómina';
-    const valueElement = '12.75';
-    const dateElement = new Date('2026-07-20');
+    useEffect(() => {
+        const loadTransaction = async () => {
+            await getTransaction(Number(id));
+        };
 
-    // Get the categories
-    const expense_categories:Category[] = require('@/docs/expense_categories.json');
-    const income_categories:Category[] = require('@/docs/income_categories.json');
+        loadTransaction();
+    }, [id]);
 
     // Active type
-    const [expenseActive, setExpenseActive] = useState(false);
-    let categories = expenseActive ? expense_categories : income_categories;
+    const [expenseActive, setExpenseActive] = useState(true);
+    let categories_selected = categories.filter(item => item.type === (expenseActive ? 'expense' : 'income'));
+    let categories_formatted = categories_selected.map((item) => {
+        return {
+            value: item.name.toLowerCase(),
+            label: item.name,
+        };
+    });
 
     const expenseActivation = () => {
         setExpenseActive(true);
@@ -43,16 +55,53 @@ const DataModify = () => {
     }
 
     // Category select
-    const [selectValue, setSelectValue] = useState(categoryElement);
+    const [selectValue, setSelectValue] = useState('');
 
     // Amount and date value
-    const [amount, setAmount] = useState(valueElement);
-    const [date, setDate] = useState<Date | null>(dateElement);
+    const [amount, setAmount] = useState('');
+    const [date, setDate] = useState<Date | null>(null);
 
     // Delete popup
     const [deleteElement, setDeleteElement] = useState(false);
     const activeDeleteElement = () => {
         setDeleteElement(prev => !prev);
+    }
+
+    // Load transaction data into the form
+    useEffect(() => {
+        if (!transaction) {
+            return;
+        }
+
+        setAmount(String(transaction.amount / 100));
+        setDate(new Date(transaction.date));
+        setSelectValue(transaction.categoryName.toLowerCase());
+        setExpenseActive(transaction.type === 'expense');
+    }, [transaction]);
+
+    // Modify button
+    async function modTransaction() {
+        if (!amount || !selectValue) {
+            return;
+        }
+
+        const amountInCents = Math.round(Number(amount) * 100);
+
+        await modifyTransaction({
+            id: Number(id),
+            type: expenseActive ? 'expense' : 'income',
+            amount: amountInCents,
+            categoryId: categories_selected.find(item => item.name.toLowerCase() === selectValue)?.id || 1,
+            date: date ? date.toISOString() : new Date().toISOString(),
+        });
+
+        await modifyProfileDataModified({ last_action_date: new Date().toISOString() });
+
+        router.push('/data/list');
+    };
+
+    if (loading) {
+        return <ActivityIndicator />;
     }
     
     return (
@@ -63,7 +112,7 @@ const DataModify = () => {
                 <View style={ styles.amountInput }>
                     <TextInput
                         style={ styles.amountValue }
-                        value={ amount }
+                        value={ String(amount) }
                         placeholder='0000.00'
                         onChangeText={ setAmount }
                         inputMode='decimal'
@@ -73,13 +122,13 @@ const DataModify = () => {
                 </View>
 
                 <View style={ styles.inputs }>
-                    <Input name='Category' type='select' selectData={ categories } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
+                    <Input name='Category' type='select' selectData={ categories_formatted } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
                     <Input name='Date' type='date' dateValue={ date } onChange={ setDate } />
                 </View>
 
                 <View style={ styles.buttons }>
                     <ThemedButton label='Delete' type='delete' onPress={ activeDeleteElement } />
-                    <ThemedButton label='Modify' type='default' onPress={ () => router.push('/data/list') }/>
+                    <ThemedButton label='Modify' type='default' onPress={ modTransaction }/>
                 </View>
             </View>
 

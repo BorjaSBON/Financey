@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
-import { router } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 
 import { Values } from '@constants/values';
 import { Colors } from '@constants/colors';
@@ -8,16 +9,23 @@ import { ThemedText } from '@ui/themed-text';
 
 import BalanceResume from '@components/data/balance-resume';
 import { TransactionElement, NewTransaction, FilterTransactions } from '@components/data/list-element';
+
 import { useTransactions } from '@/src/hooks/useTransactions';
 
-type Item = {
-    type: 'expense' | 'income';
-    category: string;
-    value: number;
-    date: string;
-}
-
 const DataList = () => {
+    // Change the router previous page
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('beforeRemove', (event) => {
+            event.preventDefault();
+            router.push('/');
+        });
+
+        return unsubscribe;
+    }, [navigation]);
+
+    // Get the transactions
     const { transactions, loading } = useTransactions();
 
     if (loading) {
@@ -53,7 +61,7 @@ const DataList = () => {
                                 router.push({
                                     pathname: '/data/modify/[id]',
                                     params: {
-                                        id: '1',
+                                        id: item.id.toString(),
                                     },
                                 })
                             } />}

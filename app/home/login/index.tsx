@@ -9,14 +9,14 @@ import { ThemedInput } from '@ui/themed-input';
 import { ThemedButton } from '@ui/themed-button';
 import { AccountElement } from '@components/configuration/account-element';
 
-import { useProfile } from '@/src/hooks/useProfile';
+import { useProfiles } from '@/src/hooks/useProfiles';
 
 const LoginScreen = () => {
     // Set the username
     const [username, setUsername] = useState('');
 
     // Get the function to create a profile and the error state
-    const { profiles, createProfile, loginById, error } = useProfile();
+    const { profiles, createProfile, loginById, error } = useProfiles();
     
     // Validate username and create account
     const validateUsername = async () => {
@@ -50,7 +50,7 @@ const LoginScreen = () => {
                 <ThemedButton label='Enter' type='default' onPress={ validateUsername } />
             </View>
 
-            <View style={ styles.accounts }>
+            <View style={[ styles.accounts, { height: Math.min(profiles.length * 50, 175)} ]}>
                 <FlatList
                     data={ profiles }
                     keyExtractor={ (profile) => profile.id.toString() }

@@ -8,11 +8,11 @@ import { ThemedText } from '@ui/themed-text';
 
 import { AccountElement, NewAccount } from '@components/configuration/account-element';
 
-import { useProfile } from '@/src/hooks/useProfile';
+import { useProfiles } from '@/src/hooks/useProfiles';
 
 const AccountInformation = () => {
     // Get the profiles
-    const { profiles, profile, loginById, logout, loading } = useProfile();
+    const { profiles, profile, loginById, logout, loading } = useProfiles();
 
     if (loading) {
         return <ActivityIndicator />;

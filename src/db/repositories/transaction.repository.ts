@@ -11,6 +11,7 @@ function mapTransaction(row: any): Transaction {
         id: row.id,
         type: row.type,
         amount: row.amount,
+        profileId: row.profile_id,
         categoryId: row.category_id,
         categoryName: row.category_name,
         date: row.date,
@@ -23,39 +24,56 @@ function mapTransaction(row: any): Transaction {
 export async function getAll(): Promise<Transaction[]> {
     const db = await dbPromise;
 
-    const rows = await db.getAllAsync(`
-        SELECT
-            t.id,
-            t.type,
-            t.amount,
-            t.category_id,
-            c.name AS category_name,
-            t.date,
-            t.created_at,
-            t.updated_at
-        FROM transactions t
-        INNER JOIN categories c
-            ON c.id = t.category_id
-        ORDER BY t.date DESC, t.id DESC
-    `);
+    const rows = await db.getAllAsync(
+        `
+            SELECT
+                t.id,
+                t.type,
+                t.amount,
+                t.profile_id,
+                t.category_id,
+                c.name AS category_name,
+                t.date,
+                t.created_at,
+                t.updated_at
+            FROM transactions t
+            INNER JOIN categories c
+                ON c.id = t.category_id
+            INNER JOIN profiles p
+                ON p.id = t.profile_id
+            WHERE p.active = 1
+            ORDER BY t.date DESC, t.id DESC
+        `,
+    );
 
     return rows.map(mapTransaction);
 }
 
 // Get a transaction by ID
-export async function getById(id: number): Promise<Transaction | null> {
+export async function getById(id: number): Promise<Transaction> {
     const db = await dbPromise;
 
     const row = await db.getFirstAsync(
         `
-            SELECT *
-            FROM transactions
-            WHERE id = ?
+            SELECT
+                t.id,
+                t.type,
+                t.amount,
+                t.profile_id,
+                t.category_id,
+                c.name AS category_name,
+                t.date,
+                t.created_at,
+                t.updated_at
+            FROM transactions t
+            INNER JOIN categories c
+                ON c.id = t.category_id
+            WHERE t.id = ?
         `,
         id
     );
 
-    return row ? mapTransaction(row) : null;
+    return mapTransaction(row);
 }
 
 // Create a new transaction
@@ -69,15 +87,17 @@ export async function create(transaction: CreateTransaction): Promise<number> {
             INSERT INTO transactions (
                 type,
                 amount,
+                profile_id,
                 category_id,
                 date,
                 created_at,
                 updated_at
             )
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         `,
         transaction.type,
         transaction.amount,
+        transaction.profileId,
         transaction.categoryId,
         transaction.date,
         now,
@@ -88,7 +108,7 @@ export async function create(transaction: CreateTransaction): Promise<number> {
 }
 
 // Modify a transaction by ID
-export async function modify(id: number, transaction: UpdateTransaction): Promise<void> {
+export async function modify(transaction: UpdateTransaction): Promise<void> {
     const db = await dbPromise;
 
     const now = new Date().toISOString();
@@ -109,7 +129,7 @@ export async function modify(id: number, transaction: UpdateTransaction): Promis
         transaction.categoryId,
         transaction.date,
         now,
-        id
+        transaction.id,
     );
 }
 
@@ -127,18 +147,22 @@ export async function remove(id: number): Promise<void> {
 }
 
 // Delete all transactions
-export async function removeAll(): Promise<void> {
+export async function removeAll(id: number): Promise<void> {
     const db = await dbPromise;
 
     await db.runAsync(
         `
-            DELETE FROM transactions
-        `
+            DELETE FROM transactions t
+            INNER JOIN profiles p
+                ON p.id = t.profile_id
+            WHERE p.active = 1
+        `,
+        id
     );
 }
 
 // Get the balance for a given date range
-export async function getBalance(from: string, to: string): Promise<number> {
+export async function getBalance(id: number, from: string, to: string): Promise<number> {
     const db = await dbPromise;
 
     const row = await db.getFirstAsync<{ balance: number }>(
@@ -154,9 +178,11 @@ export async function getBalance(from: string, to: string): Promise<number> {
                     0
                 ) AS balance
             FROM transactions
-            WHERE date >= ?
+            WHERE profile_id = ?
+                AND date >= ?
                 AND date <= ?
         `,
+        id,
         from,
         to
     );

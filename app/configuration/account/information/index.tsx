@@ -7,11 +7,11 @@ import { ThemedText } from '@ui/themed-text';
 
 import InformationElement from '@components/configuration/information-element';
 
-import { useProfile } from '@/src/hooks/useProfile';
+import { useProfiles } from '@/src/hooks/useProfiles';
 
 export default function AccountInformation() {
     // Get the profile
-    const { profile } = useProfile();
+    const { profile } = useProfiles();
 
     const formatDate = (date: Date) => {
         return date.toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' });

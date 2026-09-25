@@ -11,8 +11,8 @@ import type {
     UpdateProfileDataDeleted
 } from '../types/profile';
 
-export function useProfile() {
-    // Profile information
+export function useProfiles() {
+    // Profiles information
     const [profiles, setProfiles] = useState<Profile[]>([]);
     const [profile, setProfile] = useState<Profile | null>(null);
 
@@ -44,7 +44,7 @@ export function useProfile() {
         }
     }, []);
 
-    // GET ACTIVEPROFILE
+    // GET ACTIVE PROFILE
     const getProfile = useCallback(async () => {
         try {
             // Set loading and error states
@@ -59,7 +59,7 @@ export function useProfile() {
             return data;
         } catch (err) {
             // Error handling
-            const error = err instanceof Error ? err : new Error('Error obtaining profile');
+            const error = err instanceof Error ? err : new Error('Error obtaining a profile');
             setError(error);
             throw error;
         } finally {
@@ -82,7 +82,7 @@ export function useProfile() {
             return data;
         } catch (err) {
             // Error handling
-            const error = err instanceof Error ? err : new Error('Error obtaining profile');
+            const error = err instanceof Error ? err : new Error('Error obtaining a profile');
             setError(error);
             throw error;
         } finally {
@@ -102,7 +102,7 @@ export function useProfile() {
             await profilesRepository.create(data);
         } catch (err) {
             // Error handling
-            const error = err instanceof Error ? err : new Error('Error creating profile');
+            const error = err instanceof Error ? err : new Error('Error creating a profile');
             setError(error);
             throw error;
         } finally {
@@ -111,7 +111,7 @@ export function useProfile() {
         }
     }, []);
 
-    // MODIFICAR USERNAME
+    // MODIFY
     const modifyProfileUsername = useCallback(async (data: UpdateProfileUsername) => {
         try {
             // Set loading and error states
@@ -131,7 +131,7 @@ export function useProfile() {
         }
     }, []);
 
-    // MODIFICAR DATA ADDED
+    // MODIFY DATA ADDED
     const modifyProfileDataAdded = useCallback(async (data: UpdateProfileDataAdded) => {
         try {
             // Set loading and error states
@@ -151,7 +151,7 @@ export function useProfile() {
         }
     }, []);
 
-    // MODIFICAR DATA MODIFIED
+    // MODIFY DATA MODIFIED
     const modifyProfileDataModified = useCallback(async (data: UpdateProfileDataModified) => {
         try {
             // Set loading and error states
@@ -171,7 +171,7 @@ export function useProfile() {
         }
     }, []);
 
-    // MODIFICAR DATA DELETED
+    // MODIFY DATA DELETED
     const modifyProfileDataDeleted = useCallback(async (data: UpdateProfileDataDeleted) => {
         try {
             // Set loading and error states
@@ -202,7 +202,7 @@ export function useProfile() {
             await profilesRepository.remove();
         } catch (err) {
             // Error handling
-            const error = err instanceof Error ? err : new Error('Error removing profile');
+            const error = err instanceof Error ? err : new Error('Error removing a profile');
             setError(error);
             throw error;
         } finally {
@@ -218,11 +218,11 @@ export function useProfile() {
             setLoading(true);
             setError(null);
 
-            // Remove the profile
+            // Login
             await profilesRepository.loginById(id);
         } catch (err) {
             // Error handling
-            const error = err instanceof Error ? err : new Error('Error removing profile');
+            const error = err instanceof Error ? err : new Error('Error login a profile');
             setError(error);
             throw error;
         } finally {
@@ -238,11 +238,11 @@ export function useProfile() {
             setLoading(true);
             setError(null);
 
-            // Remove the profile
+            // Logout
             await profilesRepository.logout();
         } catch (err) {
             // Error handling
-            const error = err instanceof Error ? err : new Error('Error removing profile');
+            const error = err instanceof Error ? err : new Error('Error logout a profile');
             setError(error);
             throw error;
         } finally {

@@ -1,11 +1,11 @@
 import { ActivityIndicator } from 'react-native';
 import { Redirect } from 'expo-router';
 
-import { useProfile } from '@/src/hooks/useProfile';
+import { useProfiles } from '@/src/hooks/useProfiles';
 
 const App = () => {
     // Get the profiles and loading state
-    const { profiles, loading } = useProfile();
+    const { profiles, loading } = useProfiles();
 
     // If loading, return an empty view
     if (loading) {
