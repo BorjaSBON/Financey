@@ -8,21 +8,24 @@ import { ThemedButton } from '@ui/themed-button';
 interface Props {
     // Variables
     active?: boolean;
+    title?: string;
+    titleButton?: string;
 
     // Methods
+    deleteAction?: () => void;
     cancelAction?: () => void;
 }
 
-export default function DeleteElement({ active=false, cancelAction }: Props) {
+export default function DeleteElement({ active=false, title='', titleButton='Delete', deleteAction, cancelAction }: Props) {
     return (
         <View style={[ 
             styles.popup,
             active ? { display: 'flex' } : { display: 'none' }
         ]}>
-            <ThemedText style={ styles.message } weight='light' >Are you sure you want to delete the element?</ThemedText>
+            <ThemedText style={ styles.message } weight='light'>{ title }</ThemedText>
 
             <View style={ styles.buttons }>
-                <ThemedButton label='Reset' type='delete' />
+                <ThemedButton label={ titleButton } type='delete' onPress={ deleteAction } />
                 <ThemedButton label='Cancel' type='default' onPress={ cancelAction } />
             </View>
         </View>

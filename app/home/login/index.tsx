@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 
 import { Colors } from '@constants/colors';
@@ -16,20 +16,25 @@ const LoginScreen = () => {
     const [username, setUsername] = useState('');
 
     // Get the function to create a profile and the error state
-    const { profiles, createProfile, loginById, error } = useProfiles();
+    const { profiles, UsernameProfile, loginById, loading, error } = useProfiles();
     
     // Validate username and create account
     const validateUsername = async () => {
-        // Create the profile
-        await createProfile({
-            'username': username, 
-            'creation_date': new Date().toISOString(),
-        });
-        
-        // If there is no error, navigate to the home screen
-        if (!error) {
-            router.push('/home');
+        // Check if the username if filled
+        if (username !== '') {
+            // Create the profile
+            await UsernameProfile({ 'username': username });
+            
+            // If there is no error, navigate to the home screen
+            if (!error) {
+                router.push('/home');
+            }
         }
+    }
+
+    // Check if the profiles is loaded
+    if (loading) {
+        return <ActivityIndicator />;
     }
 
     return (

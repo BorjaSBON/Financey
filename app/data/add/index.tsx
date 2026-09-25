@@ -65,7 +65,7 @@ const DataAdd = () => {
             date: date ? date.toISOString() : new Date().toISOString(),
         });
 
-        await modifyProfileDataAdded({ last_action_date: new Date().toISOString() });
+        await modifyProfileDataAdded();
 
         router.push('/data/list');
     };

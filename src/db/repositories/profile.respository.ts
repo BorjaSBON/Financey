@@ -1,13 +1,6 @@
 import { dbPromise } from '../database';
 
-import type {
-    Profile,
-    CreateProfile,
-    UpdateProfileUsername,
-    UpdateProfileDataAdded,
-    UpdateProfileDataModified,
-    UpdateProfileDataDeleted
-} from '../../types/profile';
+import type { Profile, UsernameProfile } from '../../types/profile';
 
 function mapProfile(row: any): Profile {
     return {
@@ -75,8 +68,11 @@ export async function getById(id: number): Promise<Profile | null> {
 }
 
 // Create a new profile
-export async function create(profile: CreateProfile): Promise<number> {
+export async function create(profile: UsernameProfile): Promise<number> {
     const db = await dbPromise;
+
+    // Get the date of the action
+    const now = new Date().toISOString();
 
     const result = await db.runAsync(
         `
@@ -84,8 +80,8 @@ export async function create(profile: CreateProfile): Promise<number> {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `,
         profile.username,
-        profile.creation_date,
-        profile.creation_date,
+        now,
+        now,
         'Create account',
         1,
         0,
@@ -99,8 +95,11 @@ export async function create(profile: CreateProfile): Promise<number> {
 }
 
 // Modify the username for a profile by ID
-export async function modifyUsername(data: UpdateProfileUsername): Promise<void> {
+export async function modifyUsername(data: UsernameProfile): Promise<void> {
     const db = await dbPromise;
+
+    // Get the date of the action
+    const now = new Date().toISOString();
 
     await db.runAsync(
         `
@@ -118,14 +117,17 @@ export async function modifyUsername(data: UpdateProfileUsername): Promise<void>
             )
         `,
         data.username,
-        data.last_action_date,
+        now,
         'Modify username',
     );
 }
 
 // Modify the data added for a profile by ID
-export async function modifyDataAdded(data: UpdateProfileDataAdded): Promise<void> {
+export async function modifyDataAdded(): Promise<void> {
     const db = await dbPromise;
+
+    // Get the date of the action
+    const now = new Date().toISOString();
 
     await db.runAsync(
         `
@@ -139,14 +141,17 @@ export async function modifyDataAdded(data: UpdateProfileDataAdded): Promise<voi
                 LIMIT 1
             )
         `,
-        data.last_action_date,
+        now,
         'Add new transaction'
     );
 }
 
 // Modify the data modified for a profile by ID
-export async function modifyDataModified(data: UpdateProfileDataModified): Promise<void> {
+export async function modifyDataModified(): Promise<void> {
     const db = await dbPromise;
+
+    // Get the date of the action
+    const now = new Date().toISOString();
 
     await db.runAsync(
         `
@@ -160,14 +165,17 @@ export async function modifyDataModified(data: UpdateProfileDataModified): Promi
                 LIMIT 1
             )
         `,
-        data.last_action_date,
+        now,
         'Modify transaction'
     );
 }
 
 // Modify the data deleted for a profile by ID
-export async function modifyDataDeleted(data: UpdateProfileDataDeleted): Promise<void> {
+export async function modifyDataDeleted(): Promise<void> {
     const db = await dbPromise;
+
+    // Get the date of the action
+    const now = new Date().toISOString();
 
     await db.runAsync(
         `
@@ -181,7 +189,7 @@ export async function modifyDataDeleted(data: UpdateProfileDataDeleted): Promise
                 LIMIT 1
             )
         `,
-        data.last_action_date,
+        now,
         'Delete transaction'
     );
 }

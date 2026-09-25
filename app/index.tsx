@@ -7,7 +7,7 @@ const App = () => {
     // Get the profiles and loading state
     const { profiles, loading } = useProfiles();
 
-    // If loading, return an empty view
+    // Check if the profiles are loaded
     if (loading) {
         return <ActivityIndicator />;
     }

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 
 import { ThemedText } from '@ui/themed-text';
@@ -8,13 +8,12 @@ import { useProfiles } from '@/src/hooks/useProfiles';
 
 const HomeScreen = () => {
     // Get the profile and loading state
-    const { profiles, profile, loading } = useProfiles();
+    const { profile, loading } = useProfiles();
 
+    // Check if the profile is loaded
     if (loading) {
-        return <View></View>;
+        return <ActivityIndicator />;
     }
-
-    console.log('Profiles:', profiles);
 
     return (
         <View style={ styles.container }>

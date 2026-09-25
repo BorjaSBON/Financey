@@ -1,15 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { loginById, profilesRepository } from '../db/repositories/profile.respository';
+import { profilesRepository } from '../db/repositories/profile.respository';
 
-import type {
-    Profile,
-    CreateProfile,
-    UpdateProfileUsername,
-    UpdateProfileDataAdded,
-    UpdateProfileDataModified,
-    UpdateProfileDataDeleted
-} from '../types/profile';
+import type { Profile, UsernameProfile } from '../types/profile';
 
 export function useProfiles() {
     // Profiles information
@@ -92,7 +85,7 @@ export function useProfiles() {
     }, []);
 
     // CREATE
-    const createProfile = useCallback(async (data: CreateProfile) => {
+    const UsernameProfile = useCallback(async (data: UsernameProfile) => {
         try {
             // Set loading and error states
             setLoading(true);
@@ -112,7 +105,7 @@ export function useProfiles() {
     }, []);
 
     // MODIFY
-    const modifyProfileUsername = useCallback(async (data: UpdateProfileUsername) => {
+    const modifyProfileUsername = useCallback(async (data: UsernameProfile) => {
         try {
             // Set loading and error states
             setLoading(true);
@@ -132,14 +125,14 @@ export function useProfiles() {
     }, []);
 
     // MODIFY DATA ADDED
-    const modifyProfileDataAdded = useCallback(async (data: UpdateProfileDataAdded) => {
+    const modifyProfileDataAdded = useCallback(async () => {
         try {
             // Set loading and error states
             setLoading(true);
             setError(null);
 
             // Modify the data added
-            await profilesRepository.modifyDataAdded(data);
+            await profilesRepository.modifyDataAdded();
         } catch (err) {
             // Error handling
             const error = err instanceof Error ? err : new Error('Error modifying added data');
@@ -152,14 +145,14 @@ export function useProfiles() {
     }, []);
 
     // MODIFY DATA MODIFIED
-    const modifyProfileDataModified = useCallback(async (data: UpdateProfileDataModified) => {
+    const modifyProfileDataModified = useCallback(async () => {
         try {
             // Set loading and error states
             setLoading(true);
             setError(null);
 
             // Modify the data modified
-            await profilesRepository.modifyDataModified(data);
+            await profilesRepository.modifyDataModified();
         } catch (err) {
             // Error handling
             const error = err instanceof Error ? err : new Error('Error modifying modified data');
@@ -172,14 +165,14 @@ export function useProfiles() {
     }, []);
 
     // MODIFY DATA DELETED
-    const modifyProfileDataDeleted = useCallback(async (data: UpdateProfileDataDeleted) => {
+    const modifyProfileDataDeleted = useCallback(async () => {
         try {
             // Set loading and error states
             setLoading(true);
             setError(null);
 
             // Modify the data deleted
-            await profilesRepository.modifyDataDeleted(data);
+            await profilesRepository.modifyDataDeleted();
         } catch (err) {
             // Error handling
             const error = err instanceof Error ? err : new Error('Error modifying deleted data');
@@ -268,7 +261,7 @@ export function useProfiles() {
 
         getProfiles,
         getProfile,
-        createProfile,
+        UsernameProfile,
         modifyProfileUsername,
         modifyProfileDataAdded,
         modifyProfileDataModified,

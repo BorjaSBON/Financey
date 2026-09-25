@@ -9,21 +9,17 @@ import { ThemedButton } from '@ui/themed-button';
 
 import Input from '@components/common/input';
 import TypeButtons from '@components/data/type-buttons';
-import DeleteElement from '@components/data/delete_element';
+import DeleteElement from '@components/common/delete-element';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
 import { useCategories } from '@/src/hooks/useCategories';
 import { useProfiles } from '@/src/hooks/useProfiles';
 
 const DataModify = () => {
-    // Get the categories
+    // Database
     const { categories } = useCategories();
-
-    // Get the transactions
-    const { transaction, getTransaction, modifyTransaction, loading } = useTransactions();
-
-    // Get the function to update the profile
-    const { modifyProfileDataModified } = useProfiles();
+    const { transaction, getTransaction, modifyTransaction, removeTransaction, loading } = useTransactions();
+    const { modifyProfileDataModified, modifyProfileDataDeleted } = useProfiles();
 
     // ID of the element
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -62,9 +58,9 @@ const DataModify = () => {
     const [date, setDate] = useState<Date | null>(null);
 
     // Delete popup
-    const [deleteElement, setDeleteElement] = useState(false);
-    const activeDeleteElement = () => {
-        setDeleteElement(prev => !prev);
+    const [deleteElementPopup, setDeleteElementPopup] = useState(false);
+    const activeDeleteElementPopup = () => {
+        setDeleteElementPopup(prev => !prev);
     }
 
     // Load transaction data into the form
@@ -79,14 +75,18 @@ const DataModify = () => {
         setExpenseActive(transaction.type === 'expense');
     }, [transaction]);
 
-    // Modify button
-    async function modTransaction() {
+    // MODIFY TRANSACTION ACTION
+    async function modidyTransactionAction() {
+        // Check if the values are valid
         if (!amount || !selectValue) {
             return;
         }
+        // TODO
 
+        // Convert the amount value to a valid number
         const amountInCents = Math.round(Number(amount) * 100);
 
+        // Modify transaction
         await modifyTransaction({
             id: Number(id),
             type: expenseActive ? 'expense' : 'income',
@@ -95,11 +95,26 @@ const DataModify = () => {
             date: date ? date.toISOString() : new Date().toISOString(),
         });
 
-        await modifyProfileDataModified({ last_action_date: new Date().toISOString() });
+        // Modify profile
+        await modifyProfileDataModified();
 
-        router.push('/data/list');
+        // Return to the prevous page (List page)
+        router.back();
     };
 
+    // DELETE TRANSACTION ACTION
+    async function deleteTransactionAction() {
+        // Remove the transaction
+        await removeTransaction(transaction?.id || 0);
+
+        // Modify the profile
+        await modifyProfileDataDeleted();
+
+        // Return to the prevous page (List page)
+        router.back();
+    }
+
+    // Check if the data is loaded
     if (loading) {
         return <ActivityIndicator />;
     }
@@ -127,12 +142,13 @@ const DataModify = () => {
                 </View>
 
                 <View style={ styles.buttons }>
-                    <ThemedButton label='Delete' type='delete' onPress={ activeDeleteElement } />
-                    <ThemedButton label='Modify' type='default' onPress={ modTransaction }/>
+                    <ThemedButton label='Delete' type='delete' onPress={ activeDeleteElementPopup } />
+                    <ThemedButton label='Modify' type='default' onPress={ modidyTransactionAction }/>
+                    <ThemedButton label='Cancel' type='default' onPress={ () => { router.back() } }/>
                 </View>
             </View>
 
-            <DeleteElement active={ deleteElement } cancelAction={ activeDeleteElement } />
+            <DeleteElement active={ deleteElementPopup } title='Are you sure you want to delete the element?' titleButton='Delete' deleteAction={ deleteTransactionAction } cancelAction={ activeDeleteElementPopup } />
         </View>
     );
 };

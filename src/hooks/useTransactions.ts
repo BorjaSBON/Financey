@@ -126,14 +126,14 @@ export function useTransactions() {
     }, [getTransactions]);
 
     // ELIMINAR
-    const removeTransactions = useCallback(async (id: number) => {
+    const removeTransactions = useCallback(async () => {
         try {
             // Set loading and error states
             setLoading(true);
             setError(null);
 
             // Remove all transactions
-            await transactionsRepository.removeAll(id);
+            await transactionsRepository.removeAll();
         } catch (err) {
             // Error handling
             const error = err instanceof Error ? err : new Error('Error eliminando la transacción');

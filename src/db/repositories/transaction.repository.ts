@@ -80,6 +80,7 @@ export async function getById(id: number): Promise<Transaction> {
 export async function create(transaction: CreateTransaction): Promise<number> {
     const db = await dbPromise;
 
+    // Get the date of the action
     const now = new Date().toISOString();
 
     const result = await db.runAsync(
@@ -147,17 +148,18 @@ export async function remove(id: number): Promise<void> {
 }
 
 // Delete all transactions
-export async function removeAll(id: number): Promise<void> {
+export async function removeAll(): Promise<void> {
     const db = await dbPromise;
 
     await db.runAsync(
         `
-            DELETE FROM transactions t
-            INNER JOIN profiles p
-                ON p.id = t.profile_id
-            WHERE p.active = 1
+            DELETE FROM transactions
+            WHERE profile_id IN (
+                SELECT id
+                FROM profiles
+                WHERE active = 1
+            )
         `,
-        id
     );
 }
 
