@@ -105,7 +105,7 @@ export function useTransactions() {
         }
     }, [getTransactions]);
 
-    // REMOVE
+    // REMOVE A TRANSACTION
     const removeTransaction = useCallback(async (id: number) => {
         try {
             // Set loading and error states
@@ -125,7 +125,7 @@ export function useTransactions() {
         }
     }, [getTransactions]);
 
-    // ELIMINAR
+    // REMOVE ALL TRANSACTIONS
     const removeTransactions = useCallback(async () => {
         try {
             // Set loading and error states
@@ -134,6 +134,29 @@ export function useTransactions() {
 
             // Remove all transactions
             await transactionsRepository.removeAll();
+        } catch (err) {
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error eliminando la transacción');
+            setError(error);
+            throw error;
+        } finally {
+            // Reset loading state
+            setLoading(false);
+        }
+    }, []);
+
+    // GET THE TOTAL INCOMES AND EXPENSES
+    const getBalance = useCallback(async (profileId: number, from: string = '0000-01-01T00:00:00.000Z', to: string = '9999-12-31T23:59:59.999Z'): Promise<{ income: number, expense: number }> => {
+        try {
+            // Set loading and error states
+            setLoading(true);
+            setError(null);
+
+            // Get the incomes and expenses
+            const { income, expense } = await transactionsRepository.getBalance(profileId, from, to);
+
+            // Return the income, expese and balance
+            return { income, expense }
         } catch (err) {
             // Error handling
             const error = err instanceof Error ? err : new Error('Error eliminando la transacción');
@@ -161,6 +184,8 @@ export function useTransactions() {
         createTransaction,
         modifyTransaction,
         removeTransaction,
-        removeTransactions
+        removeTransactions,
+
+        getBalance,
     };
 }

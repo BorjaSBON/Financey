@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
 import { router, useNavigation } from 'expo-router';
 
@@ -11,6 +11,7 @@ import BalanceResume from '@components/data/balance-resume';
 import { TransactionElement, NewTransaction, FilterTransactions } from '@components/data/list-element';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
+import { useProfiles } from '@/src/hooks/useProfiles';
 
 const DataList = () => {
     // Change the router previous page
@@ -25,16 +26,35 @@ const DataList = () => {
         return unsubscribe;
     }, [navigation]);
 
-    // Get the transactions
-    const { transactions, loading } = useTransactions();
+    // Database
+    const { transactions, getBalance, loading } = useTransactions();
+    const { profile } = useProfiles();
+    const [income, setIncome] = useState(0);
+    const [expense, setExpense] = useState(0);
 
+    useEffect(() => {
+        if (!profile) {
+            return;
+        }
+
+        const loadBalance = async () => {
+            const balance = await getBalance(profile.id);
+
+            setIncome(balance.income);
+            setExpense(balance.expense);
+        };
+
+        loadBalance();
+    }, [profile, getBalance]);
+
+    // Check if the transactions are laoded
     if (loading) {
         return <ActivityIndicator />;
     }
 
     return (
         <View style={ styles.container }>
-            <BalanceResume incomes={ 12000.58 } expenses={ 5000.36 } squareEnable={ false } />
+            <BalanceResume incomes={ income } expenses={ expense } squareEnable={ false } />
 
             <View style={ styles.sections }>
                 <View style={ styles.section }>

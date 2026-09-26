@@ -164,32 +164,46 @@ export async function removeAll(): Promise<void> {
 }
 
 // Get the balance for a given date range
-export async function getBalance(id: number, from: string, to: string): Promise<number> {
+export async function getBalance(profileId: number, from: string = '0000-01-01T00:00:00.000Z', to: string = '9999-12-31T23:59:59.999Z'): Promise<{ income: number, expense: number }> {
     const db = await dbPromise;
 
-    const row = await db.getFirstAsync<{ balance: number }>(
+    const row = await db.getFirstAsync<{ income: number; expense: number; }>(
         `
             SELECT
                 COALESCE(
                     SUM(
                         CASE
                             WHEN type = 'income' THEN amount
-                            WHEN type = 'expense' THEN -amount
+                            ELSE 0
                         END
                     ),
                     0
-                ) AS balance
+                ) AS income,
+
+                COALESCE(
+                    SUM(
+                        CASE
+                            WHEN type = 'expense' THEN amount
+                            ELSE 0
+                        END
+                    ),
+                    0
+                ) AS expense
+
             FROM transactions
             WHERE profile_id = ?
                 AND date >= ?
                 AND date <= ?
         `,
-        id,
+        profileId,
         from,
         to
     );
 
-    return row?.balance ?? 0;
+    return {
+        income: row?.income ?? 0,
+        expense: row?.expense ?? 0,
+    };
 }
 
 // Export the repository functions

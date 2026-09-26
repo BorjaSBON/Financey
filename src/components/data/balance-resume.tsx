@@ -13,7 +13,7 @@ interface Props {
 export default function BalanceResume({ incomes, expenses, squareEnable=false }: Props) {
     // Function to transform the values in readable text
     function ReadableNumber(value: number) {
-        return value.toLocaleString('de-DE').replace(',', '\'');
+        return (value / 100).toLocaleString('de-DE').replace(',', '\'');
     }
 
     // Calculate the balance
@@ -96,6 +96,8 @@ const styles = StyleSheet.create({
     data: {
         fontSize: 12,
         textAlign: 'center',
+        height: 17,
+        verticalAlign: 'bottom',
     },
 
     currency: {

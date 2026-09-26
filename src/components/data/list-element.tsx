@@ -141,6 +141,8 @@ const styles = StyleSheet.create({
     value: {
         fontSize: 13,
         marginTop: -2,
+        height: '100%',
+        textAlignVertical: 'bottom',
     },
 
     unit: {
