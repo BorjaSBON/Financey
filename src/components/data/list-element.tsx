@@ -10,7 +10,7 @@ import Add from '@assets/add.svg';
 
 interface TransactionProps {
     // Variables
-    type: 'income' | 'expense';
+    type: string;
     category: string;
     value: number;
     date: string;
@@ -162,6 +162,6 @@ const styles = StyleSheet.create({
     },
 
     actionIcon: {
-        transform: [{ scale: 0.75 }]
+        transform: [{ scale: 0.6 }]
     },
 });

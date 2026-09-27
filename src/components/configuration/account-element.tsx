@@ -128,6 +128,6 @@ const styles = StyleSheet.create({
 
     actionIcon: {
         marginTop: 3,
-        transform: [{ scale: 1.1 }]
+        transform: [{ scale: 0.9 }]
     },
 });

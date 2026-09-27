@@ -206,6 +206,39 @@ export async function getBalance(profileId: number, from: string = '0000-01-01T0
     };
 }
 
+// Get the last transaction
+export async function getLastTransaction(): Promise<Transaction | null> {
+    const db = await dbPromise;
+
+    const row = await db.getFirstAsync(
+        `
+            SELECT
+                t.id,
+                t.type,
+                t.amount,
+                t.profile_id,
+                t.category_id,
+                c.name AS category_name,
+                t.date,
+                t.created_at,
+                t.updated_at
+            FROM transactions t
+            INNER JOIN categories c
+                ON c.id = t.category_id
+            INNER JOIN profiles p
+                ON p.id = t.profile_id
+            WHERE p.active = 1
+            ORDER BY t.date DESC
+        `,
+    );
+
+    if (row != null) {
+        return mapTransaction(row);
+    }
+
+    return null;
+}
+
 // Export the repository functions
 export const transactionsRepository = {
     getAll,
@@ -216,4 +249,5 @@ export const transactionsRepository = {
     removeAll,
 
     getBalance,
+    getLastTransaction,
 };

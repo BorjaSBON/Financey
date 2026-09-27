@@ -12,6 +12,7 @@ export function useTransactions() {
     // Transactions information
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [transaction, setTransaction] = useState<Transaction>();
+    const [lastTransaction, setLastTransaction] = useState<Transaction | null>();
 
     // Loading and error states
     const [loadingTransactions, setLoading] = useState(true);
@@ -116,7 +117,7 @@ export function useTransactions() {
             await transactionsRepository.remove(id);
         } catch (err) {
             // Error handling
-            const error = err instanceof Error ? err : new Error('Error removin a transaction');
+            const error = err instanceof Error ? err : new Error('Error removing a transaction');
             setError(error);
             throw error;
         } finally {
@@ -136,7 +137,7 @@ export function useTransactions() {
             await transactionsRepository.removeAll();
         } catch (err) {
             // Error handling
-            const error = err instanceof Error ? err : new Error('Error eliminando la transacción');
+            const error = err instanceof Error ? err : new Error('Error removing all transactions');
             setError(error);
             throw error;
         } finally {
@@ -159,7 +160,31 @@ export function useTransactions() {
             return { income, expense }
         } catch (err) {
             // Error handling
-            const error = err instanceof Error ? err : new Error('Error eliminando la transacción');
+            const error = err instanceof Error ? err : new Error('Error obtaining the balance');
+            setError(error);
+            throw error;
+        } finally {
+            // Reset loading state
+            setLoading(false);
+        }
+    }, []);
+
+    // GET THE LAST TRANSACTION
+    const getLastTransaction = useCallback(async (): Promise<Transaction | null> => {
+        try {
+            // Set loading and error states
+            setLoading(true);
+            setError(null);
+
+            // Get the incomes and expenses
+            const data = await transactionsRepository.getLastTransaction();
+            setLastTransaction(data);
+
+            // Return the income, expese and balance
+            return data;
+        } catch (err) {
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error obtaining the last transaction');
             setError(error);
             throw error;
         } finally {
@@ -175,6 +200,7 @@ export function useTransactions() {
     return {
         transactions,
         transaction,
+        lastTransaction,
 
         loadingTransactions,
         errorTransactions,
@@ -187,5 +213,6 @@ export function useTransactions() {
         removeTransactions,
 
         getBalance,
+        getLastTransaction,
     };
 }

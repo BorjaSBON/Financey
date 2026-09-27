@@ -115,6 +115,6 @@ const styles = StyleSheet.create({
     },
 
     actionIcon: {
-        transform: [{ scale: 0.75 }]
+        transform: [{ scale: 0.6 }]
     },
 });
