@@ -1,24 +1,56 @@
-import { StyleSheet, View } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 
-import { ThemedText } from '@ui/themed-text';
 import { Colors } from '@constants/colors';
 import { Values } from '@constants/values';
 
+import { ThemedText } from '@ui/themed-text';
+
+import { useTransactions } from '@/src/hooks/useTransactions';
+import { useProfiles } from '@/src/hooks/useProfiles';
+
 interface Props {
-    incomes: number,
-    expenses: number,
+    // Variables
     squareEnable?: boolean,
 }
 
-export default function BalanceResume({ incomes, expenses, squareEnable=false }: Props) {
+export default function BalanceResume({ squareEnable=false }: Props) {
+    // Database
+    const { getBalance, loadingTransactions } = useTransactions();
+    const { profile, loadingProfiles } = useProfiles();
+
+    // Variables
+    const [income, setIncome] = useState(0);
+    const [expense, setExpense] = useState(0);
+
+    useEffect(() => {
+        if (!profile) {
+            return;
+        }
+
+        const loadBalance = async () => {
+            const balance = await getBalance(profile.id);
+
+            setIncome(balance.income);
+            setExpense(balance.expense);
+        };
+
+        loadBalance();
+    }, [profile, getBalance]);
+
     // Function to transform the values in readable text
     function ReadableNumber(value: number) {
         return (value / 100).toLocaleString('de-DE').replace(',', '\'');
     }
 
     // Calculate the balance
-    const balance = Number((incomes - expenses).toFixed(2));
+    const balance = Number((income - expense).toFixed(2));
     const balanceColor = balance >= 0 ? styles.positive : styles.negative;
+
+    // Check if the transactions are laoded
+    if (loadingTransactions || loadingProfiles) {
+        return <ActivityIndicator />;
+    }
 
     return (
         <View style={ styles.container }>
@@ -29,7 +61,7 @@ export default function BalanceResume({ incomes, expenses, squareEnable=false }:
                         <ThemedText style={ styles.title } weight='regular'>Incomes</ThemedText>
                     </View>
                     <ThemedText style={ styles.data } weight='light' numberOfLines={ 1 } adjustsFontSizeToFit>
-                        { ReadableNumber(incomes) }
+                        { ReadableNumber(income) }
                         <ThemedText style={ styles.currency }  weight='light'> €</ThemedText>
                     </ThemedText>
                 </View>
@@ -48,7 +80,7 @@ export default function BalanceResume({ incomes, expenses, squareEnable=false }:
                         <ThemedText style={ styles.title } weight='regular'>Expenses</ThemedText>
                     </View>
                     <ThemedText style={ styles.data } weight='light' numberOfLines={ 1 } adjustsFontSizeToFit>
-                        { ReadableNumber(expenses) }
+                        { ReadableNumber(expense) }
                         <ThemedText style={ styles.currency } weight='light'> €</ThemedText>
                     </ThemedText>
                 </View>

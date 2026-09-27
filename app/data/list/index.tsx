@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
 import { router, useNavigation } from 'expo-router';
 
@@ -11,7 +11,6 @@ import BalanceResume from '@components/data/balance-resume';
 import { TransactionElement, NewTransaction, FilterTransactions } from '@components/data/list-element';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
-import { useProfiles } from '@/src/hooks/useProfiles';
 
 const DataList = () => {
     // Change the router previous page
@@ -27,34 +26,11 @@ const DataList = () => {
     }, [navigation]);
 
     // Database
-    const { transactions, getBalance, loading } = useTransactions();
-    const { profile } = useProfiles();
-    const [income, setIncome] = useState(0);
-    const [expense, setExpense] = useState(0);
-
-    useEffect(() => {
-        if (!profile) {
-            return;
-        }
-
-        const loadBalance = async () => {
-            const balance = await getBalance(profile.id);
-
-            setIncome(balance.income);
-            setExpense(balance.expense);
-        };
-
-        loadBalance();
-    }, [profile, getBalance]);
-
-    // Check if the transactions are laoded
-    if (loading) {
-        return <ActivityIndicator />;
-    }
+    const { transactions, loadingTransactions } = useTransactions();
 
     return (
         <View style={ styles.container }>
-            <BalanceResume incomes={ income } expenses={ expense } squareEnable={ false } />
+            <BalanceResume squareEnable={ false } />
 
             <View style={ styles.sections }>
                 <View style={ styles.section }>
@@ -74,18 +50,22 @@ const DataList = () => {
                 <View style={[ styles.section, styles.transactionsSection ]}>
                     <ThemedText style={ styles.title } weight='regular'>Transactions</ThemedText>
                     <View style={ styles.elementsScroll }>
-                        <FlatList
-                            data={ transactions }
-                            keyExtractor={ (item) => item.id.toString() }
-                            renderItem={({ item }) => <TransactionElement type={ item.type } category={ item.categoryName } value={ item.amount } date={ item.date } onPress={ () =>
-                                router.push({
-                                    pathname: '/data/modify/[id]',
-                                    params: {
-                                        id: item.id.toString(),
-                                    },
-                                })
-                            } />}
-                        />
+                        {
+                            loadingTransactions ? 
+                                <ActivityIndicator/> :
+                                <FlatList
+                                    data={ transactions }
+                                    keyExtractor={ (item) => item.id.toString() }
+                                    renderItem={({ item }) => <TransactionElement type={ item.type } category={ item.categoryName } value={ item.amount } date={ item.date } onPress={ () =>
+                                        router.push({
+                                            pathname: '/data/modify/[id]',
+                                            params: {
+                                                id: item.id.toString(),
+                                            },
+                                        })
+                                    } />}
+                                />
+                        }
                     </View>
                 </View>
             </View>

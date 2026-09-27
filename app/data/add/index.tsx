@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View, TextInput } from 'react-native';
+import { StyleSheet, View, TextInput, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 
 import { Values } from '@constants/values';
@@ -15,14 +15,10 @@ import { useCategories } from '@/src/hooks/useCategories';
 import { useProfiles } from '@/src/hooks/useProfiles';
 
 const DataAdd = () => {
-    // Get the categories
-    const { categories, loading } = useCategories();
-
-    // Get the function to create a transaction
+    // Database
+    const { categories, loadingCategories } = useCategories();
     const { createTransaction } = useTransactions();
-
-    // Get the function to update the profile
-    const { profile, modifyProfileDataAdded } = useProfiles();
+    const { profile, modifyProfileDataAdded, loadingProfiles } = useProfiles();
 
     // Active type
     const [expenseActive, setExpenseActive] = useState(true);
@@ -70,8 +66,8 @@ const DataAdd = () => {
         router.push('/data/list');
     };
 
-    if (loading) {
-        return <View></View>;
+    if (loadingCategories || loadingProfiles) {
+        return <ActivityIndicator />;
     }
 
     return (

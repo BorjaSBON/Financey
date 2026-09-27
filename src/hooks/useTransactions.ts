@@ -14,8 +14,8 @@ export function useTransactions() {
     const [transaction, setTransaction] = useState<Transaction>();
 
     // Loading and error states
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<Error | null>(null);
+    const [loadingTransactions, setLoading] = useState(true);
+    const [errorTransactions, setError] = useState<Error | null>(null);
 
     // GET ALL TRANSACTIONS
     const getTransactions = useCallback(async () => {
@@ -176,8 +176,8 @@ export function useTransactions() {
         transactions,
         transaction,
 
-        loading,
-        error,
+        loadingTransactions,
+        errorTransactions,
 
         getTransactions,
         getTransaction,

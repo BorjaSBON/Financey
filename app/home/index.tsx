@@ -7,11 +7,11 @@ import { ThemedButton } from '@ui/themed-button';
 import { useProfiles } from '@/src/hooks/useProfiles';
 
 const HomeScreen = () => {
-    // Get the profile and loading state
-    const { profile, loading } = useProfiles();
+    // Database
+    const { profile, loadingProfiles } = useProfiles();
 
     // Check if the profile is loaded
-    if (loading) {
+    if (loadingProfiles) {
         return <ActivityIndicator />;
     }
 

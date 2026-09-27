@@ -10,8 +10,8 @@ import type {
 
 export function useCategories() {
     const [categories, setCategories] = useState<Category[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<Error | null>(null);
+    const [loadingCategories, setLoading] = useState(true);
+    const [errorCategories, setError] = useState<Error | null>(null);
 
     const getCategories = useCallback(async () => {
         try {
@@ -40,8 +40,8 @@ export function useCategories() {
     return {
         categories,
 
-        loading,
-        error,
+        loadingCategories,
+        errorCategories,
 
         getCategories,
     };

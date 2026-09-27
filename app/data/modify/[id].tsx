@@ -17,8 +17,8 @@ import { useProfiles } from '@/src/hooks/useProfiles';
 
 const DataModify = () => {
     // Database
-    const { categories } = useCategories();
-    const { transaction, getTransaction, modifyTransaction, removeTransaction, loading } = useTransactions();
+    const { transaction, getTransaction, modifyTransaction, removeTransaction, loadingTransactions } = useTransactions();
+    const { categories, loadingCategories } = useCategories();
     const { modifyProfileDataModified, modifyProfileDataDeleted } = useProfiles();
 
     // ID of the element
@@ -115,7 +115,7 @@ const DataModify = () => {
     }
 
     // Check if the data is loaded
-    if (loading) {
+    if (loadingTransactions || loadingCategories) {
         return <ActivityIndicator />;
     }
     

@@ -4,16 +4,16 @@ import { Redirect } from 'expo-router';
 import { useProfiles } from '@/src/hooks/useProfiles';
 
 const App = () => {
-    // Get the profiles and loading state
-    const { profiles, loading } = useProfiles();
+    // Database
+    const { profile, loadingProfiles } = useProfiles();
 
     // Check if the profiles are loaded
-    if (loading) {
+    if (loadingProfiles) {
         return <ActivityIndicator />;
     }
 
     // If there are no profiles, redirect to the login page
-    if (profiles.some(profile => profile.active === 1)) {
+    if (profile) {
         return <Redirect href='/home' />;
     }
 

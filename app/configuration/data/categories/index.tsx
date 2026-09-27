@@ -8,19 +8,18 @@ import { ThemedText } from '@ui/themed-text';
 
 import TypeButtons from '@components/data/type-buttons';
 import { CategoryElement, NewCategory } from '@components/configuration/category-element';
-import Logo from '@assets/add.svg';
 
 import { useCategories } from '@/src/hooks/useCategories';
 
 const Categories = () => {
     // Get the categories
-    const { categories, loading } = useCategories();
+    const { categories, loadingCategories } = useCategories();
 
     // Active type
     const [expenseActive, setExpenseActive] = useState(true);
     let categories_selected = categories.filter(item => item.type === (expenseActive ? 'expense' : 'income'));
 
-    if (loading) {
+    if (loadingCategories) {
         return <View></View>;
     }
 

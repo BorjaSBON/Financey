@@ -7,16 +7,17 @@ import { Colors } from '@constants/colors';
 import { ThemedText } from '@ui/themed-text';
 import { ThemedInput } from '@ui/themed-input';
 import { ThemedButton } from '@ui/themed-button';
+
 import { AccountElement } from '@components/configuration/account-element';
 
 import { useProfiles } from '@/src/hooks/useProfiles';
 
 const LoginScreen = () => {
-    // Set the username
+    // Database
     const [username, setUsername] = useState('');
 
     // Get the function to create a profile and the error state
-    const { profiles, UsernameProfile, loginById, loading, error } = useProfiles();
+    const { profiles, UsernameProfile, loginById, loadingProfiles, errorProfiles } = useProfiles();
     
     // Validate username and create account
     const validateUsername = async () => {
@@ -26,14 +27,14 @@ const LoginScreen = () => {
             await UsernameProfile({ 'username': username });
             
             // If there is no error, navigate to the home screen
-            if (!error) {
+            if (!errorProfiles) {
                 router.push('/home');
             }
         }
     }
 
     // Check if the profiles is loaded
-    if (loading) {
+    if (loadingProfiles) {
         return <ActivityIndicator />;
     }
 

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { View, Pressable, FlatList, StyleSheet, Modal } from 'react-native';
 
 import { Colors } from '@constants/colors';

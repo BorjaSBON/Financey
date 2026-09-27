@@ -1,4 +1,5 @@
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native';
 
 import { Values } from '@constants/values';
 import { Colors } from '@constants/colors';
@@ -11,15 +12,27 @@ import { useProfiles } from '@/src/hooks/useProfiles';
 
 export default function AccountInformation() {
     // Get the profile
-    const { profile } = useProfiles();
+    const { profile, loadingProfiles } = useProfiles();
 
-    const formatDate = (date: Date) => {
-        return date.toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' });
-    };
+    // Variables
+    const [ creationDate, setCreationDate ] = useState('Month DD, YYYY - HH:MM:SS');
+    const [ lastActionDate, setLastActionDate ] = useState('Month DD, YYYY - HH:MM:SS');
 
-    // Get the dates formatted
-    const formattedCreationDate = profile?.creation_date ? formatDate(new Date(profile.creation_date)) + ' - ' + new Date(profile.creation_date).toLocaleTimeString('en-GB') : 'Month DD, YYYY - HH:MM:SS';
-    const formattedLastActionDate = profile?.last_action_date ? formatDate(new Date(profile.last_action_date)) + ' - ' + new Date(profile.last_action_date).toLocaleTimeString('en-GB') : 'Month DD, YYYY - HH:MM:SS';
+    useEffect(() => {
+        if (profile) {
+            const formatDate = (date: string) => {
+                return (new Date(date)).toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' }) + ' - ' + new Date(date).toLocaleTimeString('en-GB');
+            };
+
+            setCreationDate(formatDate(profile.creation_date));
+            setLastActionDate(formatDate(profile.last_action_date));
+        }
+    }, [profile]);
+
+    // Check if the profile is loaded
+    if (loadingProfiles) {
+        return <ActivityIndicator />
+    }
 
     return (
         <View style={ styles.container }>
@@ -29,14 +42,14 @@ export default function AccountInformation() {
                         <ThemedText style={ styles.title } weight='regular'>Profile</ThemedText>
                         <View style={ styles.elements }>
                             <InformationElement title='Username' data={ profile?.username || 'Username' } />
-                            <InformationElement title='Creation date' data={ formattedCreationDate } />
+                            <InformationElement title='Creation date' data={ creationDate } />
                         </View>
                     </View>
                     
                     <View style={ styles.section }>
                         <ThemedText style={ styles.title } weight='regular'>Actions</ThemedText>
                         <View style={ styles.elements }>
-                            <InformationElement title='Last action date' data={ formattedLastActionDate } />
+                            <InformationElement title='Last action date' data={ lastActionDate } />
                             <InformationElement title='Last action' data={ profile?.last_action || 'Action name' } />
                             <InformationElement title='Number of actions' data={ String(profile?.number_actions) || '000' } />
                         </View>

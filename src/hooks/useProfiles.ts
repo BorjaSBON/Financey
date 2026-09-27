@@ -10,8 +10,8 @@ export function useProfiles() {
     const [profile, setProfile] = useState<Profile | null>(null);
 
     // Loading and error states
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<Error | null>(null);
+    const [loadingProfiles, setLoading] = useState(true);
+    const [errorProfiles, setError] = useState<Error | null>(null);
 
     // GET ALL PROFILES
     const getProfiles = useCallback(async () => {
@@ -256,8 +256,8 @@ export function useProfiles() {
         profiles,
         profile,
 
-        loading,
-        error,
+        loadingProfiles,
+        errorProfiles,
 
         getProfiles,
         getProfile,

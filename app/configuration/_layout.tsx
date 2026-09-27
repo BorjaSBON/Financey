@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { Slot, usePathname  } from 'expo-router';
+import { Slot, usePathname } from 'expo-router';
 
 import { Colors } from '@constants/colors';
 

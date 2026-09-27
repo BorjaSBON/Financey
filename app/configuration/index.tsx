@@ -16,7 +16,7 @@ import { useTransactions } from '@/src/hooks/useTransactions';
 
 const ConfigurationScreen = () => {
     // Database
-    const { profile, modifyProfileUsername, removeProfile, loading, error } = useProfiles();
+    const { profile, modifyProfileUsername, removeProfile, loadingProfiles, errorProfiles } = useProfiles();
     const { removeTransactions } = useTransactions();
 
     // Variables
@@ -53,27 +53,23 @@ const ConfigurationScreen = () => {
     // CHANGE USERNAME ACTION
     // Get the username
     useEffect(() => {
-        if (!profile) {
-            return;
+        if (profile) {
+            setUsername(profile.username);
         }
-
-        setUsername(profile.username)
     }, [profile]);
     
     // Button action
     const changeUsernameAction = async () => {
         // Check if the username if filled
-        if (username !== '') {
-            // Modify username
-            await modifyProfileUsername({ username: username });
+        if (username === '') {
+            return;
+        }
 
-            // Error while modifying the username
-            if (error) {
-                console.error(error);
-            }
-
-            // Redirect
+        try {
+            await modifyProfileUsername({ username });
             router.push('/');
+        } catch (error) {
+            console.error(error);
         }
     };
 
@@ -100,7 +96,7 @@ const ConfigurationScreen = () => {
     };
 
     // Check if the profile is loaded
-    if (loading) {
+    if (loadingProfiles) {
         return <ActivityIndicator />;
     }
 

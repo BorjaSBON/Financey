@@ -12,9 +12,9 @@ import { useProfiles } from '@/src/hooks/useProfiles';
 
 const AccountInformation = () => {
     // Get the profiles
-    const { profiles, profile, loginById, logout, loading } = useProfiles();
+    const { profiles, profile, loginById, logout, loadingProfiles } = useProfiles();
 
-    if (loading) {
+    if (loadingProfiles) {
         return <ActivityIndicator />;
     }
 
@@ -38,7 +38,7 @@ const AccountInformation = () => {
                             <AccountElement username={ profile?.username || 'Username' } last_action_date={ profile?.last_action_date || 'DD/MM/YYYY' } active={ profile?.active || 0 } />
                         </View>
                     </View>
-
+                    
                     <View style={ styles.section }>
                         <ThemedText style={ styles.title } weight='regular'>Accounts</ThemedText>
                         <View style={ styles.elements }>
@@ -92,5 +92,6 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.backgroundPrimary,
         borderRadius: 10,
         overflow: 'hidden',
+        minHeight: 50,
     },
 });
