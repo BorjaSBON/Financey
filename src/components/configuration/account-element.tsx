@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
         width: '100%',
         textAlign: Platform.OS == 'android' ? 'left' :'justify',
         fontSize: 12,
+        color: Colors.fontSecondary,
     },
 
     actionIcon: {

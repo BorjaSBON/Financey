@@ -42,17 +42,17 @@ const styles = StyleSheet.create({
     },
 
     default: {
-        backgroundColor: Colors.buttonPrimary,
+        backgroundColor: Colors.buttonBackgroundPrimary,
     },
     clear: {
-        backgroundColor: Colors.buttonSecondary,
+        backgroundColor: Colors.buttonBackgroundSecondary,
     },
     delete: {
-        backgroundColor: Colors.buttonWarning,
+        backgroundColor: Colors.buttonBackgroundWarning,
     },
 
     text: {
-        color: Colors.fontSecondary,
+        color: Colors.buttonFont,
         fontFamily: 'Montserrat-Medium',
         fontSize: 15,
     }

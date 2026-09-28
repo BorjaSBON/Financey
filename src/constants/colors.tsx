@@ -1,26 +1,31 @@
 export const Colors = {
-    primaryColor: '#0F172A',
-    secondaryColor: '#FFFFFF',
+    // Background
+    backgroundPrimary: '#F7F7F7',
+    backgroundSecondary: '#FFFFFF',
 
+    // Fonts
     fontPrimary: '#0F172A',
-    fontSecondary: '#FFFFFF',
+    fontSecondary: '#0F172A80',
 
-    background: '#F7F7F7',
-    backgroundPrimary: '#FFFFFF',
-    backgroundSecondary: '#D9D9D980',
-
+    // +/-
     positive: '#AED136',
     negative: '#F15A29',
 
-    buttonPrimary: '#111A30',
-    buttonSecondary: '#111A3080',
-    buttonWarning: '#F15A29',
+    // Button
+    buttonFont: '#FFFFFF',
+    buttonBackgroundPrimary: '#111A30',
+    buttonBackgroundSecondary: '#111A3080',
+    buttonBackgroundWarning: '#F15A29',
 
+    // Input
+    inputFont: '#0F172A',
+    inputFontPlaceholder: '#0F172A80',
     inputBackground: '#D9D9D933',
-    inputTextUnselected: '#0F172A80',
+    inputBackgroundDropdown: '#FFFFFF',
 
-    hoverElement: '#B1B1B133',
+    // Hover
+    hoverElement: '#111A301A',
 
-    shadow: '#111A3040',
-    divider: '#111A3018',
+    // Popup
+    popupShadow: '#111A3040',
 } as const;

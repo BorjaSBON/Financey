@@ -60,10 +60,11 @@ const styles = StyleSheet.create({
 
     text: {
         fontSize: 13,
+        color: Colors.inputFont,
     },
 
     placeholder: {
-        color: Colors.inputTextUnselected,
+        color: Colors.inputFontPlaceholder,
     },
     
     icon: {

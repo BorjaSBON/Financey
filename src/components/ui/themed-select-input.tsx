@@ -122,12 +122,12 @@ const styles = StyleSheet.create({
 
     selectedText: {
         fontSize: 13,
-        color: Colors.fontPrimary,
+        color: Colors.inputFont,
     },
 
     arrow: {
         fontSize: 18,
-        color: Colors.fontPrimary,
+        color: Colors.inputFont,
     },
 
     modalContainer: {
@@ -137,13 +137,13 @@ const styles = StyleSheet.create({
     dropdown: {
         position: 'absolute',
         maxHeight: 390,
-        backgroundColor: Colors.backgroundPrimary,
+        backgroundColor: Colors.inputBackgroundDropdown,
         borderWidth: 1,
         borderColor: Colors.inputBackground,
         borderRadius: 12,
         elevation: 10,
 
-        shadowColor: Colors.primaryColor,
+        shadowColor: Colors.inputFont,
         shadowOffset: {
             width: 0,
             height: 4,
@@ -164,10 +164,10 @@ const styles = StyleSheet.create({
 
     optionText: {
         fontSize: 12,
-        color: Colors.inputTextUnselected,
+        color: Colors.inputFontPlaceholder,
     },
 
     selectedOptionText: {
-        color: Colors.fontPrimary,
+        color: Colors.inputFont,
     },
 });

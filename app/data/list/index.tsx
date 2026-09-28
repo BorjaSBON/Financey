@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     },
 
     elements: {
-        backgroundColor: Colors.backgroundPrimary,
+        backgroundColor: Colors.backgroundSecondary,
         borderRadius: 10,
         overflow: 'hidden',
     },
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     elementsScroll: {
         flex: 1,
         minHeight: 0,
-        backgroundColor: Colors.backgroundPrimary,
+        backgroundColor: Colors.backgroundSecondary,
         borderRadius: 10,
         overflow: 'hidden',
     },

@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         backgroundColor: Colors.inputBackground,
-        color: Colors.fontPrimary,
+        color: Colors.inputFont,
         paddingStart: 15,
         paddingEnd: 35,
         borderRadius: 12,

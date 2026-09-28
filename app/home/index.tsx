@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     },
 
     elements: {
-        backgroundColor: Colors.backgroundPrimary,
+        backgroundColor: Colors.backgroundSecondary,
         borderRadius: 10,
         overflow: 'hidden',
     },
@@ -150,14 +150,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: Values.paddingElement,
         alignItems: 'center',
-        backgroundColor: Colors.backgroundPrimary,
+        backgroundColor: Colors.backgroundSecondary,
         borderRadius: 10,
         overflow: 'hidden',
         height: 50,
     },
 
     lastActionElement: {
-        backgroundColor: Colors.backgroundPrimary,
+        backgroundColor: Colors.backgroundSecondary,
         borderRadius: 10,
         overflow: 'hidden',
         paddingHorizontal: Values.paddingElement,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     },
 
     emptyElement: {
-        backgroundColor: Colors.backgroundPrimary,
+        backgroundColor: Colors.backgroundSecondary,
         borderRadius: 10,
         height: 50,
     },
@@ -193,6 +193,6 @@ const styles = StyleSheet.create({
 
     date: {
         fontSize: 11,
-        color: Colors.inputTextUnselected,
+        color: Colors.fontSecondary,
     },
 });

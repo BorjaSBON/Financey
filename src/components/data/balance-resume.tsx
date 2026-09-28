@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         columnGap: 3,
         justifyContent: 'space-between',
         width: '100%',
-        backgroundColor: Colors.backgroundPrimary,
+        backgroundColor: Colors.backgroundSecondary,
         borderRadius: 10,
         paddingVertical: 6,
         paddingHorizontal: 10,

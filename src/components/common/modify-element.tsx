@@ -50,9 +50,9 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         elevation: 2,
-        backgroundColor: Colors.backgroundPrimary,
+        backgroundColor: Colors.backgroundSecondary,
         
-        shadowColor: Colors.shadow,
+        shadowColor: Colors.popupShadow,
         shadowOffset: {
             width: 0,
             height: 5,

@@ -109,14 +109,6 @@ const styles = StyleSheet.create({
         columnGap: 5,
     },
 
-    icon: {
-        width: 20,
-        height: 20,
-        borderRadius: 50,
-        backgroundColor: Colors.backgroundSecondary,
-        marginTop: 2,
-    },
-
     letter: {
         margin: 'auto',
         fontSize: 14,
@@ -158,7 +150,7 @@ const styles = StyleSheet.create({
 
     date: {
         fontSize: 11,
-        color: Colors.inputTextUnselected,
+        color: Colors.fontSecondary,
     },
 
     actionIcon: {

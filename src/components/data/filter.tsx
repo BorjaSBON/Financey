@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 20,
         elevation: 2,
         
-        shadowColor: Colors.shadow,
+        shadowColor: Colors.popupShadow,
         shadowOffset: {
             width: 0,
             height: 5,

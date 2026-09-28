@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     },
 
     elements: {
-        backgroundColor: Colors.backgroundPrimary,
+        backgroundColor: Colors.backgroundSecondary,
         borderRadius: 8,
         overflow: 'hidden',
     },

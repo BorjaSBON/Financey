@@ -48,7 +48,7 @@ const RootLayout = () => {
     if (!fontsLoaded && !error) return null;
 
     return (
-		<View style={{ flex: 1, backgroundColor: Colors.background }}>
+		<View style={{ flex: 1, backgroundColor: Colors.backgroundPrimary }}>
 			<Slot />
 			<StatusBar style="auto" />
 		</View>

@@ -76,14 +76,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         columnGap: 5,
     },
-    
-    icon: {
-        width: 20,
-        height: 20,
-        borderRadius: 50,
-        marginVertical: 'auto',
-        backgroundColor: Colors.backgroundSecondary,
-    },
 
     letter: {
         margin: 'auto',

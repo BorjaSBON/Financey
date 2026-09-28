@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
         width: 75,
         height: 75,
         borderRadius: 50,
-        backgroundColor: Colors.backgroundSecondary,
+        backgroundColor: '#D9D9D980',
         margin: 'auto',
     },
 
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     },
 
     accounts: {
-        backgroundColor: Colors.backgroundPrimary,
+        backgroundColor: Colors.backgroundSecondary,
         borderRadius: 10,
         overflow: 'hidden',
         maxHeight: 175,

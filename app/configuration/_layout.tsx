@@ -26,7 +26,7 @@ const ConfigurationLayout = () => {
     };
 
     return (
-        <View style={{ flex: 1, backgroundColor: Colors.background }}>
+        <View style={{ flex: 1, backgroundColor: Colors.backgroundPrimary }}>
             <Header title={ getTitle() } />
             <Slot />
         </View>
