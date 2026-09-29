@@ -69,29 +69,33 @@ export async function getById(id: number): Promise<Profile | null> {
 
 // Create a new profile
 export async function create(profile: UsernameProfile): Promise<number> {
-    const db = await dbPromise;
+    try {
+        const db = await dbPromise;
 
-    // Get the date of the action
-    const now = new Date().toISOString();
+        // Get the date of the action
+        const now = new Date().toISOString();
 
-    const result = await db.runAsync(
-        `
-            INSERT INTO profiles (username, creation_date, last_action_date, last_action, number_actions, number_transactions, number_transactions_added, number_transactions_modified, number_transactions_deleted, active)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `,
-        profile.username,
-        now,
-        now,
-        'Create account',
-        1,
-        0,
-        0,
-        0,
-        0,
-        1
-    );
+        const result = await db.runAsync(
+            `
+                INSERT INTO profiles (username, creation_date, last_action_date, last_action, number_actions, number_transactions, number_transactions_added, number_transactions_modified, number_transactions_deleted, active)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `,
+            profile.username,
+            now,
+            now,
+            'Create account',
+            1,
+            0,
+            0,
+            0,
+            0,
+            1
+        );
 
-    return result.lastInsertRowId;
+        return result.lastInsertRowId;
+    } catch (err) {
+        throw new Error('Error creating a profile');
+    }
 }
 
 // Modify the username for a profile by ID

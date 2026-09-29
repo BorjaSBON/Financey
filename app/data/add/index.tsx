@@ -52,9 +52,20 @@ const DataAdd = () => {
     const [amount, setAmount] = useState('');
     const [date, setDate] = useState<Date | null>(null);
 
+    // Error
+    const [error, setError] = useState<String | null>(null);
+
     // Add button
     async function addTransaction() {
-        if (!amount || !selectValue) {
+        if (!amount || !selectValue || !date) {
+            setError('Fill all the inputs');
+            return;
+        }
+
+        setError(null);
+
+        if (isNaN(Number(amount.replace(',', '.')))) {
+            setError('The amount is not a valid number');
             return;
         }
 
@@ -98,6 +109,8 @@ const DataAdd = () => {
                 <Input name='Category' type='select' selectData={ categories_formatted } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
                 <Input name='Date' type='date' dateValue={ date } onChange={ setDate } />
             </View>
+
+            { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
 
             <View style={ styles.add }>
                 <ThemedButton label='Add' type='default' onPress={ addTransaction } />
@@ -154,6 +167,13 @@ const createStyles = (colors: ThemeColors) =>
         add: {
             marginTop: 25,
             marginHorizontal: 'auto',
+        },
+        
+        error: {
+            textAlign: 'center',
+            fontSize: 12,
+            marginTop: 5,
+            color: colors.negative,
         },
     }
 );

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, View, ActivityIndicator, ScrollView, Pressable } from 'react-native';
-import { router } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 
 import { Values } from '@constants/values';
 
@@ -62,6 +62,15 @@ const HomeScreen = () => {
             loadTransaction();
         }
     }, [profile]);
+
+    // Routes
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        if (navigation.canGoBack()) {
+            router.dismissAll();
+        }
+    }, [navigation]);
 
     // Check if the profile is loaded
     if (loadingTransactions || loadingProfiles) {
@@ -186,6 +195,7 @@ const createStyles = (colors: ThemeColors) =>
         welcome: {
             textAlign: 'center',
             fontSize: 16,
+            paddingHorizontal: 15,
         },
 
         buttons: {

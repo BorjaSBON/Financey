@@ -70,6 +70,9 @@ const DataModify = () => {
         setDeleteElementPopup(prev => !prev);
     }
 
+    // Error
+    const [error, setError] = useState<String | null>(null);
+
     // Load transaction data into the form
     useEffect(() => {
         if (!transaction) {
@@ -85,10 +88,17 @@ const DataModify = () => {
     // MODIFY TRANSACTION ACTION
     async function modidyTransactionAction() {
         // Check if the values are valid
-        if (!amount || !selectValue) {
+        if (!amount || !selectValue || !date) {
+            setError('Fill all the inputs');
             return;
         }
-        // TODO
+
+        setError(null);
+
+        if (isNaN(Number(amount.replace(',', '.')))) {
+            setError('The amount is not a valid number');
+            return;
+        }
 
         // Convert the amount value to a valid number
         const amountInCents = Math.round(Number(amount) * 100);
@@ -148,6 +158,8 @@ const DataModify = () => {
                     <Input name='Category' type='select' selectData={ categories_formatted } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
                     <Input name='Date' type='date' dateValue={ date } onChange={ setDate } />
                 </View>
+
+                { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
 
                 <View style={ styles.buttons }>
                     <ThemedButton label='Delete' type='delete' onPress={ activeDeleteElementPopup } />
@@ -212,6 +224,13 @@ const createStyles = (colors: ThemeColors) =>
             rowGap: 10,
             marginTop: 25,
             marginHorizontal: 'auto',
+        },
+        
+        error: {
+            textAlign: 'center',
+            fontSize: 12,
+            marginTop: 5,
+            color: colors.negative,
         },
     }
 );

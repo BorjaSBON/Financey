@@ -13,6 +13,7 @@ interface Props {
     title?: string;
     value?: string;
     placeholder?: string;
+    error?: string | null;
 
     // Methods
     modifyAction?: () => void;
@@ -20,7 +21,7 @@ interface Props {
     onChange?: (value:string) => void;
 }
 
-export default function ModifyElement({ active=false, title='Modify element', value='', placeholder='Element name', modifyAction, cancelAction, onChange }: Props) {
+export default function ModifyElement({ active=false, title='Modify element', value='', placeholder='Element name', error, modifyAction, cancelAction, onChange }: Props) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
@@ -32,6 +33,7 @@ export default function ModifyElement({ active=false, title='Modify element', va
         ]}>
             <ThemedText style={ styles.message } weight='light'>{ title }</ThemedText>
             <ThemedInput value={ value } placeholder={ placeholder } type='text' onChange={ onChange } />
+            { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
 
             <View style={ styles.buttons }>
                 <ThemedButton label='Change' type='default' onPress={ modifyAction } />
@@ -76,6 +78,12 @@ const createStyles = (colors: ThemeColors) =>
             flexDirection: 'column',
             rowGap: 7,
             marginHorizontal: 'auto',
+        },
+        
+        error: {
+            textAlign: 'center',
+            fontSize: 12,
+            color: colors.negative,
         },
     }
 );

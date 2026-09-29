@@ -31,6 +31,7 @@ const ConfigurationScreen = () => {
     const [deleteAccountPopup, setDeleteAccountPopup] = useState(false);
     const [resetAppPopup, setResetAppPopup] = useState(false);
     const [username, setUsername] = useState('');
+    const [error, setError] = useState<string | null>(null);
 
     // Popups logic
     const activeChangeUsernamePopup = () => {
@@ -72,11 +73,18 @@ const ConfigurationScreen = () => {
             return;
         }
 
+        setError(null);
+
+        if (username.length > 15) {
+            setError('The username must be less than 15 characters');
+            return;
+        }
+
         try {
             await modifyProfileUsername({ username });
             router.push('/');
         } catch (error) {
-            console.error(error);
+            setError('The username must be unique');
         }
     };
 
@@ -149,7 +157,7 @@ const ConfigurationScreen = () => {
                 </View>
             </ScrollView>
 
-            <ModifyElement active={ changeUsernamePopup } title='New username' value={ username } placeholder='New username' modifyAction={ changeUsernameAction } cancelAction={ activeChangeUsernamePopup } onChange={ setUsername } />
+            <ModifyElement active={ changeUsernamePopup } title='New username' value={ username } placeholder='New username' error={ error } modifyAction={ changeUsernameAction } cancelAction={ activeChangeUsernamePopup } onChange={ setUsername } />
             <DeleteElement active={ deleteAccountPopup } title={ deleteAccountTitle } titleButton='Delete' deleteAction={ deleteAccountAction } cancelAction={ activeDeleteAccountPopup } />
             <DeleteElement active={ resetAppPopup } title={ resetAppTitle } titleButton='Reset' deleteAction={ resetAppAction } cancelAction={ activeResetAppPopup } />
         </View>

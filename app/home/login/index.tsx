@@ -18,22 +18,30 @@ const LoginScreen = () => {
     const { colors } = useTheme();
     const styles = createStyles(colors);
 
-    // Database
+    // Variables
     const [username, setUsername] = useState('');
+    const [error, setError] = useState<string | null>(null);
 
-    // Get the function to create a profile and the error state
-    const { profiles, UsernameProfile, loginById, loadingProfiles, errorProfiles } = useProfiles();
+    // Database
+    const { profiles, UsernameProfile, loginById, loadingProfiles } = useProfiles();
     
     // Validate username and create account
     const validateUsername = async () => {
         // Check if the username if filled
         if (username !== '') {
-            // Create the profile
-            await UsernameProfile({ 'username': username });
-            
-            // If there is no error, navigate to the home screen
-            if (!errorProfiles) {
+            setError(null);
+
+            if (username.length > 15) {
+                setError('The user must be less than 15 characters')
+                return;
+            };
+
+            try {
+                // Create the profile
+                await UsernameProfile({ 'username': username });
                 router.push('/home');
+            } catch (err) {
+                setError('The username must be unique');
             }
         }
     }
@@ -55,6 +63,7 @@ const LoginScreen = () => {
 
             <View style={ styles.input }>
                 <ThemedInput placeholder='Username' type='text' value={ username } onChange={ setUsername } />
+                { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
             </View>
 
             <View style={ styles.button }>
@@ -67,7 +76,7 @@ const LoginScreen = () => {
                     keyExtractor={ (profile) => profile.id.toString() }
                     renderItem={({ item }) => <AccountElement username={ item?.username || 'Username' } last_action_date={ item?.last_action_date || 'DD/MM/YYYY' } active={ item?.active || 0 } onPress={ async () => {
                         await loginById(item.id);
-                        router.push('/');
+                        router.replace('/');
                     } } />}
                 />
             </View>
@@ -127,6 +136,13 @@ const createStyles = (colors: ThemeColors) =>
             overflow: 'hidden',
             maxHeight: 175,
             marginBottom: 50,
-        }
+        },
+        
+        error: {
+            textAlign: 'center',
+            fontSize: 12,
+            marginTop: 5,
+            color: colors.negative,
+        },
     }
 );

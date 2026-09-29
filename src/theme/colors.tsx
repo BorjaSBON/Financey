@@ -113,13 +113,13 @@ export const DarkColors: ThemeColors = {
     // Input
     inputFont: '#0F172A',
     inputFontPlaceholder: '#0F172A80',
-    inputBackground: '#FFFFFF',
+    inputBackground: '#FFFFFF66',
     inputBackgroundDropdown: '#FFFFFF',
 
     // Input Mini
     inputMiniFont: '#FFFFFF',
     inputMiniFontPlaceholder: '#FFFFFF',
-    inputMiniBackground: '#FFFFFF0D',
+    inputMiniBackground: '#5EEAD426',
     inputMiniBackgroundDropdown: '#111A30',
 
     // Hover
