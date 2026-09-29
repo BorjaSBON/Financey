@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 
-import { Colors } from '@constants/colors';
+import { ThemeColors } from '@theme/colors';
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedInput } from '@ui/themed-input';
@@ -13,6 +14,10 @@ import { AccountElement } from '@components/configuration/account-element';
 import { useProfiles } from '@/src/hooks/useProfiles';
 
 const LoginScreen = () => {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
     // Database
     const [username, setUsername] = useState('');
 
@@ -72,54 +77,56 @@ const LoginScreen = () => {
 
 export default LoginScreen;
 
-const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 25,
-        marginHorizontal: 'auto',
-        marginVertical: 'auto',
-    },
+const createStyles = (colors: ThemeColors) =>
+    StyleSheet.create({
+        container: {
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 25,
+            marginHorizontal: 'auto',
+            marginVertical: 'auto',
+        },
 
-    presentation: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 10,
-        paddingHorizontal: 50,
-        margin: 'auto',
-    },
+        presentation: {
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 10,
+            paddingHorizontal: 50,
+            margin: 'auto',
+        },
 
-    title: {
-        fontSize: 30,
-        textAlign: 'center',
-    },
+        title: {
+            fontSize: 30,
+            textAlign: 'center',
+        },
 
-    image: {
-        width: 75,
-        height: 75,
-        borderRadius: 50,
-        backgroundColor: '#D9D9D980',
-        margin: 'auto',
-    },
+        image: {
+            width: 75,
+            height: 75,
+            borderRadius: 50,
+            backgroundColor: '#D9D9D980',
+            margin: 'auto',
+        },
 
-    description: {
-        fontSize: 13,
-        textAlign: 'center',
-    },
+        description: {
+            fontSize: 13,
+            textAlign: 'center',
+        },
 
-    input: {
-        marginHorizontal: 50,
-    },
+        input: {
+            marginHorizontal: 50,
+        },
 
-    button: {
-        marginHorizontal: 'auto',
-    },
+        button: {
+            marginHorizontal: 'auto',
+        },
 
-    accounts: {
-        backgroundColor: Colors.backgroundSecondary,
-        borderRadius: 10,
-        overflow: 'hidden',
-        maxHeight: 175,
-        marginBottom: 50,
+        accounts: {
+            backgroundColor: colors.backgroundSecondary,
+            borderRadius: 10,
+            overflow: 'hidden',
+            maxHeight: 175,
+            marginBottom: 50,
+        }
     }
-});
+);

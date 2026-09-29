@@ -6,22 +6,18 @@ import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
-type DropdownItem = {
+export type DropdownItem<T extends string = string> = {
     label: string;
-    value: string;
+    value: T;
 };
 
-interface DropdownProps {
-    // Variables
-    data: DropdownItem[];
-    value: string;
-    displayArrow: boolean;
-
-    // Methods
-    onSelect: (item: DropdownItem) => void;
+interface DropdownProps<T extends string = string> {
+    data: DropdownItem<T>[];
+    value: T;
+    onSelect: (item: DropdownItem<T>) => void;
 }
 
-export function ThemedSelectInput({ data, value, displayArrow=true, onSelect }: DropdownProps) {
+export function ThemedSelectInputMini<T extends string = string>({ data, value, onSelect }: DropdownProps<T>) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
@@ -59,19 +55,16 @@ export function ThemedSelectInput({ data, value, displayArrow=true, onSelect }: 
         setOpen(false);
     };
 
-    const handleSelect = (item: DropdownItem) => {
+    const handleSelect = (item: DropdownItem<T>) => {
         onSelect(item);
         closeDropdown();
     };
 
     return (
         <View>
-            <View style={styles.container}>
+            <View style={ styles.container }>
                 <Pressable ref={ selectRef } style={ styles.select } onPress={ openDropdown }>
                     <ThemedText style={styles.selectedText} weight='light'>{ selectedItem?.label ?? 'Select' }</ThemedText>
-                    {
-                        displayArrow === true && <ThemedText style={styles.arrow} weight="light">{ open ? '▲' : '▼' }</ThemedText>
-                    }
                 </Pressable>
             </View>
 
@@ -87,11 +80,7 @@ export function ThemedSelectInput({ data, value, displayArrow=true, onSelect }: 
                     <View
                         style={[
                             styles.dropdown,
-                            {
-                                top: dropdownPosition.y,
-                                left: dropdownPosition.x,
-                                width: dropdownPosition.width,
-                            },
+                            { top: dropdownPosition.y, left: dropdownPosition.x, width: dropdownPosition.width },
                         ]}
                     >
                         <FlatList
@@ -119,25 +108,22 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         select: {
-            height: 40,
-            width: '100%',
+            width: 75,
             paddingHorizontal: 15,
+            paddingVertical: 4,
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
 
-            backgroundColor: colors.inputBackground,
-            borderRadius: 12,
+            backgroundColor: colors.inputMiniBackground,
+            borderRadius: 5,
         },
 
         selectedText: {
-            fontSize: 13,
-            color: colors.inputFont,
-        },
-
-        arrow: {
-            fontSize: 18,
-            color: colors.inputFont,
+            width: '100%',
+            textAlign: 'center',
+            fontSize: 11,
+            color: colors.inputMiniFont,
         },
 
         modalContainer: {
@@ -147,13 +133,13 @@ const createStyles = (colors: ThemeColors) =>
         dropdown: {
             position: 'absolute',
             maxHeight: 390,
-            backgroundColor: colors.inputBackgroundDropdown,
+            backgroundColor: colors.inputMiniBackgroundDropdown,
             borderWidth: 1,
-            borderColor: colors.inputBackground,
-            borderRadius: 12,
+            borderColor: colors.inputMiniBackgroundDropdown,
+            borderRadius: 5,
             elevation: 10,
 
-            shadowColor: colors.inputFont,
+            shadowColor: colors.inputMiniBackgroundDropdown,
             shadowOffset: {
                 width: 0,
                 height: 4,
@@ -163,22 +149,24 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         option: {
-            height: 35,
+            height: 30,
             paddingHorizontal: 15,
             justifyContent: 'center',
         },
 
         selectedOption: {
-            backgroundColor: colors.inputBackground,
+            backgroundColor: colors.inputMiniBackground,
         },
 
         optionText: {
-            fontSize: 12,
-            color: colors.inputFontPlaceholder,
+            width: '100%',
+            textAlign: 'center',
+            fontSize: 10,
+            color: colors.inputMiniFontPlaceholder,
         },
 
         selectedOptionText: {
-            color: colors.inputFont,
+            color: colors.inputMiniFont,
         },
     }
 );

@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { Values } from '@constants/values';
-import { Colors } from '@constants/colors';
+
+import { ThemeColors } from '@theme/colors';
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedButton } from '@ui/themed-button';
@@ -10,6 +12,10 @@ import { ThemedButton } from '@ui/themed-button';
 import Input from '@components/common/input';
 
 const Categories = () => {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
     // File selection
     const [selectFile, setSelectFile] = useState('');
 
@@ -27,16 +33,18 @@ const Categories = () => {
 
 export default Categories;
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        top: Values.topIfHeader,
-        width: '100%',
-        marginTop: 10,
-    },
-        
-    import: {
-        marginTop: 25,
-        marginHorizontal: 'auto',
-    },
-});
+const createStyles = (colors: ThemeColors) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            top: Values.topIfHeader,
+            width: '100%',
+            marginTop: 10,
+        },
+            
+        import: {
+            marginTop: 25,
+            marginHorizontal: 'auto',
+        },
+    }
+);

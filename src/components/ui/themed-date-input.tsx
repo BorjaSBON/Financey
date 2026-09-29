@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import { Colors } from '@constants/colors';
+import { ThemeColors } from '@theme/colors';
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -17,6 +18,11 @@ type DateInputProps = {
 };
 
 export function ThemedDateInput({ value, onChange }: DateInputProps) {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
+    // Data
     const [open, setOpen] = useState(false);
     const formattedDate = value ? value.toLocaleDateString('en-GB') : 'DD/MM/YYYY';
 
@@ -47,29 +53,31 @@ export function ThemedDateInput({ value, onChange }: DateInputProps) {
     );
 }
 
-const styles = StyleSheet.create({
-    input: {
-        position: 'relative',   
-        width: '100%',
-        height: 40,
-        paddingHorizontal: 15,
-        justifyContent: 'center',
-        backgroundColor: Colors.inputBackground,
-        borderRadius: 12,
-    },
+const createStyles = (colors: ThemeColors) =>
+    StyleSheet.create({
+        input: {
+            position: 'relative',   
+            width: '100%',
+            height: 40,
+            paddingHorizontal: 15,
+            justifyContent: 'center',
+            backgroundColor: colors.inputBackground,
+            borderRadius: 12,
+        },
 
-    text: {
-        fontSize: 13,
-        color: Colors.inputFont,
-    },
+        text: {
+            fontSize: 13,
+            color: colors.inputFont,
+        },
 
-    placeholder: {
-        color: Colors.inputFontPlaceholder,
-    },
-    
-    icon: {
-        position: 'absolute',
-        right: 15,
-        width: 20
-    },
-});
+        placeholder: {
+            color: colors.inputFontPlaceholder,
+        },
+        
+        icon: {
+            position: 'absolute',
+            right: 15,
+            width: 20
+        },
+    }
+);

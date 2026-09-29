@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Colors } from '@constants/colors';
 import { Values } from '@constants/values';
+
+import { ThemeColors } from '@theme/colors';
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedInput } from '@ui/themed-input';
@@ -11,6 +13,11 @@ import { ThemedDateInput } from '@ui/themed-date-input';
 import Input from '@components/common/input';
 
 export default function Filter() {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
+    // Data
     const [selectValueOrder, setSelectValueOrder] = useState('date_new');
     const dropDownListOrder = [
         {
@@ -118,46 +125,48 @@ export default function Filter() {
     );
 }
 
-const styles = StyleSheet.create({
-    popup: {
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 15,
-        top: 100,
-        width: '100%',
-        paddingTop: 25,
-        paddingBottom: 25,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        elevation: 2,
-        
-        shadowColor: Colors.popupShadow,
-        shadowOffset: {
-            width: 0,
-            height: 5,
+const createStyles = (colors: ThemeColors) =>
+    StyleSheet.create({
+        popup: {
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 15,
+            top: 100,
+            width: '100%',
+            paddingTop: 25,
+            paddingBottom: 25,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            elevation: 2,
+            
+            shadowColor: colors.popupShadow,
+            shadowOffset: {
+                width: 0,
+                height: 5,
+            },
+            shadowOpacity: 0.2,
+            shadowRadius: 4,
         },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-    },
 
-    input: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 6,
-        paddingHorizontal: Values.paddingApp,
-        width: '100%',
-    },
+        input: {
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 6,
+            paddingHorizontal: Values.paddingApp,
+            width: '100%',
+        },
 
-    title: {
-        fontSize: 15,
-    },
+        title: {
+            fontSize: 15,
+        },
 
-    pairButtons: {
-        display: 'flex',
-        flexDirection: 'row',
-        columnGap: 8,
-        position: 'relative',
-        width: '49%',
-    },
-});
+        pairButtons: {
+            display: 'flex',
+            flexDirection: 'row',
+            columnGap: 8,
+            position: 'relative',
+            width: '49%',
+        },
+    }
+);

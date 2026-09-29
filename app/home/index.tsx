@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, View, ActivityIndicator, ScrollView } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, ScrollView, Pressable } from 'react-native';
 import { router } from 'expo-router';
 
 import { Values } from '@constants/values';
-import { Colors } from '@constants/colors';
+
+import { ThemeColors } from '@theme/colors';
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
-import List from '@assets/list.svg';
-import Charts from '@assets/charts.svg';
+import { ListIcon } from '@icons/list';
+import { ChartsIcon } from '@icons/charts';
 import Add from '@assets/add.svg';
-import Configuration from '@assets/configuration.svg';
+import { ConfIcon } from '@icons/conf';
 
 import BalanceResume from '@components/data/balance-resume';
 import { TransactionElement  } from '@components/data/list-element';
@@ -19,6 +21,10 @@ import { useTransactions } from '@/src/hooks/useTransactions';
 import { useProfiles } from '@/src/hooks/useProfiles';
 
 const HomeScreen = () => {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
     // Database
     const { lastTransaction, getLastTransaction, loadingTransactions } = useTransactions();
     const { profile, loadingProfiles } = useProfiles();
@@ -75,10 +81,16 @@ const HomeScreen = () => {
                     <View style={ styles.section }>
                         <ThemedText style={ styles.title } weight='regular'>Actions</ThemedText>
                         <View style={ styles.actionElements }>
-                            <Charts style={ styles.actionIcon } onPress={ () => router.push('/data/charts') } />
-                            <List style={ styles.actionIcon } onPress={ () => router.push('/data/list') } />
-                            <Add style={ styles.actionIcon } onPress={ () => router.push('/data/add') } />
-                            <Configuration style={ styles.actionIcon } onPress={ () => router.push('/configuration') } />
+                            <Pressable onPress={ () => router.push('/data/charts') }>
+                                <ChartsIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
+                            </Pressable>
+                            <Pressable onPress={ () => router.push('/data/list') }>
+                                <ListIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
+                            </Pressable>
+                            <Add style={ styles.actionIcon } color={ colors.iconBackground } onPress={ () => router.push('/data/add') } /> 
+                            <Pressable onPress={ () => router.push('/configuration') }>
+                                <ConfIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
+                            </Pressable>
                         </View>
                     </View>
 
@@ -94,7 +106,7 @@ const HomeScreen = () => {
                         <ThemedText style={ styles.title } weight='regular'>Last transaction</ThemedText>
                         <View style={ styles.elements }>
                             {
-                                lastTransaction == null ? <View style={ styles.emptyElement } />:
+                                lastTransaction == null ? <View style={ styles.emptyElement } /> :
                                     <TransactionElement type={ typeLastTransaction } category={ categoryLastTransaction } value={ amountLastTransaction } date={ String(dateLastTransaction) } onPress={ () => { router.push({
                                         pathname: '/data/modify/[id]',
                                         params: {
@@ -112,87 +124,89 @@ const HomeScreen = () => {
 
 export default HomeScreen;
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        top: Values.topNotHeader,
-        width: '100%',
-    },
+const createStyles = (colors: ThemeColors) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            top: Values.topNotHeader,
+            width: '100%',
+        },
 
-    sections: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 15,
-        paddingBottom: 125,
-    },
+        sections: {
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 15,
+            paddingBottom: 125,
+        },
 
-    section: {
-        display: 'flex',
-        flexDirection: 'column',
-        paddingHorizontal: Values.paddingApp,
-        rowGap: 8,
-    },
+        section: {
+            display: 'flex',
+            flexDirection: 'column',
+            paddingHorizontal: Values.paddingApp,
+            rowGap: 8,
+        },
 
-    title: {
-        fontSize: 13,
-    },
+        title: {
+            fontSize: 13,
+        },
 
-    elements: {
-        backgroundColor: Colors.backgroundSecondary,
-        borderRadius: 10,
-        overflow: 'hidden',
-    },
+        elements: {
+            backgroundColor: colors.backgroundSecondary,
+            borderRadius: 10,
+            overflow: 'hidden',
+        },
 
-    actionElements: {
-        display: 'flex',
-        flexDirection: 'row',
-        columnGap: 20,
-        justifyContent: 'center',
-        paddingHorizontal: Values.paddingElement,
-        alignItems: 'center',
-        backgroundColor: Colors.backgroundSecondary,
-        borderRadius: 10,
-        overflow: 'hidden',
-        height: 50,
-    },
+        actionElements: {
+            display: 'flex',
+            flexDirection: 'row',
+            columnGap: 20,
+            justifyContent: 'center',
+            paddingHorizontal: Values.paddingElement,
+            alignItems: 'center',
+            backgroundColor: colors.backgroundSecondary,
+            borderRadius: 10,
+            overflow: 'hidden',
+            height: 50,
+        },
 
-    lastActionElement: {
-        backgroundColor: Colors.backgroundSecondary,
-        borderRadius: 10,
-        overflow: 'hidden',
-        paddingHorizontal: Values.paddingElement,
-        paddingVertical: 6,
-    },
+        lastActionElement: {
+            backgroundColor: colors.backgroundSecondary,
+            borderRadius: 10,
+            overflow: 'hidden',
+            paddingHorizontal: Values.paddingElement,
+            paddingVertical: 6,
+        },
 
-    emptyElement: {
-        backgroundColor: Colors.backgroundSecondary,
-        borderRadius: 10,
-        height: 50,
-    },
+        emptyElement: {
+            backgroundColor: colors.backgroundSecondary,
+            borderRadius: 10,
+            height: 50,
+        },
 
-    welcome: {
-        textAlign: 'center',
-        fontSize: 16,
-    },
+        welcome: {
+            textAlign: 'center',
+            fontSize: 16,
+        },
 
-    buttons: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        rowGap: 5,
-        marginTop: 25,
-    },
+        buttons: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            rowGap: 5,
+            marginTop: 25,
+        },
 
-    actionIcon: {
-        transform: [{ scale: 0.9 }],
-    },
+        actionIcon: {
+            transform: [{ scale: 0.9 }],
+        },
 
-    name: {
-        fontSize: 14,
-    },
+        name: {
+            fontSize: 14,
+        },
 
-    date: {
-        fontSize: 11,
-        color: Colors.fontSecondary,
-    },
-});
+        date: {
+            fontSize: 11,
+            color: colors.fontSecondary,
+        },
+    }
+);

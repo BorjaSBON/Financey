@@ -1,6 +1,7 @@
 import { Pressable, Text, StyleSheet } from 'react-native';
 
-import { Colors } from '@constants/colors';
+import { ThemeColors } from '@theme/colors';
+import { useTheme } from '@theme/useTheme';
 
 interface Props {
     // Variables
@@ -13,6 +14,10 @@ interface Props {
 }
 
 export function ThemedButton({ label, type, onPress, onLongPress }: Props) {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
     return (
         <Pressable
             style={({ pressed }) => [
@@ -30,30 +35,32 @@ export function ThemedButton({ label, type, onPress, onLongPress }: Props) {
     );
 }
 
-const styles = StyleSheet.create({
-    button: {
-        borderRadius: 30,
-        paddingTop: 5,
-        paddingBottom: 6,
-        paddingStart: 25,
-        paddingEnd: 25,
-        minWidth: 125,
-        alignItems: 'center'
-    },
+const createStyles = (colors: ThemeColors) =>
+    StyleSheet.create({
+        button: {
+            borderRadius: 30,
+            paddingTop: 5,
+            paddingBottom: 6,
+            paddingStart: 25,
+            paddingEnd: 25,
+            minWidth: 125,
+            alignItems: 'center'
+        },
 
-    default: {
-        backgroundColor: Colors.buttonBackgroundPrimary,
-    },
-    clear: {
-        backgroundColor: Colors.buttonBackgroundSecondary,
-    },
-    delete: {
-        backgroundColor: Colors.buttonBackgroundWarning,
-    },
+        default: {
+            backgroundColor: colors.buttonBackgroundPrimary,
+        },
+        clear: {
+            backgroundColor: colors.buttonBackgroundSecondary,
+        },
+        delete: {
+            backgroundColor: colors.buttonBackgroundWarning,
+        },
 
-    text: {
-        color: Colors.buttonFont,
-        fontFamily: 'Montserrat-Medium',
-        fontSize: 15,
+        text: {
+            color: colors.buttonFont,
+            fontFamily: 'Montserrat-Medium',
+            fontSize: 15,
+        }
     }
-});
+);

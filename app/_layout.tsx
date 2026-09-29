@@ -6,9 +6,22 @@ import { Slot, SplashScreen } from 'expo-router';
 
 import { initializeAppDatabase } from '@db/init';
 
-import { Colors } from '@constants/colors';
+import { ThemeProvider } from '@theme/ThemeContext';
+import { useTheme } from '@theme/useTheme';
 
 SplashScreen.preventAutoHideAsync();
+
+const RootLayoutContent = () => {
+	// Theme
+    const { colors, resolvedTheme } = useTheme();
+
+    return (
+        <View style={{ flex: 1, backgroundColor: colors.backgroundPrimary }}>
+            <Slot />
+            <StatusBar style={ resolvedTheme === 'dark' ? 'light' : 'dark'} />
+        </View>
+    );
+};
 
 const RootLayout = () => {
 	// Initialize the database
@@ -48,10 +61,9 @@ const RootLayout = () => {
     if (!fontsLoaded && !error) return null;
 
     return (
-		<View style={{ flex: 1, backgroundColor: Colors.backgroundPrimary }}>
-			<Slot />
-			<StatusBar style="auto" />
-		</View>
+		<ThemeProvider>
+			<RootLayoutContent />
+		</ThemeProvider>
 	);
 };
 

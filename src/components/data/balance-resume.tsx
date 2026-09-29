@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 
-import { Colors } from '@constants/colors';
 import { Values } from '@constants/values';
+
+import { ThemeColors } from '@theme/colors';
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -15,6 +17,10 @@ interface Props {
 }
 
 export default function BalanceResume({ squareEnable=false }: Props) {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
     // Database
     const { getBalance, loadingTransactions } = useTransactions();
     const { profile, loadingProfiles } = useProfiles();
@@ -89,71 +95,73 @@ export default function BalanceResume({ squareEnable=false }: Props) {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        paddingHorizontal: Values.paddingApp,
-    },
+const createStyles = (colors: ThemeColors) =>
+    StyleSheet.create({
+        container: {
+            width: '100%',
+            paddingHorizontal: Values.paddingApp,
+        },
 
-    sections: {
-        display: 'flex',
-        flexDirection: 'row',
-        columnGap: 3,
-        justifyContent: 'space-between',
-        width: '100%',
-        backgroundColor: Colors.backgroundSecondary,
-        borderRadius: 10,
-        paddingVertical: 6,
-        paddingHorizontal: 10,
-        overflow: 'hidden',
-    },
+        sections: {
+            display: 'flex',
+            flexDirection: 'row',
+            columnGap: 3,
+            justifyContent: 'space-between',
+            width: '100%',
+            backgroundColor: colors.backgroundSecondary,
+            borderRadius: 10,
+            paddingVertical: 6,
+            paddingHorizontal: 10,
+            overflow: 'hidden',
+        },
 
-    section: {
-        width: '33%',
-    },
+        section: {
+            width: '33%',
+        },
 
-    titleRow: {
-        display: 'flex',
-        flexDirection: 'row',
-        columnGap: 7,
-        justifyContent: 'center',
-        width: '100%',
-    },
+        titleRow: {
+            display: 'flex',
+            flexDirection: 'row',
+            columnGap: 7,
+            justifyContent: 'center',
+            width: '100%',
+        },
 
-    title: {
-        fontSize: 14,
-        textAlign: 'center',
-    },
+        title: {
+            fontSize: 14,
+            textAlign: 'center',
+        },
 
-    data: {
-        fontSize: 12,
-        textAlign: 'center',
-        height: 17,
-        verticalAlign: 'bottom',
-    },
+        data: {
+            fontSize: 12,
+            textAlign: 'center',
+            height: 17,
+            verticalAlign: 'bottom',
+        },
 
-    currency: {
-        fontSize: 9,
-    },
+        currency: {
+            fontSize: 9,
+        },
 
-    positive: {
-        color: Colors.positive,
-    },
-    negative: {
-        color: Colors.negative,
-    },
+        positive: {
+            color: colors.positive,
+        },
+        negative: {
+            color: colors.negative,
+        },
 
-    square: {
-        width: 10,
-        height: 10,
-        borderRadius: 3,
-        alignSelf: 'center',
-    },
+        square: {
+            width: 10,
+            height: 10,
+            borderRadius: 3,
+            alignSelf: 'center',
+        },
 
-    incomes: {
-        backgroundColor: Colors.positive,
-    },
-    expenses: {
-        backgroundColor: Colors.negative,
-    },
-});
+        incomes: {
+            backgroundColor: colors.positive,
+        },
+        expenses: {
+            backgroundColor: colors.negative,
+        },
+    }
+);

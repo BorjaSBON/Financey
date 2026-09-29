@@ -3,13 +3,20 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import * as Application from 'expo-application';
 
 import { Values } from '@constants/values';
-import { Colors } from '@constants/colors';
+
+import { ThemeColors } from '@theme/colors';
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
 import InformationElement from '@components/configuration/information-element';
 
 export default function AppInformation() {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
+    // Data of the system
     const appVersion = Application.nativeApplicationVersion;
     const buildVersion = Application.nativeBuildVersion;
     const os = Platform.OS;
@@ -51,35 +58,37 @@ export default function AppInformation() {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        top: Values.topIfHeader,
-        width: '100%',
-        paddingTop: 5,
-    },
+const createStyles = (colors: ThemeColors) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            top: Values.topIfHeader,
+            width: '100%',
+            paddingTop: 5,
+        },
 
-    sections: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 15,
-        paddingHorizontal: Values.paddingApp,
-        paddingBottom: 125,
-    },
+        sections: {
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 15,
+            paddingHorizontal: Values.paddingApp,
+            paddingBottom: 125,
+        },
 
-    section: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 8,
-    },
+        section: {
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 8,
+        },
 
-    title: {
-        fontSize: 13,
-    },
+        title: {
+            fontSize: 13,
+        },
 
-    elements: {
-        backgroundColor: Colors.backgroundSecondary,
-        borderRadius: 10,
-        overflow: 'hidden',
-    },
-});
+        elements: {
+            backgroundColor: colors.backgroundSecondary,
+            borderRadius: 10,
+            overflow: 'hidden',
+        },
+    }
+);

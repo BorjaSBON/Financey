@@ -6,6 +6,9 @@
 			"@ui/*": [
 				"./src/components/ui/*"
 			],
+			"@icons/*": [
+				"./src/components/icons/*"
+			],
 			"@components/*": [
 				"./src/components/*"
 			],
@@ -14,6 +17,9 @@
 			],
 			"@db/*": [
 				"./src/db/*"
+			],
+			"@theme/*": [
+				"./src/theme/*"
 			],
 			"@assets/*": [
 				"./assets/svg/*"

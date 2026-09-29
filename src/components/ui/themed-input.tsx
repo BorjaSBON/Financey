@@ -1,6 +1,7 @@
 import { View, TextInput, StyleSheet, InputModeOptions } from 'react-native';
 
-import { Colors } from '@constants/colors';
+import { ThemeColors } from '@theme/colors';
+import { useTheme } from '@theme/useTheme';
 
 interface Props {
     // Variables
@@ -13,6 +14,10 @@ interface Props {
 }
 
 export function ThemedInput({ value='', placeholder='', type='text', onChange=()=>{} }: Props) {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
     return (
         <View style={ styles.container }>
             <TextInput
@@ -27,30 +32,32 @@ export function ThemedInput({ value='', placeholder='', type='text', onChange=()
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        position: 'relative',
-        width: '100%',
-        height: 40,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 10,
-        elevation: 10,
-    },
+const createStyles = (colors: ThemeColors) =>
+    StyleSheet.create({
+        container: {
+            position: 'relative',
+            width: '100%',
+            height: 40,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 10,
+            elevation: 10,
+        },
 
-    input: {
-        flex: 1,
-        backgroundColor: Colors.inputBackground,
-        color: Colors.inputFont,
-        paddingStart: 15,
-        paddingEnd: 35,
-        borderRadius: 12,
-    },
+        input: {
+            flex: 1,
+            backgroundColor: colors.inputBackground,
+            color: colors.inputFont,
+            paddingStart: 15,
+            paddingEnd: 35,
+            borderRadius: 12,
+        },
 
-    icon: {
-        position: 'absolute',
-        right: 15,
-        width: 20
-    },
-});
+        icon: {
+            position: 'absolute',
+            right: 15,
+            width: 20
+        },
+    }
+);

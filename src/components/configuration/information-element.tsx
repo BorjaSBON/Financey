@@ -1,7 +1,8 @@
 import { StyleSheet, Pressable, Platform } from 'react-native';
 
-import { Colors } from '@constants/colors';
 import { Values } from '@constants/values';
+
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -15,11 +16,14 @@ interface Props {
 }
 
 export default function InformationElement({ title, data, onPress }: Props) {
+    // Theme
+    const { colors } = useTheme();
+
     return (
         <Pressable 
             style={({ pressed }) => [
                 styles.informationElement,
-                pressed ? { backgroundColor: Colors.hoverElement } : { backgroundColor: 'transparent' },
+                pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
             ]}
             onPress={ onPress }
         >

@@ -2,7 +2,8 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 
 import { Values } from '@constants/values';
-import { Colors } from '@constants/colors';
+
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -14,16 +15,19 @@ interface Props {
 }
 
 export default function Header({ title }: Props) {
+    // Theme
+    const { colors } = useTheme();
+
     return (
         <View style={ styles.header }>
             <Pressable 
                 style={({ pressed }) => [
                     styles.return,
-                    pressed ? { backgroundColor: Colors.hoverElement } : { backgroundColor: 'transparent' },
+                    pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
                 ]} 
                 onPress={ () => router.back() } 
             >
-                <Logo style={ styles.icon } />
+                <Logo style={ styles.icon } color={ colors.iconBackground } />
             </Pressable>
             <ThemedText style={ styles.title }>{ title }</ThemedText>
         </View>

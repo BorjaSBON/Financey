@@ -1,11 +1,15 @@
 import { View } from 'react-native';
 import { Slot, usePathname } from 'expo-router';
 
-import { Colors } from '@constants/colors';
+import { useTheme } from '@theme/useTheme';
 
 import Header from '@components/layout/header';
 
 const ConfigurationLayout = () => {
+    // Theme
+    const { colors } = useTheme();
+
+    // Navigation
     const pathname = usePathname();
 
     const getTitle = () => {
@@ -26,7 +30,7 @@ const ConfigurationLayout = () => {
     };
 
     return (
-        <View style={{ flex: 1, backgroundColor: Colors.backgroundPrimary }}>
+        <View style={{ flex: 1, backgroundColor: colors.backgroundPrimary }}>
             <Header title={ getTitle() } />
             <Slot />
         </View>

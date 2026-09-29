@@ -1,7 +1,9 @@
 import { View, StyleSheet, Pressable } from 'react-native';
 
-import { Colors } from '@constants/colors';
 import { Values } from '@constants/values';
+
+import { ThemeColors } from '@theme/colors';
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -25,6 +27,10 @@ interface NewTransactionProp {
 }
 
 export function TransactionElement({ type, category, value, date, onPress }: TransactionProps) {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
     // Function to transform the values in readable text
     function ReadableNumber(value: number) {
         return (value / 100).toLocaleString('de-DE').replace(',', '\'');
@@ -40,7 +46,7 @@ export function TransactionElement({ type, category, value, date, onPress }: Tra
         <Pressable 
             style={({ pressed }) => [
                 styles.transactionElement,
-                pressed ? { backgroundColor: Colors.hoverElement } : { backgroundColor: 'transparent' },
+                pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
             ]}
             onPress={ onPress }
         >
@@ -58,102 +64,112 @@ export function TransactionElement({ type, category, value, date, onPress }: Tra
 }
 
 export function NewTransaction({ onPress }: NewTransactionProp) {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
     return (
         <Pressable 
             style={({ pressed }) => [
                 styles.actionElement,
-                pressed ? { backgroundColor: Colors.hoverElement } : { backgroundColor: 'transparent' },
+                pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
             ]}
             onPress={ onPress }
         >
-            <Add style={ styles.actionIcon } />
+            <Add style={ styles.actionIcon } color={ colors.iconBackground } />
             <ThemedText style={ styles.title } weight='light'>Add new transaction</ThemedText>
         </Pressable>
     );
 }
 
 export function FilterTransactions({ onPress }: NewTransactionProp) {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
     return (
         <Pressable 
             style={({ pressed }) => [
                 styles.actionElement,
-                pressed ? { backgroundColor: Colors.hoverElement } : { backgroundColor: 'transparent' },
+                pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
             ]}
             onPress={ onPress }
         >
-            <Filter style={ styles.actionIcon } />
+            <Filter style={ styles.actionIcon } color={ colors.iconBackground } />
             <ThemedText style={ styles.title } weight='light'>Filter</ThemedText>
         </Pressable>
     );
 }
 
-const styles = StyleSheet.create({
-    transactionElement: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 0,
-        alignItems: 'flex-start',
-        width: '100%',
-        minHeight: 36,
-        paddingVertical: 6,
-        paddingHorizontal: Values.paddingElement,
-    },
+const createStyles = (colors: ThemeColors) =>
+    StyleSheet.create({
+        transactionElement: {
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 0,
+            alignItems: 'flex-start',
+            width: '100%',
+            minHeight: 36,
+            paddingVertical: 6,
+            paddingHorizontal: Values.paddingElement,
+        },
 
-    actionElement: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        width: '100%',
-        minHeight: 30,
-        paddingVertical: 2,
-        paddingHorizontal: 10,
-        columnGap: 5,
-    },
+        actionElement: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            minHeight: 30,
+            paddingVertical: 2,
+            paddingHorizontal: 10,
+            columnGap: 5,
+        },
 
-    letter: {
-        margin: 'auto',
-        fontSize: 14,
-    },
+        letter: {
+            margin: 'auto',
+            fontSize: 14,
+        },
 
-    title: {
-        fontSize: 14,
-    },
+        title: {
+            fontSize: 14,
+        },
 
-    transactionHeader: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%'
-    },
+        transactionHeader: {
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%'
+        },
 
-    category: {
-        fontSize: 14,
-    },
+        category: {
+            fontSize: 14,
+        },
 
-    value: {
-        fontSize: 13,
-        marginTop: -2,
-        height: '100%',
-        textAlignVertical: 'bottom',
-    },
+        value: {
+            fontSize: 13,
+            marginTop: -2,
+            height: '100%',
+            textAlignVertical: 'bottom',
+        },
 
-    unit: {
-        fontSize: 9,
-    },
+        unit: {
+            fontSize: 9,
+        },
 
-    positive: {
-        color: Colors.positive,
-    },
-    negative: {
-        color: Colors.negative,
-    },
+        positive: {
+            color: colors.positive,
+        },
+        negative: {
+            color: colors.negative,
+        },
 
-    date: {
-        fontSize: 11,
-        color: Colors.fontSecondary,
-    },
+        date: {
+            fontSize: 11,
+            color: colors.fontSecondary,
+        },
 
-    actionIcon: {
-        transform: [{ scale: 0.6 }]
-    },
-});
+        actionIcon: {
+            transform: [{ scale: 0.6 }]
+        },
+    }
+);

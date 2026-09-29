@@ -3,7 +3,9 @@ import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
 import { router, useNavigation } from 'expo-router';
 
 import { Values } from '@constants/values';
-import { Colors } from '@constants/colors';
+
+import { ThemeColors } from '@theme/colors';
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -13,6 +15,10 @@ import { TransactionElement, NewTransaction, FilterTransactions } from '@compone
 import { useTransactions } from '@/src/hooks/useTransactions';
 
 const DataList = () => {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
     // Change the router previous page
     const navigation = useNavigation();
 
@@ -75,48 +81,50 @@ const DataList = () => {
 
 export default DataList;
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        top: Values.topNotHeader,
-        width: '100%',
-        flexDirection: 'column',
-        rowGap: 15,
-        paddingBottom: 100,
-    },
+const createStyles = (colors: ThemeColors) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            top: Values.topNotHeader,
+            width: '100%',
+            flexDirection: 'column',
+            rowGap: 15,
+            paddingBottom: 100,
+        },
 
-    sections: {
-        flex: 1,
-        flexDirection: 'column',
-        rowGap: 15,
-        paddingHorizontal: Values.paddingApp,
-    },
+        sections: {
+            flex: 1,
+            flexDirection: 'column',
+            rowGap: 15,
+            paddingHorizontal: Values.paddingApp,
+        },
 
-    section: {
-        flexDirection: 'column',
-        rowGap: 8,
-    },
+        section: {
+            flexDirection: 'column',
+            rowGap: 8,
+        },
 
-    transactionsSection: {
-        flex: 1,
-        minHeight: 0,
-    },
+        transactionsSection: {
+            flex: 1,
+            minHeight: 0,
+        },
 
-    title: {
-        fontSize: 13,
-    },
+        title: {
+            fontSize: 13,
+        },
 
-    elements: {
-        backgroundColor: Colors.backgroundSecondary,
-        borderRadius: 10,
-        overflow: 'hidden',
-    },
+        elements: {
+            backgroundColor: colors.backgroundSecondary,
+            borderRadius: 10,
+            overflow: 'hidden',
+        },
 
-    elementsScroll: {
-        flex: 1,
-        minHeight: 0,
-        backgroundColor: Colors.backgroundSecondary,
-        borderRadius: 10,
-        overflow: 'hidden',
-    },
-});
+        elementsScroll: {
+            flex: 1,
+            minHeight: 0,
+            backgroundColor: colors.backgroundSecondary,
+            borderRadius: 10,
+            overflow: 'hidden',
+        },
+    }
+);

@@ -1,11 +1,13 @@
 import { StyleSheet, Pressable } from 'react-native';
 
-import { Colors } from '@constants/colors';
 import { Values } from '@constants/values';
+
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
 import Logo from '@assets/more.svg';
+
 
 interface Props {
     // Variables
@@ -17,17 +19,22 @@ interface Props {
     onPress?: () => void;
 }
 
-export default function ConfElement({ title, colorText=Colors.fontPrimary, iconDisplay=true, onPress }: Props) {
+export default function ConfElement({ title, colorText='', iconDisplay=true, onPress }: Props) {
+    // Theme
+    const { colors } = useTheme();
+
+    if (colorText === '') colorText = colors.fontPrimary;
+
     return (
         <Pressable 
             style={({ pressed }) => [
                 styles.informationElement,
-                pressed ? { backgroundColor: Colors.hoverElement } : { backgroundColor: 'transparent' },
+                pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
             ]}
             onPress={ onPress }
         >
             <ThemedText style={[ styles.title, { color:colorText } ]} weight='light'>{ title }</ThemedText>
-            <Logo style={[ styles.icon, iconDisplay ? { display: 'flex'} : { display: 'none'} ]} />
+            <Logo style={[ styles.icon, iconDisplay ? { display: 'flex'} : { display: 'none'} ]} color={ colors.iconBackground } />
         </Pressable>
     );
 }

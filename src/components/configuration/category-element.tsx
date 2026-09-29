@@ -1,7 +1,8 @@
 import { StyleSheet, Pressable, View } from 'react-native';
 
 import { Values } from '@constants/values';
-import { Colors } from '@constants/colors';
+
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -23,16 +24,19 @@ interface NewCategoryProp {
 }
 
 export function CategoryElement({ title, type, onPress }: CategoryProps) {
+    // Theme
+    const { colors } = useTheme();
+
     return (
         <Pressable 
             style={({ pressed }) => [
                 styles.categoryElement,
-                pressed ? { backgroundColor: Colors.hoverElement } : { backgroundColor: 'transparent' },
+                pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
             ]}
             onPress={ onPress }
         >
             <View style={ styles.name }>
-                <View style={[ styles.color, type === 'expense' ? { backgroundColor: Colors.negative } : { backgroundColor: Colors.positive } ]} />
+                <View style={[ styles.color, type === 'expense' ? { backgroundColor: colors.negative } : { backgroundColor: colors.positive } ]} />
                 <ThemedText style={ styles.title } weight='light'>{ title }</ThemedText>
             </View>
             <Logo style={ styles.trashIcon } />
@@ -41,15 +45,18 @@ export function CategoryElement({ title, type, onPress }: CategoryProps) {
 }
 
 export function NewCategory({ onPress }: NewCategoryProp) {
+    // Theme
+    const { colors } = useTheme();
+    
     return (
         <Pressable 
             style={({ pressed }) => [
                 styles.actionElement,
-                pressed ? { backgroundColor: Colors.hoverElement } : { backgroundColor: 'transparent' },
+                pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
             ]}
             onPress={ onPress }
         >
-            <Add style={ styles.actionIcon } />
+            <Add style={ styles.actionIcon } color={ colors.iconBackground } />
             <ThemedText style={ styles.title } weight='light'>Create new category</ThemedText>
         </Pressable>
     );

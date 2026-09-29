@@ -2,7 +2,9 @@ import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 
 import { Values } from '@constants/values';
-import { Colors } from '@constants/colors';
+
+import { ThemeColors } from '@theme/colors';
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -11,6 +13,10 @@ import { AccountElement, NewAccount } from '@components/configuration/account-el
 import { useProfiles } from '@/src/hooks/useProfiles';
 
 const AccountInformation = () => {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
     // Get the profiles
     const { profiles, profile, loginById, logout, loadingProfiles } = useProfiles();
 
@@ -62,36 +68,38 @@ const AccountInformation = () => {
 
 export default AccountInformation;
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        top: Values.topIfHeader,
-        width: '100%',
-        paddingTop: 5,
-    },
-    
-    sections: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 15,
-        paddingHorizontal: Values.paddingApp,
-        paddingBottom: 125,
-    },
+const createStyles = (colors: ThemeColors) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            top: Values.topIfHeader,
+            width: '100%',
+            paddingTop: 5,
+        },
+        
+        sections: {
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 15,
+            paddingHorizontal: Values.paddingApp,
+            paddingBottom: 125,
+        },
 
-    section: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 8,
-    },
+        section: {
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 8,
+        },
 
-    title: {
-        fontSize: 13,
-    },
+        title: {
+            fontSize: 13,
+        },
 
-    elements: {
-        backgroundColor: Colors.backgroundSecondary,
-        borderRadius: 10,
-        overflow: 'hidden',
-        minHeight: 50,
-    },
-});
+        elements: {
+            backgroundColor: colors.backgroundSecondary,
+            borderRadius: 10,
+            overflow: 'hidden',
+            minHeight: 50,
+        },
+    }
+);

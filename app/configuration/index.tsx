@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 
-import { Colors } from '@constants/colors';
 import { Values } from '@constants/values';
+
+import { ThemeColors } from '@theme/colors';
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
 import ConfElement from '@components/configuration/conf-element';
+import ConfElementSelect from '@components/configuration/conf-element-select';
 import ModifyElement from '@components/common/modify-element';
 import DeleteElement from '@components/common/delete-element';
 
@@ -15,8 +18,12 @@ import { useProfiles } from '@/src/hooks/useProfiles';
 import { useTransactions } from '@/src/hooks/useTransactions';
 
 const ConfigurationScreen = () => {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
     // Database
-    const { profile, modifyProfileUsername, removeProfile, loadingProfiles, errorProfiles } = useProfiles();
+    const { profile, modifyProfileUsername, removeProfile, loadingProfiles } = useProfiles();
     const { removeTransactions } = useTransactions();
 
     // Variables
@@ -107,15 +114,15 @@ const ConfigurationScreen = () => {
                     <View style={ styles.section }>
                         <ThemedText style={ styles.title } weight='regular'>General</ThemedText>
                         <View style={ styles.elements }>
-                            <ConfElement title='Theme' iconDisplay={ false } />
-                            <ConfElement title='Language' iconDisplay={ false } />
+                            <ConfElementSelect title='Theme' />
+                            <ConfElementSelect title='Language' />
                         </View>
                     </View>
 
                     <View style={ styles.section }>
                         <ThemedText style={ styles.title } weight='regular'>Data</ThemedText>
                         <View style={ styles.elements }>
-                            <ConfElement title='Currency' iconDisplay={ false } />
+                            <ConfElementSelect title='Currency' />
                             <ConfElement title='Categories' onPress={ () => router.push('/configuration/data/categories') } />
                             <ConfElement title='Import data' onPress={ () => router.push('/configuration/data/import_data') } />
                             <ConfElement title='Export data' iconDisplay={ false } onPress={ exportData } />
@@ -128,7 +135,7 @@ const ConfigurationScreen = () => {
                             <ConfElement title='Information of the account' onPress={ () => router.push('/configuration/account/information') } />
                             <ConfElement title='Change account' onPress={ () => router.push('/configuration/account/change_account') } />
                             <ConfElement title='Change username' iconDisplay={ false } onPress={ activeChangeUsernamePopup } />
-                            <ConfElement title='Delete account' colorText={ Colors.negative } iconDisplay={ false } onPress={ activeDeleteAccountPopup } />
+                            <ConfElement title='Delete account' colorText={ colors.negative } iconDisplay={ false } onPress={ activeDeleteAccountPopup } />
                         </View>
                     </View>
                     
@@ -136,7 +143,7 @@ const ConfigurationScreen = () => {
                         <ThemedText style={ styles.title } weight='regular'>Application</ThemedText>
                         <View style={ styles.elements }>
                             <ConfElement title='Information of the app' onPress={ () => router.push('/configuration/application') } />
-                            <ConfElement title='Reset application' colorText={ Colors.negative } iconDisplay={ false } onPress={ activeResetAppPopup } />
+                            <ConfElement title='Reset application' colorText={ colors.negative } iconDisplay={ false } onPress={ activeResetAppPopup } />
                         </View>
                     </View>
                 </View>
@@ -151,35 +158,37 @@ const ConfigurationScreen = () => {
 
 export default ConfigurationScreen;
 
-const styles = StyleSheet.create({
-    container: {
-        position: 'relative',
-        flex: 1,
-        top: Values.topIfHeader,
-        width: '100%',
-    },
+const createStyles = (colors: ThemeColors) =>
+    StyleSheet.create({
+        container: {
+            position: 'relative',
+            flex: 1,
+            top: Values.topIfHeader,
+            width: '100%',
+        },
 
-    sections: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 15,
-        paddingHorizontal: Values.paddingApp,
-        paddingBottom: 125,
-    },
+        sections: {
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 15,
+            paddingHorizontal: Values.paddingApp,
+            paddingBottom: 125,
+        },
 
-    section: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 8,
-    },
+        section: {
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 8,
+        },
 
-    title: {
-        fontSize: 13,
-    },
+        title: {
+            fontSize: 13,
+        },
 
-    elements: {
-        backgroundColor: Colors.backgroundSecondary,
-        borderRadius: 8,
-        overflow: 'hidden',
-    },
-});
+        elements: {
+            backgroundColor: colors.backgroundSecondary,
+            borderRadius: 8,
+            overflow: 'hidden',
+        },
+    }
+);

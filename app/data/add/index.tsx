@@ -4,6 +4,9 @@ import { router } from 'expo-router';
 
 import { Values } from '@constants/values';
 
+import { ThemeColors } from '@theme/colors';
+import { useTheme } from '@theme/useTheme';
+
 import { ThemedText } from '@ui/themed-text';
 import { ThemedButton } from '@ui/themed-button';
 
@@ -15,6 +18,10 @@ import { useCategories } from '@/src/hooks/useCategories';
 import { useProfiles } from '@/src/hooks/useProfiles';
 
 const DataAdd = () => {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
     // Database
     const { categories, loadingCategories } = useCategories();
     const { createTransaction } = useTransactions();
@@ -82,6 +89,7 @@ const DataAdd = () => {
                     onChangeText={ setAmount }
                     inputMode='decimal'
                     autoComplete='off'
+                    placeholderTextColor={ colors.fontSecondary }
                 />
                 <ThemedText style={ styles.amountUnit } weight='light'>€</ThemedText>
             </View>
@@ -100,49 +108,52 @@ const DataAdd = () => {
 
 export default DataAdd;
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        top: Values.topNotHeader,
-        width: '100%',
-        paddingBottom: 125,
-    },
+const createStyles = (colors: ThemeColors) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            top: Values.topNotHeader,
+            width: '100%',
+            paddingBottom: 125,
+        },
 
-    amountInput: {
-        display: 'flex',
-        flexDirection: 'row',
-        columnGap: 0,
-        marginHorizontal: 'auto',
-        marginTop: 10,
-    },
+        amountInput: {
+            display: 'flex',
+            flexDirection: 'row',
+            columnGap: 0,
+            marginHorizontal: 'auto',
+            marginTop: 10,
+        },
 
-    amountValue: {
-        fontSize: 28,
-    },
+        amountValue: {
+            fontSize: 28,
+            color: colors.fontPrimary,
+        },
 
-    amountUnit: {
-        fontSize: 16,
-        marginVertical: 'auto',
-        marginBottom: 14,
-    },
+        amountUnit: {
+            fontSize: 16,
+            marginVertical: 'auto',
+            marginBottom: 14,
+        },
 
-    inputs: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 10,
-        marginVertical: 10,
-    },
+        inputs: {
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 10,
+            marginVertical: 10,
+        },
 
-    pairButtons: {
-        display: 'flex',
-        flexDirection: 'row',
-        columnGap: 8,
-        position: 'relative',
-        width: '49%',
-    },
+        pairButtons: {
+            display: 'flex',
+            flexDirection: 'row',
+            columnGap: 8,
+            position: 'relative',
+            width: '49%',
+        },
 
-    add: {
-        marginTop: 25,
-        marginHorizontal: 'auto',
-    },
-});
+        add: {
+            marginTop: 25,
+            marginHorizontal: 'auto',
+        },
+    }
+);
