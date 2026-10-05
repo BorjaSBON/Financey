@@ -1,6 +1,6 @@
 import { dbPromise } from '../database';
 
-import type { Profile, UsernameProfile } from '../../types/profile';
+import type { LastActionProfile, Profile, UsernameProfile } from '../../types/profile';
 
 function mapProfile(row: any): Profile {
     return {
@@ -96,6 +96,32 @@ export async function create(profile: UsernameProfile): Promise<number> {
     } catch (err) {
         throw new Error('Error creating a profile');
     }
+}
+
+// Modify the last action for a profile by ID
+export async function modifyLastAction(data: LastActionProfile): Promise<void> {
+    const db = await dbPromise;
+
+    // Get the date of the action
+    const now = new Date().toISOString();
+
+    await db.runAsync(
+        `
+            UPDATE profiles
+            SET last_action_date = ?, 
+                last_action = ?, 
+                number_actions = number_actions + 1
+            WHERE id = (
+                SELECT id
+                FROM profiles
+                WHERE active = 1
+                ORDER BY id ASC
+                LIMIT 1
+            )
+        `,
+        now,
+        data.lastAction,
+    );
 }
 
 // Modify the username for a profile by ID
@@ -249,7 +275,8 @@ export const profilesRepository = {
     getById,
 
     create,
-
+    
+    modifyLastAction,
     modifyUsername,
     modifyDataAdded,
     modifyDataModified,

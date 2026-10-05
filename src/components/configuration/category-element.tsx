@@ -6,7 +6,8 @@ import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
-import Logo from '@assets/trash.svg';
+import { EditIcon } from '@icons/edit';
+import Trash from '@assets/trash.svg';
 import Add from '@assets/add.svg';
 
 interface CategoryProps {
@@ -39,7 +40,11 @@ export function CategoryElement({ title, type, onPress }: CategoryProps) {
                 <View style={[ styles.color, type === 'expense' ? { backgroundColor: colors.negative } : { backgroundColor: colors.positive } ]} />
                 <ThemedText style={ styles.title } weight='light'>{ title }</ThemedText>
             </View>
-            <Logo style={ styles.trashIcon } />
+
+            <View style={ styles.icons }>
+                <EditIcon iconColor={ colors.iconBackground } size={ 18 } />
+                <Trash style={ styles.trashIcon } />
+            </View>
         </Pressable>
     );
 }
@@ -107,10 +112,17 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 14,
     },
+
+    icons: {
+        display: 'flex',
+        flexDirection: 'row',
+        columnGap: 5,
+        alignItems: 'center',
+        height: 20,
+    },
     
     trashIcon: {
         transform: [{ scale: 1.1 }],
-        marginTop: 4,
     },
 
     actionIcon: {

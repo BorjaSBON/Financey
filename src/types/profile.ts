@@ -15,3 +15,7 @@ export type Profile = {
 export type UsernameProfile = {
     username: string;
 };
+
+export type LastActionProfile = {
+    lastAction: string;
+};

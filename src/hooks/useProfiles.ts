@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { profilesRepository } from '../db/repositories/profile.respository';
 
-import type { Profile, UsernameProfile } from '../types/profile';
+import type { LastActionProfile, Profile, UsernameProfile } from '../types/profile';
 
 export function useProfiles() {
     // Profiles information
@@ -104,7 +104,28 @@ export function useProfiles() {
         }
     }, []);
 
+    // MODIFY LAST ACTION
     // MODIFY
+    const modifyProfileLastAction = useCallback(async (data: LastActionProfile) => {
+        try {
+            // Set loading and error states
+            setLoading(true);
+            setError(null);
+
+            // Modify the last action
+            await profilesRepository.modifyLastAction(data);
+        } catch (err) {
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error modifying last action');
+            setError(error);
+            throw error;
+        } finally {
+            // Reset loading state
+            setLoading(false);
+        }
+    }, []);
+
+    // MODIFY USERNAME
     const modifyProfileUsername = useCallback(async (data: UsernameProfile) => {
         try {
             // Set loading and error states
@@ -262,10 +283,13 @@ export function useProfiles() {
         getProfiles,
         getProfile,
         UsernameProfile,
+
+        modifyProfileLastAction,
         modifyProfileUsername,
         modifyProfileDataAdded,
         modifyProfileDataModified,
         modifyProfileDataDeleted,
+        
         removeProfile,
         loginById,
         logout,

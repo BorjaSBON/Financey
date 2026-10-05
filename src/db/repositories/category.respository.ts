@@ -28,7 +28,7 @@ export async function getAll(): Promise<Category[]> {
 }
 
 // Get a category by ID
-export async function getById(id: number): Promise<Category | null> {
+export async function getById(id: number): Promise<Category> {
     const db = await dbPromise;
 
     const row = await db.getFirstAsync(
@@ -40,27 +40,31 @@ export async function getById(id: number): Promise<Category | null> {
         id
     );
 
-    return row ? mapCategory(row) : null;
+    return mapCategory(row);
 }
 
 // Create a new category
 export async function create(category: CreateCategory): Promise<number> {
-    const db = await dbPromise;
+    try {
+        const db = await dbPromise;
 
-    const result = await db.runAsync(
-        `
-            INSERT INTO categories (name, type)
-            VALUES (?, ?)
-        `,
-        category.name,
-        category.type
-    );
+        const result = await db.runAsync(
+            `
+                INSERT INTO categories (name, type)
+                VALUES (?, ?)
+            `,
+            category.name,
+            category.type
+        );
 
-    return result.lastInsertRowId;
+        return result.lastInsertRowId;
+    } catch (err) {
+        throw new Error('The category name must be unique');
+    }
 }
 
 // Modify an existing category
-export async function modify(id: number, category: UpdateCategory): Promise<void> {
+export async function modify(category: UpdateCategory): Promise<void> {
     const db = await dbPromise;
 
     await db.runAsync(
@@ -70,7 +74,7 @@ export async function modify(id: number, category: UpdateCategory): Promise<void
             WHERE id = ?
         `,
         category.name,
-        id
+        category.id
     );
 }
 

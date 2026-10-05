@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native';
-import { router } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 
 import { Values } from '@constants/values';
 
@@ -21,6 +21,18 @@ const ConfigurationScreen = () => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Change the router previous page
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('beforeRemove', (event) => {
+            event.preventDefault();
+            router.push('/');
+        });
+
+        return unsubscribe;
+    }, [navigation]);
 
     // Database
     const { profile, modifyProfileUsername, removeProfile, loadingProfiles } = useProfiles();

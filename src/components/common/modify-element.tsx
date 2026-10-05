@@ -11,6 +11,7 @@ interface Props {
     // Variables
     active?: boolean;
     title?: string;
+    titleButton?: string;
     value?: string;
     placeholder?: string;
     error?: string | null;
@@ -21,7 +22,7 @@ interface Props {
     onChange?: (value:string) => void;
 }
 
-export default function ModifyElement({ active=false, title='Modify element', value='', placeholder='Element name', error, modifyAction, cancelAction, onChange }: Props) {
+export default function ModifyElement({ active=false, title='Modify element', titleButton='Change', value='', placeholder='Element name', error, modifyAction, cancelAction, onChange }: Props) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
@@ -36,7 +37,7 @@ export default function ModifyElement({ active=false, title='Modify element', va
             { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
 
             <View style={ styles.buttons }>
-                <ThemedButton label='Change' type='default' onPress={ modifyAction } />
+                <ThemedButton label={ titleButton } type='default' onPress={ modifyAction } />
                 <ThemedButton label='Cancel' type='default' onPress={ cancelAction } />
             </View>
         </View>
