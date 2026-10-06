@@ -163,6 +163,23 @@ export async function removeAll(): Promise<void> {
     );
 }
 
+// Delete all transactions
+export async function removeByCategory(categoryId: number): Promise<void> {
+    const db = await dbPromise;
+
+    await db.runAsync(
+        `
+            DELETE FROM transactions
+            WHERE profile_id IN (
+                SELECT id
+                FROM profiles
+                WHERE active = 1
+            ) AND category_id = ?
+        `,
+        categoryId
+    );
+}
+
 // Get the balance for a given date range
 export async function getBalance(profileId: number, from: string = '0000-01-01T00:00:00.000Z', to: string = '9999-12-31T23:59:59.999Z'): Promise<{ income: number, expense: number }> {
     const db = await dbPromise;
@@ -245,8 +262,10 @@ export const transactionsRepository = {
     getById,
     create,
     modify,
+
     remove,
     removeAll,
+    removeByCategory,
 
     getBalance,
     getLastTransaction,

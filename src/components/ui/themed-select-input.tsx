@@ -15,13 +15,12 @@ interface DropdownProps {
     // Variables
     data: DropdownItem[];
     value: string;
-    displayArrow: boolean;
 
     // Methods
     onSelect: (item: DropdownItem) => void;
 }
 
-export function ThemedSelectInput({ data, value, displayArrow=true, onSelect }: DropdownProps) {
+export function ThemedSelectInput({ data, value, onSelect }: DropdownProps) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
@@ -69,9 +68,6 @@ export function ThemedSelectInput({ data, value, displayArrow=true, onSelect }: 
             <View style={styles.container}>
                 <Pressable ref={ selectRef } style={ styles.select } onPress={ openDropdown }>
                     <ThemedText style={styles.selectedText} weight='light'>{ selectedItem?.label ?? 'Select' }</ThemedText>
-                    {
-                        displayArrow === true && <ThemedText style={styles.arrow} weight="light">{ open ? '▲' : '▼' }</ThemedText>
-                    }
                 </Pressable>
             </View>
 

@@ -12,7 +12,6 @@ import { ThemedText } from '@ui/themed-text';
 import TypeButtons from '@components/data/type-buttons';
 import { CategoryElement, NewCategory } from '@components/configuration/category-element';
 import ModifyElement from '@components/common/modify-element';
-import DeleteElement from '@components/common/delete-element';
 
 import { useCategories } from '@/src/hooks/useCategories';
 import { useProfiles } from '@/src/hooks/useProfiles';
@@ -35,7 +34,7 @@ const Categories = () => {
     }, [navigation]);
 
     // Database
-    const { categories, category, createCategory, modifyCategory, removeCategory, loadingCategories } = useCategories();
+    const { categories, category, createCategory, loadingCategories } = useCategories();
     const { modifyProfileLastAction } = useProfiles();
 
     // Variables
@@ -81,7 +80,7 @@ const Categories = () => {
             await modifyProfileLastAction({ lastAction: 'Create category' });
             router.push('/configuration/data/categories');
         } catch (err) {
-            const error = err instanceof Error ? err : new Error('The category name must be unique');
+            const error = err instanceof Error ? err : new Error('Error creating category');
             setError(error.message);
         }
     };
@@ -96,16 +95,6 @@ const Categories = () => {
 
     const changeNameAction = async () => {
         // TODO
-    };
-
-    // REMOVE CATEGORY ACTION
-    const deleteCategoryTitle = 'Are you sure you want to delete the category? All the transactions related will be permanently lost';
-    const deleteCategoryAction = async () => {
-        // Remove transactions
-        // TODO
-
-        // Remove category
-        // await removeCategory(1);
     };
 
     if (loadingCategories) {
@@ -139,9 +128,12 @@ const Categories = () => {
                             {
                                 categories_selected.map((category) => (
                                     <CategoryElement key={ category.name } title={ category.name } type={ category.type } onPress={ () => {
-                                        setCategoryName(category.name);
-                                        setRemoveCategoryPopup(false);
-                                        setModifyCategoryPopup(true);
+                                        router.push({
+                                            pathname: '/configuration/data/categories/[id]',
+                                            params: {
+                                                id: category.id.toString(),
+                                            },
+                                        })
                                     } } />
                                 )) 
                             }
@@ -152,7 +144,6 @@ const Categories = () => {
 
             <ModifyElement active={ createCategoryPopup } title='New category' titleButton='Create' value={ categoryName } placeholder='New category' error={ error } modifyAction={ createCategoryAction } cancelAction={ activeCreateCategoryPopup } onChange={ setCategoryName } />
             <ModifyElement active={ modifyCategoryPopup } title='Modify category' value={ categoryName } placeholder='Modify category' error={ error } modifyAction={ changeNameAction } cancelAction={ activeModifyCategoryPopup } onChange={ setCategoryName } />
-            {/* <DeleteElement active={ removeCategoryPopup } title={ deleteCategoryTitle } titleButton='Delete' deleteAction={ deleteCategoryAction } cancelAction={ activeRemoveCategoryPopup } /> */}
         </View>
     );
 };

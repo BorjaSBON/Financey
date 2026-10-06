@@ -146,6 +146,26 @@ export function useTransactions() {
         }
     }, []);
 
+    // REMOVE TRANSACTIONS BY CATEGORY
+    const removeTransactionsByCategory = useCallback(async (categoryId: number) => {
+        try {
+            // Set loading and error states
+            setLoading(true);
+            setError(null);
+
+            // Remove all transactions
+            await transactionsRepository.removeByCategory(categoryId);
+        } catch (err) {
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error removing all transactions');
+            setError(error);
+            throw error;
+        } finally {
+            // Reset loading state
+            setLoading(false);
+        }
+    }, []);
+
     // GET THE TOTAL INCOMES AND EXPENSES
     const getBalance = useCallback(async (profileId: number, from: string = '0000-01-01T00:00:00.000Z', to: string = '9999-12-31T23:59:59.999Z'): Promise<{ income: number, expense: number }> => {
         try {
@@ -209,8 +229,10 @@ export function useTransactions() {
         getTransaction,
         createTransaction,
         modifyTransaction,
+
         removeTransaction,
         removeTransactions,
+        removeTransactionsByCategory,
 
         getBalance,
         getLastTransaction,

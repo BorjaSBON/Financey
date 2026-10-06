@@ -24,30 +24,23 @@ const DataModify = () => {
     const styles = createStyles(colors);
     
     // Database
-    const { transaction, getTransaction, modifyTransaction, removeTransaction, loadingTransactions } = useTransactions();
-    const { categories, loadingCategories } = useCategories();
-    const { modifyProfileDataModified, modifyProfileDataDeleted } = useProfiles();
+    const { removeTransactionsByCategory, loadingTransactions } = useTransactions();
+    const { category, getCategory, modifyCategory, removeCategory, loadingCategories } = useCategories();
+    const { modifyProfileLastAction } = useProfiles();
 
     // ID of the element
     const { id } = useLocalSearchParams<{ id: string }>();
 
     useEffect(() => {
-        const loadTransaction = async () => {
-            await getTransaction(Number(id));
+        const loadCategory = async () => {
+            await getCategory(Number(id));
         };
 
-        loadTransaction();
+        loadCategory();
     }, [id]);
 
     // Active type
     const [expenseActive, setExpenseActive] = useState(true);
-    let categories_selected = categories.filter(item => item.type === (expenseActive ? 'expense' : 'income'));
-    let categories_formatted = categories_selected.map((item) => {
-        return {
-            value: item.name.toLowerCase(),
-            label: item.name,
-        };
-    });
 
     const expenseActivation = () => {
         setExpenseActive(true);
@@ -57,12 +50,8 @@ const DataModify = () => {
         setExpenseActive(false);
     }
 
-    // Category select
-    const [selectValue, setSelectValue] = useState('');
-
-    // Amount and date value
-    const [amount, setAmount] = useState('');
-    const [date, setDate] = useState<Date | null>(null);
+    // Category name
+    const [name, setName] = useState('');
 
     // Delete popup
     const [deleteElementPopup, setDeleteElementPopup] = useState(false);
@@ -75,57 +64,43 @@ const DataModify = () => {
 
     // Load transaction data into the form
     useEffect(() => {
-        if (!transaction) {
+        if (!category) {
             return;
         }
 
-        setAmount(String(transaction.amount / 100));
-        setDate(new Date(transaction.date));
-        setSelectValue(transaction.categoryName.toLowerCase());
-        setExpenseActive(transaction.type === 'expense');
-    }, [transaction]);
+        setName(category.name);
+    }, [category]);
 
-    // MODIFY TRANSACTION ACTION
-    async function modidyTransactionAction() {
+    // MODIFY CATEGORY ACTION
+    async function modidyCategoryAction() {
         // Check if the values are valid
-        if (!amount || !selectValue || !date) {
-            setError('Fill all the inputs');
+        if (!name) {
+            setError('Fill the name input');
             return;
         }
 
         setError(null);
 
-        if (isNaN(Number(amount.replace(',', '.')))) {
-            setError('The amount is not a valid number');
-            return;
-        }
-
-        // Convert the amount value to a valid number
-        const amountInCents = Math.round(Number(amount) * 100);
-
-        // Modify transaction
-        await modifyTransaction({
-            id: Number(id),
-            type: expenseActive ? 'expense' : 'income',
-            amount: amountInCents,
-            categoryId: categories_selected.find(item => item.name.toLowerCase() === selectValue)?.id || 1,
-            date: date ? date.toISOString() : new Date().toISOString(),
-        });
+        // Modify category
+        await modifyCategory({ id: Number(id), name });
 
         // Modify profile
-        await modifyProfileDataModified();
+        await modifyProfileLastAction({ lastAction: 'Modify category' });
 
         // Return to the prevous page
         router.back();
     };
 
-    // DELETE TRANSACTION ACTION
-    async function deleteTransactionAction() {
-        // Remove the transaction
-        await removeTransaction(transaction?.id || 0);
+    // DELETE CATEGORY ACTION
+    async function deleteCategoryAction() {
+        // Remove the transactions related to the category
+        await removeTransactionsByCategory(Number(id));
+
+        // Remove the category
+        await removeCategory(Number(id));
 
         // Modify the profile
-        await modifyProfileDataDeleted();
+        await modifyProfileLastAction({ lastAction: 'Delete category' });
 
         // Return to the prevous page
         router.back();
@@ -141,34 +116,20 @@ const DataModify = () => {
             <View>
                 <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
 
-                <View style={ styles.amountInput }>
-                    <TextInput
-                        style={ styles.amountValue }
-                        value={ String(amount) }
-                        placeholder='0000.00'
-                        onChangeText={ setAmount }
-                        inputMode='decimal'
-                        autoComplete='off'
-                        placeholderTextColor={ colors.fontSecondary }
-                    />
-                    <ThemedText style={ styles.amountUnit } weight='light'>€</ThemedText>
-                </View>
-
                 <View style={ styles.inputs }>
-                    <Input name='Category' type='select' selectData={ categories_formatted } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
-                    <Input name='Date' type='date' dateValue={ date } onChange={ setDate } />
+                    <Input name='Name' type='text' placeholder='Category name' value={ name } onChangeText={ setName } />
                 </View>
 
                 { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
 
                 <View style={ styles.buttons }>
                     <ThemedButton label='Delete' type='delete' onPress={ activeDeleteElementPopup } />
-                    <ThemedButton label='Modify' type='default' onPress={ modidyTransactionAction }/>
+                    <ThemedButton label='Modify' type='default' onPress={ modidyCategoryAction }/>
                     <ThemedButton label='Cancel' type='default' onPress={ () => { router.back() } }/>
                 </View>
             </View>
 
-            <DeleteElement active={ deleteElementPopup } title='Are you sure you want to delete the element?' titleButton='Delete' deleteAction={ deleteTransactionAction } cancelAction={ activeDeleteElementPopup } />
+            <DeleteElement active={ deleteElementPopup } title='Are you sure you want to delete the element? All the related transactions will be lost.' titleButton='Delete' deleteAction={ deleteCategoryAction } cancelAction={ activeDeleteElementPopup } />
         </View>
     );
 };
@@ -179,7 +140,7 @@ const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         container: {
             flex: 1,
-            top: Values.topNotHeader,
+            top: Values.topIfHeader,
             width: '100%',
             paddingBottom: 125,
         },
@@ -190,17 +151,6 @@ const createStyles = (colors: ThemeColors) =>
             columnGap: 0,
             marginHorizontal: 'auto',
             marginTop: 10,
-        },
-
-        amountValue: {
-            fontSize: 28,
-            color: colors.fontPrimary,
-        },
-
-        amountUnit: {
-            fontSize: 16,
-            marginVertical: 'auto',
-            marginBottom: 14,
         },
 
         inputs: {
