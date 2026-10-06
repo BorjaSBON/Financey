@@ -55,7 +55,7 @@ export function NewCategory({ onPress }: NewCategoryProp) {
             onPress={ onPress }
         >
             <Add style={ styles.actionIcon } color={ colors.iconBackground } />
-            <ThemedText style={ styles.title } weight='light'>Create new category</ThemedText>
+            <ThemedText style={ styles.title } weight='light'>Add new category</ThemedText>
         </Pressable>
     );
 }

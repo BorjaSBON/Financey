@@ -14,4 +14,5 @@ export type CreateCategory = {
 export type UpdateCategory = {
     id: number;
     name: string;
+    type: TransactionType;
 };

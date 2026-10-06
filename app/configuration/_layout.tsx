@@ -13,7 +13,7 @@ const ConfigurationLayout = () => {
     const pathname = usePathname();
 
     const getTitle = () => {
-        if (/^\/configuration\/data\/categories\/\d+$/.test(pathname)) {
+        if (/^\/configuration\/data\/categories\/modify\/\d+$/.test(pathname)) {
             return 'Modify category';
         }
 
@@ -26,8 +26,8 @@ const ConfigurationLayout = () => {
                 return 'Information of the application';
             case '/configuration/data/categories':
                 return 'Categories';
-            case '/configuration/data/categories/create':
-                return 'Create category';
+            case '/configuration/data/categories/add':
+                return 'Add category';
             case '/configuration/data/import_data':
                 return 'Import data';
             default:

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, View, TextInput, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 
 import { Values } from '@constants/values';
@@ -69,6 +69,7 @@ const DataModify = () => {
         }
 
         setName(category.name);
+        setExpenseActive(category.type === 'expense');
     }, [category]);
 
     // MODIFY CATEGORY ACTION
@@ -82,7 +83,7 @@ const DataModify = () => {
         setError(null);
 
         // Modify category
-        await modifyCategory({ id: Number(id), name });
+        await modifyCategory({ id: Number(id), name: name, type: expenseActive ? 'expense' : 'income' });
 
         // Modify profile
         await modifyProfileLastAction({ lastAction: 'Modify category' });

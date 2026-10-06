@@ -70,10 +70,11 @@ export async function modify(category: UpdateCategory): Promise<void> {
     await db.runAsync(
         `
             UPDATE categories
-            SET name = ?
+            SET name = ?, type = ?
             WHERE id = ?
         `,
         category.name,
+        category.type,
         category.id
     );
 }

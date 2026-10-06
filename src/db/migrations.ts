@@ -4,6 +4,7 @@ export async function initializeDatabase() {
     const db = await dbPromise;
 
     // DROP TABLE IF EXISTS categories;
+    // DROP TABLE IF EXISTS transactions;
     // DROP TABLE IF EXISTS profiles;
 
     // INSERT INTO profiles (username, creation_date, last_action_date, data_added, data_modified, data_deleted)
