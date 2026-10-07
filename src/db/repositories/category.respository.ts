@@ -11,6 +11,7 @@ function mapCategory(row: any): Category {
         id: row.id,
         name: row.name,
         type: row.type,
+        profileId: row.profile_id,
     };
 }
 
@@ -20,7 +21,10 @@ export async function getAll(): Promise<Category[]> {
 
     const rows = await db.getAllAsync(`
         SELECT *
-        FROM categories
+        FROM categories c
+        INNER JOIN profiles p
+            ON p.id = c.profile_id
+        WHERE p.active = 1
         ORDER BY name ASC
     `);
 
@@ -48,13 +52,48 @@ export async function create(category: CreateCategory): Promise<number> {
     try {
         const db = await dbPromise;
 
-        const result = await db.runAsync(
+        // Get the active profile
+        const profile = await db.getFirstAsync<{ id: number }>(
             `
-                INSERT INTO categories (name, type)
-                VALUES (?, ?)
+                SELECT id
+                FROM profiles
+                WHERE active = 1
+                LIMIT 1
+            `
+        );
+
+        if (!profile) {
+            throw new Error('There is no active profile');
+        }
+
+        // Check if the category name is unique for the active profile
+        const existingCategory = await db.getFirstAsync<{ id: number }>(
+            `
+                SELECT id
+                FROM categories
+                WHERE profile_id = ?
+                    AND name = ?
+                    AND type = ?
+                LIMIT 1
             `,
+            profile.id,
             category.name,
             category.type
+        );
+
+        if (existingCategory) {
+            throw new Error('The category name must be unique');
+        }
+
+        // Insert the category
+        const result = await db.runAsync(
+            `
+                INSERT INTO categories (name, type, profile_id)
+                VALUES (?, ?, ?)
+            `,
+            category.name,
+            category.type,
+            profile.id
         );
 
         return result.lastInsertRowId;

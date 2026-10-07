@@ -12,6 +12,7 @@ import { ThemedButton } from '@ui/themed-button';
 import { AccountElement } from '@components/configuration/account-element';
 
 import { useProfiles } from '@/src/hooks/useProfiles';
+import { useCategories } from '@/src/hooks/useCategories';
 
 const LoginScreen = () => {
     // Theme
@@ -24,6 +25,7 @@ const LoginScreen = () => {
 
     // Database
     const { profiles, UsernameProfile, loginById, loadingProfiles } = useProfiles();
+    const { createCategory } = useCategories();
     
     // Validate username and create account
     const validateUsername = async () => {
@@ -39,6 +41,12 @@ const LoginScreen = () => {
             try {
                 // Create the profile
                 await UsernameProfile({ 'username': username });
+
+                // Create the default categories
+                await createCategory({ name: 'General', type: 'expense' });
+                await createCategory({ name: 'General', type: 'income' });
+
+                // Redirect
                 router.push('/home');
             } catch (err) {
                 setError('The username must be unique');

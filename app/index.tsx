@@ -12,13 +12,7 @@ const App = () => {
         return <ActivityIndicator />;
     }
 
-    // If there are no profiles, redirect to the login page
-    if (profile) {
-        return <Redirect href='/home' />;
-    }
-
-    // If there are profiles, redirect to the home page
-    return <Redirect href='/home/login' />;
+    return profile ? <Redirect href='/home' /> : <Redirect href='/home/login' />;
 };
 
 export default App;

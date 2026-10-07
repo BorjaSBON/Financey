@@ -29,9 +29,16 @@ export async function initializeDatabase() {
 
         CREATE TABLE IF NOT EXISTS categories (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL UNIQUE,
-            type TEXT NOT NULL CHECK (type IN ('income', 'expense'))
+            name TEXT NOT NULL,
+            type TEXT NOT NULL CHECK (type IN ('income', 'expense')),
+            profile_id INTEGER NOT NULL,
+
+            FOREIGN KEY (profile_id)
+                REFERENCES profiles(id)
         );
+
+        CREATE INDEX IF NOT EXISTS idx_categories_profile
+            ON categories(profile_id);
 
         CREATE TABLE IF NOT EXISTS transactions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
