@@ -7,7 +7,7 @@ import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
-import Logo from '@assets/return.svg';
+import ReturnIcon from '@assets/return.svg';
 
 interface Props {
     // Variables
@@ -27,7 +27,7 @@ export default function Header({ title }: Props) {
                 ]} 
                 onPress={ () => router.back() } 
             >
-                <Logo style={ styles.icon } color={ colors.iconBackground } />
+                <ReturnIcon style={ styles.icon } color={ colors.iconBackground } />
             </Pressable>
             <ThemedText style={ styles.title }>{ title }</ThemedText>
         </View>
@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     icon: {
         width: 25,
         height: 25,
-        marginTop: 3,
         transform: [{scale: 0.75}]
     }
 });
