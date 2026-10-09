@@ -12,12 +12,16 @@ export type DropdownItem<T extends string = string> = {
 };
 
 interface DropdownProps<T extends string = string> {
+    // Variables
     data: DropdownItem<T>[];
     value: T;
+    widthInput?: number;
+
+    // Methods
     onSelect: (item: DropdownItem<T>) => void;
 }
 
-export function ThemedSelectInputMini<T extends string = string>({ data, value, onSelect }: DropdownProps<T>) {
+export function ThemedSelectInputMini<T extends string = string>({ data, value, widthInput=75, onSelect }: DropdownProps<T>) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
@@ -63,7 +67,7 @@ export function ThemedSelectInputMini<T extends string = string>({ data, value, 
     return (
         <View>
             <View style={ styles.container }>
-                <Pressable ref={ selectRef } style={ styles.select } onPress={ openDropdown }>
+                <Pressable ref={ selectRef } style={[ styles.select, { width: widthInput } ]} onPress={ openDropdown }>
                     <ThemedText style={styles.selectedText} weight='light'>{ selectedItem?.label ?? 'Select' }</ThemedText>
                 </Pressable>
             </View>
@@ -108,7 +112,6 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         select: {
-            width: 75,
             paddingHorizontal: 15,
             paddingVertical: 4,
             flexDirection: 'row',
@@ -135,7 +138,7 @@ const createStyles = (colors: ThemeColors) =>
             maxHeight: 390,
             backgroundColor: colors.inputMiniBackgroundDropdown,
             borderWidth: 1,
-            borderColor: colors.inputMiniBackgroundDropdown,
+            borderColor: colors.inputMiniBorderDropdown,
             borderRadius: 5,
             elevation: 10,
 

@@ -105,8 +105,24 @@ export function useCategories() {
         }
     }, [getCategories]);
 
-    useEffect(() => {
-        getCategories();
+    // REMOVE ALL
+    const removeAllCategories = useCallback(async () => {
+        try {
+            // Set loading and error states
+            setLoading(true);
+            setError(null);
+
+            // Remove all categories
+            await categoriesRepository.removeAll();
+        } catch (err) {
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error removing all categories');
+            setError(error);
+            throw error;
+        } finally {
+            // Reset loading state
+            setLoading(false);
+        }
     }, [getCategories]);
 
     // REMOVE
@@ -144,6 +160,7 @@ export function useCategories() {
         getCategory,
         createCategory,
         modifyCategory,
+        removeAllCategories,
         removeCategory
     };
 }

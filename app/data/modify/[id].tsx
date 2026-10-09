@@ -7,6 +7,8 @@ import { Values } from '@constants/values';
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
 
+import { useCurrency } from '@currency/useCurrency';
+
 import { ThemedText } from '@ui/themed-text';
 import { ThemedButton } from '@ui/themed-button';
 
@@ -22,6 +24,9 @@ const DataModify = () => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+    
+    // Currency
+    const { currencyInfo } = useCurrency();
     
     // Database
     const { transaction, getTransaction, modifyTransaction, removeTransaction, loadingTransactions } = useTransactions();
@@ -151,7 +156,7 @@ const DataModify = () => {
                         autoComplete='off'
                         placeholderTextColor={ colors.fontSecondary }
                     />
-                    <ThemedText style={ styles.amountUnit } weight='light'>€</ThemedText>
+                    <ThemedText style={ styles.amountUnit } weight='light'>{ currencyInfo.symbol }</ThemedText>
                 </View>
 
                 <View style={ styles.inputs }>

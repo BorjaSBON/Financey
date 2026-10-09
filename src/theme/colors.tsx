@@ -31,6 +31,7 @@ export interface ThemeColors {
     inputMiniFontPlaceholder: string;
     inputMiniBackground: string;
     inputMiniBackgroundDropdown: string;
+    inputMiniBorderDropdown: string;
 
     // Hover
     hoverElement: string;
@@ -74,8 +75,9 @@ export const LightColors: ThemeColors = {
     // Input Mini
     inputMiniFont: '#0F172A',
     inputMiniFontPlaceholder: '#0F172A80',
-    inputMiniBackground: '#D9D9D933',
+    inputMiniBackground: '#D9D9D966',
     inputMiniBackgroundDropdown: '#FFFFFF',
+    inputMiniBorderDropdown: '#0F172A20',
 
     // Hover
     hoverElement: '#111A301A',
@@ -121,6 +123,7 @@ export const DarkColors: ThemeColors = {
     inputMiniFontPlaceholder: '#FFFFFF',
     inputMiniBackground: '#5EEAD426',
     inputMiniBackgroundDropdown: '#111A30',
+    inputMiniBorderDropdown: '#FFFFFF20',
 
     // Hover
     hoverElement: '#FFFFFF1A',

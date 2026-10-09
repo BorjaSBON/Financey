@@ -158,6 +158,7 @@ export async function removeAll(): Promise<void> {
                 SELECT id
                 FROM profiles
                 WHERE active = 1
+                LIMIT 1
             )
         `,
     );

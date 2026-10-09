@@ -21,6 +21,9 @@
 			"@theme/*": [
 				"./src/theme/*"
 			],
+			"@currency/*": [
+				"./src/currency/*"
+			],
 			"@assets/*": [
 				"./assets/svg/*"
 			],

@@ -6,6 +6,8 @@ import { Values } from '@constants/values';
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
 
+import { useCurrency } from '@currency/useCurrency';
+
 import { ThemedText } from '@ui/themed-text';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
@@ -20,6 +22,9 @@ export default function BalanceResume({ squareEnable=false }: Props) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Currency
+    const { currencyInfo } = useCurrency();
 
     // Database
     const { getBalance, loadingTransactions } = useTransactions();
@@ -68,7 +73,7 @@ export default function BalanceResume({ squareEnable=false }: Props) {
                     </View>
                     <ThemedText style={ styles.data } weight='light' numberOfLines={ 1 } adjustsFontSizeToFit>
                         { ReadableNumber(income) }
-                        <ThemedText style={ styles.currency }  weight='light'> €</ThemedText>
+                        <ThemedText style={ styles.currency }  weight='light'> { currencyInfo.symbol }</ThemedText>
                     </ThemedText>
                 </View>
 
@@ -76,7 +81,7 @@ export default function BalanceResume({ squareEnable=false }: Props) {
                     <ThemedText style={ styles.title } weight='regular'>Balance</ThemedText>
                     <ThemedText style={[ styles.data, balanceColor ]} weight='regular' numberOfLines={ 1 } adjustsFontSizeToFit>
                         { ReadableNumber(balance) }
-                        <ThemedText style={[ styles.currency, balanceColor ]} weight='light'> €</ThemedText>
+                        <ThemedText style={[ styles.currency, balanceColor ]} weight='light'> { currencyInfo.symbol }</ThemedText>
                     </ThemedText>
                 </View>
 
@@ -87,7 +92,7 @@ export default function BalanceResume({ squareEnable=false }: Props) {
                     </View>
                     <ThemedText style={ styles.data } weight='light' numberOfLines={ 1 } adjustsFontSizeToFit>
                         { ReadableNumber(expense) }
-                        <ThemedText style={ styles.currency } weight='light'> €</ThemedText>
+                        <ThemedText style={ styles.currency } weight='light'> { currencyInfo.symbol }</ThemedText>
                     </ThemedText>
                 </View>
             </View>

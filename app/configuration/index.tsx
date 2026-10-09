@@ -10,12 +10,13 @@ import { useTheme } from '@theme/useTheme';
 import { ThemedText } from '@ui/themed-text';
 
 import ConfElement from '@components/configuration/conf-element';
-import ConfElementSelect from '@components/configuration/conf-element-select';
+import { ConfElementSelect, ConfCurrencySelect } from '@components/configuration/conf-element-select';
 import ModifyElement from '@components/common/modify-element';
 import DeleteElement from '@components/common/delete-element';
 
 import { useProfiles } from '@/src/hooks/useProfiles';
 import { useTransactions } from '@/src/hooks/useTransactions';
+import { useCategories } from '@/src/hooks/useCategories';
 
 const ConfigurationScreen = () => {
     // Theme
@@ -37,6 +38,7 @@ const ConfigurationScreen = () => {
     // Database
     const { profile, modifyProfileUsername, removeProfile, loadingProfiles } = useProfiles();
     const { removeTransactions } = useTransactions();
+    const { removeAllCategories } = useCategories();
 
     // Variables
     const [changeUsernamePopup, setChangeUsernamePopup] = useState(false);
@@ -107,7 +109,7 @@ const ConfigurationScreen = () => {
         await removeTransactions();
 
         // Remove categories
-        // TODO
+        await removeAllCategories();
 
         // Remove profile
         await removeProfile();
@@ -142,7 +144,7 @@ const ConfigurationScreen = () => {
                     <View style={ styles.section }>
                         <ThemedText style={ styles.title } weight='regular'>Data</ThemedText>
                         <View style={ styles.elements }>
-                            <ConfElementSelect title='Currency' />
+                            <ConfCurrencySelect />
                             <ConfElement title='Categories' onPress={ () => router.push('/configuration/data/categories') } />
                             <ConfElement title='Import data' onPress={ () => router.push('/configuration/data/import_data') } />
                             <ConfElement title='Export data' iconDisplay={ false } onPress={ exportData } />

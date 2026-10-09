@@ -5,6 +5,8 @@ import { Values } from '@constants/values';
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
 
+import { useCurrency } from '@currency/useCurrency';
+
 import { ThemedText } from '@ui/themed-text';
 
 import Filter from '@assets/filter.svg';
@@ -36,6 +38,9 @@ export function TransactionElement({ type, category, value, date, onPress }: Tra
     const { colors } = useTheme();
     const styles = createStyles(colors);
 
+    // Currency
+    const { currencyInfo } = useCurrency();
+
     // Function to transform the values in readable text
     function ReadableNumber(value: number) {
         return (value / 100).toLocaleString('de-DE').replace(',', '\'');
@@ -59,7 +64,7 @@ export function TransactionElement({ type, category, value, date, onPress }: Tra
                 <ThemedText style={ styles.category } weight='light'>{ category }</ThemedText>
                 <ThemedText style={[ styles.value, valueColor ]} weight='medium'>
                     { ReadableNumber(value) }
-                    <ThemedText style={[ styles.unit, valueColor ]} weight='light'> €</ThemedText>
+                    <ThemedText style={[ styles.unit, valueColor ]} weight='light'> { currencyInfo.symbol }</ThemedText>
                 </ThemedText>
             </View>
             

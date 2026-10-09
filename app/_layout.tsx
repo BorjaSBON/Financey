@@ -9,6 +9,8 @@ import { initializeAppDatabase } from '@db/init';
 import { ThemeProvider } from '@theme/ThemeContext';
 import { useTheme } from '@theme/useTheme';
 
+import { CurrencyProvider } from '@currency/CurrencyContext';
+
 SplashScreen.preventAutoHideAsync();
 
 const RootLayoutContent = () => {
@@ -62,7 +64,9 @@ const RootLayout = () => {
 
     return (
 		<ThemeProvider>
-			<RootLayoutContent />
+			<CurrencyProvider>
+				<RootLayoutContent />
+			</CurrencyProvider>
 		</ThemeProvider>
 	);
 };

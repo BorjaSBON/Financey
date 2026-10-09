@@ -119,6 +119,24 @@ export async function modify(category: UpdateCategory): Promise<void> {
 }
 
 // Delete a category by ID
+export async function removeAll(): Promise<void> {
+    const db = await dbPromise;
+
+    // Delete all categories for the active profile
+    await db.runAsync(
+        `
+            DELETE FROM categories
+            WHERE profile_id IN (
+                SELECT id
+                FROM profiles
+                WHERE active = 1
+                LIMIT 1
+            )
+        `,
+    );
+}
+
+// Delete a category by ID
 export async function remove(id: number): Promise<void> {
     const db = await dbPromise;
 
@@ -137,5 +155,6 @@ export const categoriesRepository = {
     getById,
     create,
     modify,
+    removeAll,
     remove,
 };

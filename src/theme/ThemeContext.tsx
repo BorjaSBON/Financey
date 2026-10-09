@@ -7,17 +7,18 @@ import { Themes, ThemeName, ThemePreference } from '@theme/colors';
 const THEME_STORAGE_KEY = '@theme_preference';
 
 interface ThemeContextType {
+    // Variables
     themePreference: ThemePreference;
     resolvedTheme: ThemeName;
     colors: typeof Themes.light;
-    setThemePreference: (
-        preference: ThemePreference
-    ) => Promise<void>;
+
+    // Methods
+    setThemePreference: (preference: ThemePreference) => Promise<void>;
 }
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children, }: { children: React.ReactNode; }) {
+export function ThemeProvider({ children }: { children: React.ReactNode; }) {
     const systemTheme = useColorScheme();
 
     const [themePreference, setThemePreferenceState] =
