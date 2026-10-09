@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         width: 10,
         height: 10,
         borderRadius: 2,
-        marginTop: 7,
+        margin: 'auto',
     },
 
     title: {

@@ -26,6 +26,11 @@ interface NewTransactionProp {
     onPress?: () => void;
 }
 
+interface TransactionHeaderProp {
+    // Variables
+    title: string;
+}
+
 export function TransactionElement({ type, category, value, date, onPress }: TransactionProps) {
     // Theme
     const { colors } = useTheme();
@@ -82,6 +87,20 @@ export function NewTransaction({ onPress }: NewTransactionProp) {
     );
 }
 
+export function TransactionHeader({ title }: TransactionHeaderProp) {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
+    return (
+        <View style={ styles.headerElement }>
+            <View style={ styles.divider } />
+            <ThemedText style={ styles.header } weight='regular'>{ title }</ThemedText>
+            <View style={ styles.divider } />
+        </View>
+    );
+}
+
 export function FilterTransactions({ onPress }: NewTransactionProp) {
     // Theme
     const { colors } = useTheme();
@@ -124,6 +143,15 @@ const createStyles = (colors: ThemeColors) =>
             columnGap: 5,
         },
 
+        headerElement: {
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            width: '100%',
+            height: 36,
+            paddingHorizontal: Values.paddingElement,
+        },
+
         letter: {
             margin: 'auto',
             fontSize: 14,
@@ -142,12 +170,11 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         category: {
-            fontSize: 14,
+            fontSize: 13,
         },
 
         value: {
             fontSize: 13,
-            marginTop: -2,
             height: '100%',
             textAlignVertical: 'bottom',
         },
@@ -164,12 +191,23 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         date: {
-            fontSize: 11,
+            fontSize: 10,
             color: colors.fontSecondary,
         },
 
         actionIcon: {
             transform: [{ scale: 0.6 }]
+        },
+
+        header: {
+            fontSize: 14,
+        },
+
+        divider: {
+            backgroundColor: colors.hoverElement,
+            height: 1,
+            width: '100%',
+            borderRadius: 2,
         },
     }
 );

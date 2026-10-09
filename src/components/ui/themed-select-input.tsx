@@ -68,6 +68,7 @@ export function ThemedSelectInput({ data, value, onSelect }: DropdownProps) {
             <View style={styles.container}>
                 <Pressable ref={ selectRef } style={ styles.select } onPress={ openDropdown }>
                     <ThemedText style={styles.selectedText} weight='light'>{ selectedItem?.label ?? 'Select' }</ThemedText>
+                    <ThemedText style={styles.arrow} weight="light">{ open ? '▲' : '▼' }</ThemedText>
                 </Pressable>
             </View>
 

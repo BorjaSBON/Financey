@@ -33,7 +33,7 @@ const App = () => {
         return <ActivityIndicator />;
     }
 
-    return profile ? <Redirect href='/home' /> : <Redirect href='/home/login' />;
+    return profile ? <Redirect href='/home' /> : <Redirect href='/login' />;
 };
 
 export default App;

@@ -12,6 +12,7 @@ export async function initializeDatabase() {
 
     await db.execAsync(`
         PRAGMA journal_mode = WAL;
+        PRAGMA foreign_keys = ON;
 
         CREATE TABLE IF NOT EXISTS profiles (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

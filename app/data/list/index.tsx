@@ -10,7 +10,7 @@ import { useTheme } from '@theme/useTheme';
 import { ThemedText } from '@ui/themed-text';
 
 import BalanceResume from '@components/data/balance-resume';
-import { TransactionElement, NewTransaction, FilterTransactions } from '@components/data/list-element';
+import { TransactionElement, NewTransaction, FilterTransactions, TransactionHeader } from '@components/data/list-element';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
 
@@ -33,6 +33,34 @@ const DataList = () => {
 
     // Database
     const { transactions, loadingTransactions } = useTransactions();
+
+    const addMonthHeaders = (transactionsRaw: any[]) => {
+        const result = [];
+        let previousMonth = null;
+
+        for (const transaction of transactionsRaw) {
+            const date = new Date(transaction.date);
+
+            const monthKey = `${date.getFullYear()}-${date.getMonth()}`;
+
+            if (monthKey !== previousMonth) {
+                result.push({
+                    type: 'header',
+                    id: `month-${monthKey}`,
+                    title: date.toLocaleDateString('en-GB', {
+                        month: 'long',
+                        year: 'numeric',
+                    }),
+                });
+
+                previousMonth = monthKey;
+            }
+
+            result.push(transaction);
+        }
+
+        return result;
+    };
 
     return (
         <View style={ styles.container }>
@@ -60,16 +88,22 @@ const DataList = () => {
                             loadingTransactions ? 
                                 <ActivityIndicator/> :
                                 <FlatList
-                                    data={ transactions }
+                                    data={ addMonthHeaders(transactions) }
                                     keyExtractor={ (item) => item.id.toString() }
-                                    renderItem={({ item }) => <TransactionElement type={ item.type } category={ item.categoryName } value={ item.amount } date={ item.date } onPress={ () =>
-                                        router.push({
-                                            pathname: '/data/modify/[id]',
-                                            params: {
-                                                id: item.id.toString(),
-                                            },
-                                        })
-                                    } />}
+                                    renderItem={({ item }) => {
+                                        if (item.type === 'header') {
+                                            return (<TransactionHeader title={ item.title } />);
+                                        }
+
+                                        return (<TransactionElement type={ item.type } category={ item.categoryName } value={ item.amount } date={ item.date } onPress={ () =>
+                                            router.push({
+                                                pathname: '/data/modify/[id]',
+                                                params: {
+                                                    id: item.id.toString(),
+                                                },
+                                            })
+                                        } />);
+                                    }}
                                 />
                         }
                     </View>

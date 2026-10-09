@@ -33,7 +33,7 @@ const AccountInformation = () => {
                         <View style={ styles.elements }>
                             <NewAccount onPress={ async () => {
                                 await logout();
-                                router.push('/');
+                                router.push('/login');
                             } } />
                         </View>
                     </View>

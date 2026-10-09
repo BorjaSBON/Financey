@@ -20,7 +20,7 @@ export async function getAll(): Promise<Category[]> {
     const db = await dbPromise;
 
     const rows = await db.getAllAsync(`
-        SELECT *
+        SELECT c.id AS id, c.name AS name, c.type AS type, c.profile_id AS profile_id
         FROM categories c
         INNER JOIN profiles p
             ON p.id = c.profile_id
