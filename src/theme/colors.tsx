@@ -42,6 +42,9 @@ export interface ThemeColors {
     // Icon
     iconColor: string;
     iconBackground: string;
+
+    // Charts
+    rulesColor: string;
 }
 
 export const LightColors: ThemeColors = {
@@ -88,6 +91,9 @@ export const LightColors: ThemeColors = {
     // Icon
     iconColor: '#FFFFFF',
     iconBackground: '#111A30',
+
+    // Charts
+    rulesColor: '#0F172A0D',
 } as const;
 
 export const DarkColors: ThemeColors = {
@@ -134,6 +140,9 @@ export const DarkColors: ThemeColors = {
     // Icon
     iconColor: '#111A30',
     iconBackground: '#FFFFFF',
+
+    // Charts
+    rulesColor: '#FFFFFF0D',
 } as const;
 
 export const Themes = {

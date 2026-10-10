@@ -25,7 +25,7 @@ const DataList = () => {
     useEffect(() => {
         const unsubscribe = navigation.addListener('beforeRemove', (event) => {
             event.preventDefault();
-            router.push('/');
+            router.push('/home');
         });
 
         return unsubscribe;
