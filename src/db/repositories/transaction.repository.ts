@@ -175,6 +175,7 @@ export async function removeByCategory(categoryId: number): Promise<void> {
                 SELECT id
                 FROM profiles
                 WHERE active = 1
+                LIMIT 1
             ) AND category_id = ?
         `,
         categoryId
@@ -257,6 +258,60 @@ export async function getLastTransaction(): Promise<Transaction | null> {
     return null;
 }
 
+// Get the balance of a year monthly
+export async function getBalanceMonthly(year: number) {
+    const db = await dbPromise;
+
+    // Dates
+    const startDate = `${year}-01-01`;
+    const endDate = `${year + 1}-01-01`;
+
+    // Get the transactions
+    return db.getAllAsync<{ month: number; income: number; expense: number; }>(
+        `
+            WITH RECURSIVE months(month) AS (
+                SELECT 1
+                UNION ALL
+                SELECT month + 1
+                FROM months
+                WHERE month < 12
+            ),
+            monthly_totals AS (
+                SELECT
+                    CAST(strftime('%m', date) AS INTEGER) AS month,
+                    SUM(CASE
+                        WHEN type = 'income' THEN amount
+                        ELSE 0
+                    END) AS income,
+                    SUM(CASE
+                        WHEN type = 'expense' THEN amount
+                        ELSE 0
+                    END) AS expense
+                FROM transactions
+                WHERE date >= ? 
+                    AND date < ? 
+                    AND profile_id IN (
+                        SELECT id
+                        FROM profiles
+                        WHERE active = 1
+                        LIMIT 1
+                    )
+                GROUP BY strftime('%m', date)
+            )
+            SELECT
+                months.month AS month,
+                COALESCE(monthly_totals.income, 0) AS income,
+                COALESCE(monthly_totals.expense, 0) AS expense
+            FROM months
+            LEFT JOIN monthly_totals
+                ON months.month = monthly_totals.month
+            ORDER BY months.month ASC;
+        `,
+        startDate,
+        endDate
+    );
+}
+
 // Export the repository functions
 export const transactionsRepository = {
     getAll,
@@ -270,4 +325,5 @@ export const transactionsRepository = {
 
     getBalance,
     getLastTransaction,
+    getBalanceMonthly,
 };

@@ -176,7 +176,7 @@ export function useTransactions() {
             // Get the incomes and expenses
             const { income, expense } = await transactionsRepository.getBalance(profileId, from, to);
 
-            // Return the income, expese and balance
+            // Return the incomes and expeses
             return { income, expense }
         } catch (err) {
             // Error handling
@@ -196,15 +196,38 @@ export function useTransactions() {
             setLoading(true);
             setError(null);
 
-            // Get the incomes and expenses
+            // Get the last transaction
             const data = await transactionsRepository.getLastTransaction();
             setLastTransaction(data);
 
-            // Return the income, expese and balance
+            // Return the last transaction
             return data;
         } catch (err) {
             // Error handling
             const error = err instanceof Error ? err : new Error('Error obtaining the last transaction');
+            setError(error);
+            throw error;
+        } finally {
+            // Reset loading state
+            setLoading(false);
+        }
+    }, []);
+
+    // GET THE BALANCE OF A YEAR MONTHLY
+    const getBalanceMonthly = useCallback(async (year: number) => {
+        try {
+            // Set loading and error states
+            setLoading(true);
+            setError(null);
+
+            // Get the balance
+            const data = await transactionsRepository.getBalanceMonthly(year);
+
+            // Return the balance
+            return data;
+        } catch (err) {
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error obtaining the balance of a year monthly');
             setError(error);
             throw error;
         } finally {
@@ -236,5 +259,6 @@ export function useTransactions() {
 
         getBalance,
         getLastTransaction,
+        getBalanceMonthly,
     };
 }

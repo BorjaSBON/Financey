@@ -42,7 +42,7 @@ const DataCharts = () => {
     return (
         <View style={ styles.container }>
             <BalanceResume squareEnable={ false } />
-            <GroupedBars />
+            <GroupedBars year={ 2026 } />
             <BalanceResume squareEnable={ false } />
             <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
         </View>

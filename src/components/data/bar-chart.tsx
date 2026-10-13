@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
 
@@ -6,121 +7,52 @@ import { Values } from '@constants/values';
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
 
-const GroupedBars = () => {
+import { useTransactions } from '@/src/hooks/useTransactions';
+
+interface Props {
+    // Variables
+    year: number,
+}
+
+const GroupedBars = ({ year }: Props) => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
 
-    const barData = [
-        {
-            value: 40,
-            label: 'J',
-            spacing: 1.5,
-            labelWidth: 10,
-            labelTextStyle: styles.horizontalLabelText,
-            frontColor: colors.positive,
-        },
-        { value: 20, frontColor: colors.negative },
-        {
-            value: 50,
-            label: 'F',
-            spacing: 1.5,
-            labelWidth: 10,
-            labelTextStyle: styles.horizontalLabelText,
-            frontColor: colors.positive,
-        },
-        { value: 40, frontColor: colors.negative },
-        {
-            value: 75,
-            label: 'M',
-            spacing: 1.5,
-            labelWidth: 10,
-            labelTextStyle: styles.horizontalLabelText,
-            frontColor: colors.positive,
-        },
-        { value: 25, frontColor: colors.negative },
-        {
-            value: 30,
-            label: 'A',
-            spacing: 1.5,
-            labelWidth: 10,
-            labelTextStyle: styles.horizontalLabelText,
-            frontColor: colors.positive,
-        },
-        { value: 20, frontColor: colors.negative },
-        {
-            value: 60,
-            label: 'M',
-            spacing: 1.5,
-            labelWidth: 10,
-            labelTextStyle: styles.horizontalLabelText,
-            frontColor: colors.positive,
-        },
-        { value: 40, frontColor: colors.negative },
-        {
-            value: 65,
-            label: 'J',
-            spacing: 1.5,
-            labelWidth: 10,
-            labelTextStyle: styles.horizontalLabelText,
-            frontColor: colors.positive,
-        },
-        { value: 30, frontColor: colors.negative },
-        {
-            value: 40,
-            label: 'J',
-            spacing: 1.5,
-            labelWidth: 10,
-            labelTextStyle: styles.horizontalLabelText,
-            frontColor: colors.positive,
-        },
-        { value: 20, frontColor: colors.negative },
-        {
-            value: 50,
-            label: 'A',
-            spacing: 1.5,
-            labelWidth: 10,
-            labelTextStyle: styles.horizontalLabelText,
-            frontColor: colors.positive,
-        },
-        { value: 40, frontColor: colors.negative },
-        {
-            value: 75,
-            label: 'S',
-            spacing: 1.5,
-            labelWidth: 10,
-            labelTextStyle: styles.horizontalLabelText,
-            frontColor: colors.positive,
-        },
-        { value: 25, frontColor: colors.negative },
-        {
-            value: 30,
-            label: 'O',
-            spacing: 1.5,
-            labelWidth: 10,
-            labelTextStyle: styles.horizontalLabelText,
-            frontColor: colors.positive,
-        },
-        { value: 20, frontColor: colors.negative },
-        {
-            value: 55,
-            label: 'N',
-            spacing: 1.5,
-            labelWidth: 10,
-            labelTextStyle: styles.horizontalLabelText,
-            frontColor: colors.positive,
-        },
-        { value: 25, frontColor: colors.negative },
-        {
-            value: 60,
-            label: 'D',
-            spacing: 1.5,
-            labelWidth: 10,
-            labelTextStyle: styles.horizontalLabelText,
-            frontColor: colors.positive,
-        },
-        { value: 45, frontColor: colors.negative },
-    ];
+    // Database
+    const { getBalanceMonthly } = useTransactions();
+
+    // Balance Monthly
+    const [barData, setBarData] = useState<any[] | null>([]);
+
+    useEffect(() => {
+        const loadBalanceMonthly = async () => {
+            const bm = await getBalanceMonthly(year);
+
+            let barDat:any[] = [];
+            const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+
+            bm.forEach((element) => {
+                barDat.push({
+                    value: element.income / 100,
+                    label: months[element.month - 1],
+                    spacing: 1.5,
+                    labelWidth: 10,
+                    labelTextStyle: styles.horizontalLabelText,
+                    frontColor: colors.positive,
+                });
+                barDat.push({ value: element.expense / 100, frontColor: colors.negative });
+            });
+
+            setBarData(barDat);
+        };
+
+        loadBalanceMonthly();
+    }, [getBalanceMonthly]);
+
+    if (!barData) {
+        return;
+    }
 
     return (
         <View style={ styles.container }>
@@ -145,7 +77,7 @@ const GroupedBars = () => {
                 yAxisThickness={ 0 }
                 yAxisTextStyle={ styles.verticalLabelText}
 
-                noOfSections={ 3 }
+                noOfSections={ 4 }
             />
         </View>
     );
