@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import { router, useNavigation } from 'expo-router';
 
 import { Values } from '@constants/values';
-
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
 
@@ -14,63 +13,89 @@ import TypeButtons from '@components/data/type-buttons';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
 
+type AvailablePeriod = {
+    year: number;
+    months: number[];
+};
+
 const DataCharts = () => {
-    // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
-
-    // Database
     const { getAvailablePeriods } = useTransactions();
 
-    // Available periods
-    const [availablePeriods, setAvailablePeriods] = useState<any[] | null>([]);
-    
-    const [year, setYear] = useState<number | null>(2026);
-    const [month, setYMonth] = useState<number>(0);
+    const [availablePeriods, setAvailablePeriods] = useState<AvailablePeriod[]>([]);
+
+    const [year, setYear] = useState<number | null>(null);
+    const [month, setMonth] = useState<number | null>(null);
+    const [expenseActive, setExpenseActive] = useState(true);
 
     useEffect(() => {
-        const getTransactionsData = async () => {
-            setAvailablePeriods(await getAvailablePeriods());
+        let cancelled = false;
+
+        const loadPeriods = async () => {
+            const periods = await getAvailablePeriods();
+
+            if (cancelled) return;
+
+            setAvailablePeriods(periods);
+
+            if (periods.length > 0) {
+                setYear(periods[0].year);
+                setMonth(periods[0].months[0] ?? null);
+            }
         };
 
-        getTransactionsData();
+        loadPeriods();
+
+        return () => {
+            cancelled = true;
+        };
     }, [getAvailablePeriods]);
-    
-    // Change the router previous page
+
+    // Period of the selected year
+    const selectedPeriod = availablePeriods.find(period => period.year === year);
+
+    // Change the year and select the first month of the list
+    const handleYearChange = (newYear: number) => {
+        const period = availablePeriods.find(item => item.year === newYear);
+
+        setYear(newYear);
+        setMonth(period?.months[0] ?? null);
+    };
+
+    // Go back to the previous page
     const navigation = useNavigation();
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener('beforeRemove', (event) => {
-            event.preventDefault();
-            router.push('/home');
-        });
+        const unsubscribe = navigation.addListener(
+            'beforeRemove',
+            event => {
+                event.preventDefault();
+                router.push('/home');
+            }
+        );
 
         return unsubscribe;
     }, [navigation]);
 
-    // Active type
-    const [expenseActive, setExpenseActive] = useState(true);
-
-    if (!availablePeriods || !year) {
-        return;
-    }
+    if (year === null || month === null || !selectedPeriod || availablePeriods.length === 0) return null;
 
     return (
-        <View style={ styles.container }>
+        <View style={styles.container}>
             <View>
-                <YearsPeriod years={ availablePeriods.map(period => period.year) } onChange={ setYear } />
-                <BalanceResume squareEnable={ false } from={ new Date(Date.UTC(year,0,1,0,0,0,0)).toISOString() } to={ new Date(Date.UTC(year,11,31,23,59,59,999)).toISOString() } />
-                <GroupedBars year={ year } />
+                <YearsPeriod range={ availablePeriods.map(period => period.year) } onChange={ handleYearChange } />
+                <BalanceResume squareEnable={ false } from={new Date(Date.UTC(year, 0, 1)).toISOString() } to={ new Date(Date.UTC(year+1, 0, 1)).toISOString() } />
+                <GroupedBars year={year} />
             </View>
-            
+
             <View>
                 <View>
-                    <YearsPeriod years={ availablePeriods.map(period => period.year) } onChange={ setYear } />
-                    <BalanceResume squareEnable={ false } from={ new Date(Date.UTC(year,month,1,0,0,0,0)).toISOString() } to={ new Date(Date.UTC(year,month,31,23,59,59,999)).toISOString() } />
+                    <YearsPeriod range={selectedPeriod.months} months onChange={setMonth} />
+                    <BalanceResume squareEnable={ false } from={ new Date(Date.UTC(year, month-1, 1)).toISOString() } to={ new Date(Date.UTC(year, month, 1)).toISOString() } />
                 </View>
-                
+
                 <View>
-                    <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => {setExpenseActive(true)} } incomeOnPress={ () => {setExpenseActive(false)} } />
+                    <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => setExpenseActive(true) } incomeOnPress={ () => setExpenseActive(false) } />
                 </View>
             </View>
         </View>

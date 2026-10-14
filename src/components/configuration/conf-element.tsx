@@ -6,7 +6,7 @@ import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
-import Logo from '@assets/more.svg';
+import MoreIcon from '@assets/more.svg';
 
 
 interface Props {
@@ -34,7 +34,7 @@ export default function ConfElement({ title, colorText='', iconDisplay=true, onP
             onPress={ onPress }
         >
             <ThemedText style={[ styles.title, { color:colorText } ]} weight='light'>{ title }</ThemedText>
-            <Logo style={[ styles.icon, iconDisplay ? { display: 'flex'} : { display: 'none'} ]} color={ colors.iconBackground } />
+            <MoreIcon style={[ styles.icon, iconDisplay ? { display: 'flex'} : { display: 'none'} ]} color={ colors.iconBackground } />
         </Pressable>
     );
 }
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         width: '100%',
+        maxHeight: 36,
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingTop: 6,
@@ -56,6 +57,8 @@ const styles = StyleSheet.create({
     },
 
     icon: {
-        transform: [{ rotate: '-90deg' }, { scale: 0.9 }],
+        transform: [{ scale: 0.65 }],
+        width: 16,
+        height: 16,
     },
 });

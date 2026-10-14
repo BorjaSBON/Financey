@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 
 import { ThemedText } from '@ui/themed-text';
@@ -10,28 +10,40 @@ import MoreIcon from '@assets/more.svg';
 
 interface Props {
     // Variables
-    years: number[];
+    range: number[];
+    months?: boolean;
 
     // Methods
-    onChange: (year: number) => void;
+    onChange: (date: number) => void;
 }
 
-const YearsPediod = ({ years, onChange }: Props) => {
+const YearsPediod = ({ range, months=false, onChange }: Props) => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
 
-    const [yearIndex, setYearIndex] = useState<number>(0);
+    // Year / Month
+    const [rangeIndex, setRangeIndex] = useState<number>(0);
 
-    const changeYearIndex = (index: number) => {
+    useEffect(() => {
+        if (months) setRangeIndex(0);
+    }, [range]);
+
+    const changeRangeIndex = (index: number) => {
         if (index < 0) index = 0;
-        if (index >= years.length) index = years.length - 1;
+        if (index >= range.length) index = range.length - 1;
 
-        setYearIndex(index);
-        onChange(years[index]);
+        setRangeIndex(index);
+        onChange(range[index]);
     };
 
-    if (!years) return;
+    // Generate the months
+    const monthNames = Array.from({ length: 12 }, (_, i) => {
+        const month = new Date(2026, i, 1).toLocaleDateString('es-ES', { month: 'long' });
+        return month.charAt(0).toUpperCase() + month.slice(1);
+    });
+
+    if (!range) return;
 
     return (
         <View style={ styles.container }>
@@ -40,19 +52,19 @@ const YearsPediod = ({ years, onChange }: Props) => {
                     styles.icon,
                     pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
                 ]}
-                onPress={ () => changeYearIndex(yearIndex + 1) }
+                onPress={ () => changeRangeIndex(rangeIndex + 1) }
             >
                 <MoreIcon style={[ styles.moreIcon, { transform: [{ rotate: '180deg' }, { scale: 0.75 }] } ]} color={ colors.iconBackground } />
             </Pressable>
 
-            <ThemedText style={ styles.year }  weight='light'> { years[yearIndex] }</ThemedText>
+            <ThemedText weight='light'> { months ? monthNames[range[rangeIndex] - 1] : range[rangeIndex] }</ThemedText>
 
             <Pressable 
                 style={({ pressed }) => [
                     styles.icon,
                     pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
                 ]}
-                onPress={ () => changeYearIndex(yearIndex - 1) }
+                onPress={ () => changeRangeIndex(rangeIndex - 1) }
             >
                 <MoreIcon style={[ styles.moreIcon, { transform: [{ scale: 0.75 }] } ]} color={ colors.iconBackground } />
             </Pressable>
@@ -71,10 +83,6 @@ const createStyles = (colors: ThemeColors) =>
             alignItems: 'center',
             marginHorizontal: 'auto',
             marginBottom: 10,
-        },
-
-        year: {
-
         },
 
         icon: {

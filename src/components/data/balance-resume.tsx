@@ -30,26 +30,21 @@ export default function BalanceResume({ squareEnable=false, from='0000-01-01T00:
 
     // Database
     const { getBalance, loadingTransactions } = useTransactions();
-    const { profile, loadingProfiles } = useProfiles();
 
     // Variables
     const [income, setIncome] = useState(0);
     const [expense, setExpense] = useState(0);
 
     useEffect(() => {
-        if (!profile) {
-            return;
-        }
-
         const loadBalance = async () => {
-            const balance = await getBalance(profile.id, from, to);
+            const balance = await getBalance(from, to);
 
             setIncome(balance.income);
             setExpense(balance.expense);
         };
 
         loadBalance();
-    }, [profile, getBalance, from, to]);
+    }, [getBalance, from, to]);
 
     // Function to transform the values in readable text
     function ReadableNumber(value: number) {
@@ -61,7 +56,7 @@ export default function BalanceResume({ squareEnable=false, from='0000-01-01T00:
     const balanceColor = balance >= 0 ? styles.positive : styles.negative;
 
     // Check if the transactions are laoded
-    if (loadingTransactions || loadingProfiles) {
+    if (loadingTransactions) {
         return <ActivityIndicator />;
     }
 

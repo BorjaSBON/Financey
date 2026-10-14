@@ -167,14 +167,14 @@ export function useTransactions() {
     }, []);
 
     // GET THE TOTAL INCOMES AND EXPENSES
-    const getBalance = useCallback(async (profileId: number, from: string = '0000-01-01T00:00:00.000Z', to: string = '9999-12-31T23:59:59.999Z'): Promise<{ income: number, expense: number }> => {
+    const getBalance = useCallback(async (from: string = '0000-01-01T00:00:00.000Z', to: string = '9999-12-31T23:59:59.999Z'): Promise<{ income: number, expense: number }> => {
         try {
             // Set loading and error states
             setLoading(true);
             setError(null);
 
             // Get the incomes and expenses
-            const { income, expense } = await transactionsRepository.getBalance(profileId, from, to);
+            const { income, expense } = await transactionsRepository.getBalance(from, to);
 
             // Return the incomes and expeses
             return { income, expense }

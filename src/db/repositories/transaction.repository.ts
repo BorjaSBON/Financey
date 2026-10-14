@@ -183,7 +183,7 @@ export async function removeByCategory(categoryId: number): Promise<void> {
 }
 
 // Get the balance for a given date range
-export async function getBalance(profileId: number, from: string='0000-01-01T00:00:00.000Z', to: string='9999-12-31T23:59:59.999Z'): Promise<{ income: number, expense: number }> {
+export async function getBalance(from: string='0000-01-01T00:00:00.000Z', to: string='9999-12-31T23:59:59.999Z'): Promise<{ income: number, expense: number }> {
     const db = await dbPromise;
 
     const row = await db.getFirstAsync<{ income: number; expense: number; }>(
@@ -210,11 +210,13 @@ export async function getBalance(profileId: number, from: string='0000-01-01T00:
                 ) AS expense
 
             FROM transactions
-            WHERE profile_id = ?
-                AND date >= ?
-                AND date <= ?
+            WHERE profile_id IN (
+                SELECT id
+                FROM profiles
+                WHERE active = 1
+                LIMIT 1
+            ) AND date >= ? AND date < ?
         `,
-        profileId,
         from,
         to
     );
@@ -267,8 +269,10 @@ export async function getAvailablePeriods() {
         `
             SELECT
                 strftime('%Y', date) AS year,
-                strftime('%m', date) AS month
+                strftime('%m', date) AS month,
+                COUNT(*) AS total
             FROM transactions
+            WHERE date IS NOT NULL
             GROUP BY
                 strftime('%Y', date),
                 strftime('%m', date)
