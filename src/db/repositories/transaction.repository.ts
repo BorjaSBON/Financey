@@ -183,7 +183,7 @@ export async function removeByCategory(categoryId: number): Promise<void> {
 }
 
 // Get the balance for a given date range
-export async function getBalance(profileId: number, from: string = '0000-01-01T00:00:00.000Z', to: string = '9999-12-31T23:59:59.999Z'): Promise<{ income: number, expense: number }> {
+export async function getBalance(profileId: number, from: string='0000-01-01T00:00:00.000Z', to: string='9999-12-31T23:59:59.999Z'): Promise<{ income: number, expense: number }> {
     const db = await dbPromise;
 
     const row = await db.getFirstAsync<{ income: number; expense: number; }>(
@@ -258,6 +258,27 @@ export async function getLastTransaction(): Promise<Transaction | null> {
     return null;
 }
 
+// Get the available period
+export async function getAvailablePeriods() {
+    const db = await dbPromise;
+
+    // Get the periods
+    return db.getAllAsync<{ year: number; month: number; }>(
+        `
+            SELECT
+                strftime('%Y', date) AS year,
+                strftime('%m', date) AS month
+            FROM transactions
+            GROUP BY
+                strftime('%Y', date),
+                strftime('%m', date)
+            ORDER BY
+                year DESC,
+                month DESC;
+        `,
+    );
+}
+
 // Get the balance of a year monthly
 export async function getBalanceMonthly(year: number) {
     const db = await dbPromise;
@@ -325,5 +346,6 @@ export const transactionsRepository = {
 
     getBalance,
     getLastTransaction,
+    getAvailablePeriods,
     getBalanceMonthly,
 };

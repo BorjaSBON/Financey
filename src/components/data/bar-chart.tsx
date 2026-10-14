@@ -48,7 +48,7 @@ const GroupedBars = ({ year }: Props) => {
         };
 
         loadBalanceMonthly();
-    }, [getBalanceMonthly]);
+    }, [year]);
 
     if (!barData) {
         return;

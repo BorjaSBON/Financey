@@ -213,6 +213,45 @@ export function useTransactions() {
         }
     }, []);
 
+    // GET THE AVAILABLE PERIODS
+    const getAvailablePeriods = useCallback(async () => {
+        try {
+            // Set loading and error states
+            setLoading(true);
+            setError(null);
+
+            // Get the available periods
+            const data = await transactionsRepository.getAvailablePeriods();
+
+            // Group the periods
+            const groupedMap = new Map<number, number[]>();
+
+            for (const period of data) {
+                const year = Number(period.year);
+                const month = Number(period.month);
+
+                if (!groupedMap.has(year)) {
+                    groupedMap.set(year, []);
+                }
+
+                groupedMap.get(year)!.push(month);
+            }
+
+            const groupedPeriods: { year: number; months: number[]; }[] = Array.from(groupedMap, ([year, months]) => ({ year, months }));
+
+            // Return the balance
+            return groupedPeriods;
+        } catch (err) {
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error obtaining the available periods');
+            setError(error);
+            throw error;
+        } finally {
+            // Reset loading state
+            setLoading(false);
+        }
+    }, []);
+
     // GET THE BALANCE OF A YEAR MONTHLY
     const getBalanceMonthly = useCallback(async (year: number) => {
         try {
@@ -259,6 +298,7 @@ export function useTransactions() {
 
         getBalance,
         getLastTransaction,
+        getAvailablePeriods,
         getBalanceMonthly,
     };
 }

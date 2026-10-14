@@ -16,9 +16,11 @@ import { useProfiles } from '@/src/hooks/useProfiles';
 interface Props {
     // Variables
     squareEnable?: boolean,
+    from?: string,
+    to?: string,
 }
 
-export default function BalanceResume({ squareEnable=false }: Props) {
+export default function BalanceResume({ squareEnable=false, from='0000-01-01T00:00:00.000Z', to='9999-12-31T23:59:59.999Z' }: Props) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
@@ -40,14 +42,14 @@ export default function BalanceResume({ squareEnable=false }: Props) {
         }
 
         const loadBalance = async () => {
-            const balance = await getBalance(profile.id);
+            const balance = await getBalance(profile.id, from, to);
 
             setIncome(balance.income);
             setExpense(balance.expense);
         };
 
         loadBalance();
-    }, [profile, getBalance]);
+    }, [profile, getBalance, from, to]);
 
     // Function to transform the values in readable text
     function ReadableNumber(value: number) {

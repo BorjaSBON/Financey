@@ -3,5 +3,5 @@ export const Values = {
     paddingElement: 15,
 
     topIfHeader: 90,
-    topNotHeader: 75,
+    topNotHeader: 60,
 } as const;
