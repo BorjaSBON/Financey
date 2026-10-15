@@ -114,7 +114,7 @@ const DataModify = () => {
             type: expenseActive ? 'expense' : 'income',
             amount: amountInCents,
             categoryId: categories_selected.find(item => item.name.toLowerCase() === selectValue)?.id || 1,
-            date: date ? date.toISOString() : new Date().toISOString(),
+            date: date.toISOString(),
         });
 
         // Modify profile

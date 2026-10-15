@@ -14,7 +14,7 @@ interface Props {
     year: number,
 }
 
-const GroupedBars = ({ year }: Props) => {
+const MonthlyBarChart = ({ year }: Props) => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
@@ -23,17 +23,17 @@ const GroupedBars = ({ year }: Props) => {
     const { getBalanceMonthly } = useTransactions();
 
     // Balance Monthly
-    const [barData, setBarData] = useState<any[] | null>([]);
+    const [chartData, setChartData] = useState<any[] | null>([]);
 
     useEffect(() => {
         const loadBalanceMonthly = async () => {
-            const bm = await getBalanceMonthly(year);
+            const balanceMonthly = await getBalanceMonthly(year);
 
-            let barDat:any[] = [];
+            let dataProcessed:any[] = [];
             const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
 
-            bm.forEach((element) => {
-                barDat.push({
+            balanceMonthly.forEach((element) => {
+                dataProcessed.push({
                     value: element.income / 100,
                     label: months[element.month - 1],
                     spacing: 1.5,
@@ -41,49 +41,47 @@ const GroupedBars = ({ year }: Props) => {
                     labelTextStyle: styles.horizontalLabelText,
                     frontColor: colors.positive,
                 });
-                barDat.push({ value: element.expense / 100, frontColor: colors.negative });
+                dataProcessed.push({ value: element.expense / 100, frontColor: colors.negative });
             });
 
-            setBarData(barDat);
+            setChartData(dataProcessed);
         };
 
         loadBalanceMonthly();
     }, [year]);
 
-    if (!barData) {
+    if (!chartData) {
         return;
     }
 
     return (
         <View style={ styles.container }>
             <BarChart
-                data={ barData }
+                data={ chartData }
                 
                 height={ 150 }
 
                 spacing={ 12 }
                 initialSpacing={ 5 }
                 endSpacing={ 2.5 }
+                noOfSections={ 4 }
 
                 rulesType='solid'
-                rulesColor={ colors.rulesColor }
+                rulesColor={ colors.chartRulesColor }
                 rulesThickness={ 1 }
 
                 barWidth={ 4 }
-                roundedTop
-                roundedBottom
+                barBorderRadius={ 1.5 }
 
                 xAxisThickness={ 0 }
                 yAxisThickness={ 0 }
                 yAxisTextStyle={ styles.verticalLabelText}
-
-                noOfSections={ 4 }
             />
         </View>
     );
 };
 
-export default GroupedBars;
+export default MonthlyBarChart;
 
 const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({

@@ -11,7 +11,6 @@ import { useCurrency } from '@currency/useCurrency';
 import { ThemedText } from '@ui/themed-text';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
-import { useProfiles } from '@/src/hooks/useProfiles';
 
 interface Props {
     // Variables

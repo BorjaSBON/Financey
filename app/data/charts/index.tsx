@@ -12,8 +12,9 @@ import YearsPeriod from '@components/data/years-period';
 import BalanceResume from '@components/data/balance-resume';
 import TypeButtons from '@components/data/type-buttons';
 
-import GroupedBars from '@components/data/bar-chart';
-import BalancePie from '@components/data/pie-chart';
+import MonthlyBarChart from '@components/data/charts/monthly-bar-chart';
+import BalancePieChart from '@components/data/charts/balance-pie-chart';
+import CategoriesCharts from '@components/data/charts/categories-charts';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
 
@@ -25,6 +26,8 @@ type AvailablePeriod = {
 const DataCharts = () => {
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Database
     const { getAvailablePeriods } = useTransactions();
 
     const [availablePeriods, setAvailablePeriods] = useState<AvailablePeriod[]>([]);
@@ -98,18 +101,19 @@ const DataCharts = () => {
                     <View>
                         <YearsPeriod range={ availablePeriods.map(period => period.year) } onChange={ handleYearChange } />
                         <BalanceResume squareEnable={ false } from={new Date(Date.UTC(year, 0, 1)).toISOString() } to={ new Date(Date.UTC(year+1, 0, 1)).toISOString() } />
-                        <GroupedBars year={year} />
+                        <MonthlyBarChart year={year} />
                     </View>
 
                     <View>
                         <View>
                             <YearsPeriod range={ selectedPeriod.months } months onChange={ setMonth } />
                             <BalanceResume squareEnable={ false } from={ new Date(Date.UTC(year, month-1, 1)).toISOString() } to={ new Date(Date.UTC(year, month, 1)).toISOString() } />
-                            <BalancePie year={ year } month={ month } />
+                            <BalancePieChart year={ year } month={ month } />
                         </View>
 
                         <View>
                             <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => setExpenseActive(true) } incomeOnPress={ () => setExpenseActive(false) } />
+                            <CategoriesCharts year={ year } month={ month } type={ expenseActive ? 'expense' : 'income' } />
                         </View>
                     </View>
                 </View>

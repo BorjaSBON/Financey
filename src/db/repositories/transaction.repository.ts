@@ -342,6 +342,45 @@ export async function getBalanceMonthly(year: number) {
     );
 }
 
+// Get the categories amounts
+export async function getCategoriesAmount(year: number, month: number, type: 'income' | 'expense') {
+    const db = await dbPromise;
+
+    // Dates
+    const startDate = `${year}-${String(month).padStart(2, '0')}-01T00:00:00.000Z`;
+    const endDate = new Date(Date.UTC(year, month, 1)).toISOString();
+
+    // Get the amounts
+    return db.getAllAsync<{ category: string; amount: number }>(
+        `
+            SELECT
+                c.name AS category,
+                SUM(t.amount) AS amount
+            FROM transactions t
+            INNER JOIN categories c
+                ON t.category_id = c.id
+            WHERE
+                t.date >= ?
+                AND t.date < ?
+                AND t.type = ?
+                AND t.profile_id IN (
+                    SELECT id
+                    FROM profiles
+                    WHERE active = 1
+                    LIMIT 1
+                )
+            GROUP BY
+                c.id,
+                c.name
+            HAVING SUM(t.amount) <> 0
+            ORDER BY amount DESC;
+        `,
+        startDate,
+        endDate,
+        type,
+    );
+}
+
 // Export the repository functions
 export const transactionsRepository = {
     getAll,
@@ -357,4 +396,5 @@ export const transactionsRepository = {
     getLastTransaction,
     getAvailablePeriods,
     getBalanceMonthly,
+    getCategoriesAmount,
 };

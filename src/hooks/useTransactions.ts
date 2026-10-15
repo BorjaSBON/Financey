@@ -275,6 +275,29 @@ export function useTransactions() {
         }
     }, []);
 
+    // GET THE CATEGORIES AMOUNTS
+    const getCategoriesAmount = useCallback(async (year: number, month: number, type: 'income' | 'expense') => {
+        try {
+            // Set loading and error states
+            setLoading(true);
+            setError(null);
+
+            // Get the categories amounts
+            const data = await transactionsRepository.getCategoriesAmount(year, month, type);
+
+            // Return the balance
+            return data;
+        } catch (err) {
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error obtaining the categories amounts');
+            setError(error);
+            throw error;
+        } finally {
+            // Reset loading state
+            setLoading(false);
+        }
+    }, []);
+
     useEffect(() => {
         getTransactions();
     }, [getTransactions]);
@@ -300,5 +323,6 @@ export function useTransactions() {
         getLastTransaction,
         getAvailablePeriods,
         getBalanceMonthly,
+        getCategoriesAmount,
     };
 }

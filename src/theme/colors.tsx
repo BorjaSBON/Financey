@@ -44,7 +44,9 @@ export interface ThemeColors {
     iconBackground: string;
 
     // Charts
-    rulesColor: string;
+    chartRulesColor: string;
+    chartPositiveRange: string;
+    chartNegativeRange: string;
 }
 
 export const LightColors: ThemeColors = {
@@ -93,7 +95,9 @@ export const LightColors: ThemeColors = {
     iconBackground: '#111A30',
 
     // Charts
-    rulesColor: '#0F172A0D',
+    chartRulesColor: '#0F172A0D',
+    chartPositiveRange: '#658109',
+    chartNegativeRange: '#6D1102',
 } as const;
 
 export const DarkColors: ThemeColors = {
@@ -142,7 +146,9 @@ export const DarkColors: ThemeColors = {
     iconBackground: '#FFFFFF',
 
     // Charts
-    rulesColor: '#FFFFFF0D',
+    chartRulesColor: '#FFFFFF0D',
+    chartPositiveRange: '#658109',
+    chartNegativeRange: '#6D1102',
 } as const;
 
 export const Themes = {
