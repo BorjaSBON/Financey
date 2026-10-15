@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { router, useNavigation } from 'expo-router';
 
 import { Values } from '@constants/values';
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
 
+import { ThemedText } from '@ui/themed-text';
+
 import YearsPeriod from '@components/data/years-period';
 import BalanceResume from '@components/data/balance-resume';
-import GroupedBars from '@components/data/bar-chart';
 import TypeButtons from '@components/data/type-buttons';
+
+import GroupedBars from '@components/data/bar-chart';
+import BalancePie from '@components/data/pie-chart';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
 
@@ -78,26 +82,38 @@ const DataCharts = () => {
         return unsubscribe;
     }, [navigation]);
 
-    if (year === null || month === null || !selectedPeriod || availablePeriods.length === 0) return null;
+    if (year === null || month === null || !selectedPeriod || availablePeriods.length === 0) {
+        return (
+            <View style={styles.container}>
+                <BalanceResume squareEnable={ false } />
+                <ThemedText style={ styles.noData } weight='regular'>No transactions added</ThemedText>
+            </View>
+        )
+    };
 
     return (
         <View style={styles.container}>
-            <View>
-                <YearsPeriod range={ availablePeriods.map(period => period.year) } onChange={ handleYearChange } />
-                <BalanceResume squareEnable={ false } from={new Date(Date.UTC(year, 0, 1)).toISOString() } to={ new Date(Date.UTC(year+1, 0, 1)).toISOString() } />
-                <GroupedBars year={year} />
-            </View>
+            <ScrollView>
+                <View style={ styles.sections }>
+                    <View>
+                        <YearsPeriod range={ availablePeriods.map(period => period.year) } onChange={ handleYearChange } />
+                        <BalanceResume squareEnable={ false } from={new Date(Date.UTC(year, 0, 1)).toISOString() } to={ new Date(Date.UTC(year+1, 0, 1)).toISOString() } />
+                        <GroupedBars year={year} />
+                    </View>
 
-            <View>
-                <View>
-                    <YearsPeriod range={selectedPeriod.months} months onChange={setMonth} />
-                    <BalanceResume squareEnable={ false } from={ new Date(Date.UTC(year, month-1, 1)).toISOString() } to={ new Date(Date.UTC(year, month, 1)).toISOString() } />
-                </View>
+                    <View>
+                        <View>
+                            <YearsPeriod range={ selectedPeriod.months } months onChange={ setMonth } />
+                            <BalanceResume squareEnable={ false } from={ new Date(Date.UTC(year, month-1, 1)).toISOString() } to={ new Date(Date.UTC(year, month, 1)).toISOString() } />
+                            <BalancePie year={ year } month={ month } />
+                        </View>
 
-                <View>
-                    <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => setExpenseActive(true) } incomeOnPress={ () => setExpenseActive(false) } />
+                        <View>
+                            <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => setExpenseActive(true) } incomeOnPress={ () => setExpenseActive(false) } />
+                        </View>
+                    </View>
                 </View>
-            </View>
+            </ScrollView>
         </View>
     );
 };
@@ -110,7 +126,15 @@ const createStyles = (colors: ThemeColors) =>
             flex: 1,
             top: Values.topNotHeader,
             width: '100%',
-            paddingBottom: 125,
+        },
+
+        sections: {
+            paddingBottom: 75,
+        },
+
+        noData: {
+            marginHorizontal: 'auto',
+            marginVertical: 15,
         },
     }
 );

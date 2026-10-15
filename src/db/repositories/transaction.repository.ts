@@ -272,7 +272,12 @@ export async function getAvailablePeriods() {
                 strftime('%m', date) AS month,
                 COUNT(*) AS total
             FROM transactions
-            WHERE date IS NOT NULL
+            WHERE date IS NOT NULL AND profile_id IN (
+                SELECT id
+                FROM profiles
+                WHERE active = 1
+                LIMIT 1
+            )
             GROUP BY
                 strftime('%Y', date),
                 strftime('%m', date)
