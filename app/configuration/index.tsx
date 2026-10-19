@@ -67,11 +67,6 @@ const ConfigurationScreen = () => {
         setDeleteAccountPopup(false);
     }
 
-    // Export data
-    const exportData = async () => {
-        console.log('Exporting document');
-    };
-
     // CHANGE USERNAME ACTION
     // Get the username
     useEffect(() => {
@@ -147,7 +142,7 @@ const ConfigurationScreen = () => {
                             <ConfCurrencySelect />
                             <ConfElement title='Categories' onPress={ () => router.push('/configuration/data/categories') } />
                             <ConfElement title='Import data' onPress={ () => router.push('/configuration/data/import_data') } />
-                            <ConfElement title='Export data' iconDisplay={ false } onPress={ exportData } />
+                            <ConfElement title='Export data' onPress={ () => router.push('/future') } />
                         </View>
                     </View>
                     

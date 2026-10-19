@@ -25,6 +25,7 @@ export interface ThemeColors {
     inputFontPlaceholder: string;
     inputBackground: string;
     inputBackgroundDropdown: string;
+    inputBorderDropdown: string;
 
     // Input Mini
     inputMiniFont: string;
@@ -74,8 +75,9 @@ export const LightColors: ThemeColors = {
     // Input
     inputFont: '#0F172A',
     inputFontPlaceholder: '#0F172A80',
-    inputBackground: '#D9D9D933',
+    inputBackground: '#D9D9D966',
     inputBackgroundDropdown: '#FFFFFF',
+    inputBorderDropdown: '#0F172A20',
 
     // Input Mini
     inputMiniFont: '#0F172A',
@@ -123,16 +125,17 @@ export const DarkColors: ThemeColors = {
     buttonBackgroundWarning: '#F15A29',
 
     // Input
-    inputFont: '#0F172A',
-    inputFontPlaceholder: '#0F172A80',
-    inputBackground: '#FFFFFF66',
-    inputBackgroundDropdown: '#FFFFFF',
+    inputFont: '#FFFFFF',
+    inputFontPlaceholder: '#FFFFFF80',
+    inputBackground: '#FFFFFF30',
+    inputBackgroundDropdown: '#0F172A',
+    inputBorderDropdown: '#FFFFFF20',
 
     // Input Mini
     inputMiniFont: '#FFFFFF',
     inputMiniFontPlaceholder: '#FFFFFF',
     inputMiniBackground: '#5EEAD426',
-    inputMiniBackgroundDropdown: '#111A30',
+    inputMiniBackgroundDropdown: '#0F172A',
     inputMiniBorderDropdown: '#FFFFFF20',
 
     // Hover

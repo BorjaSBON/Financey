@@ -11,7 +11,7 @@ import { ThemedText } from '@ui/themed-text';
 
 import { ListIcon } from '@icons/list';
 import { ChartsIcon } from '@icons/charts';
-import Add from '@assets/add.svg';
+import AddIcon from '@assets/add.svg';
 import { ConfIcon } from '@icons/conf';
 
 import BalanceResume from '@components/data/balance-resume';
@@ -96,7 +96,7 @@ const HomeScreen = () => {
                             <Pressable onPress={ () => router.push('/data/list') }>
                                 <ListIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
                             </Pressable>
-                            <Add style={ styles.actionIcon } color={ colors.iconBackground } onPress={ () => router.push('/data/add') } /> 
+                            <AddIcon style={ styles.actionIcon } color={ colors.iconBackground } onPress={ () => router.push('/data/add') } /> 
                             <Pressable onPress={ () => router.push('/configuration') }>
                                 <ConfIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
                             </Pressable>
@@ -168,7 +168,7 @@ const createStyles = (colors: ThemeColors) =>
         actionElements: {
             display: 'flex',
             flexDirection: 'row',
-            columnGap: 20,
+            columnGap: 25,
             justifyContent: 'center',
             paddingHorizontal: Values.paddingElement,
             alignItems: 'center',
@@ -207,7 +207,7 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         actionIcon: {
-            transform: [{ scale: 0.9 }],
+            transform: [{ scale: 1 }],
         },
 
         name: {

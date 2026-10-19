@@ -6,6 +6,8 @@ import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
+import MoreIcon from '@assets/more.svg';
+
 type DropdownItem = {
     label: string;
     value: string;
@@ -67,8 +69,8 @@ export function ThemedSelectInput({ data, value, onSelect }: DropdownProps) {
         <View>
             <View style={styles.container}>
                 <Pressable ref={ selectRef } style={ styles.select } onPress={ openDropdown }>
-                    <ThemedText style={styles.selectedText} weight='light'>{ selectedItem?.label ?? 'Select' }</ThemedText>
-                    <ThemedText style={styles.arrow} weight="light">{ open ? '▲' : '▼' }</ThemedText>
+                    <ThemedText style={[ styles.selectedText, !selectedItem?.label && { color: colors.inputFontPlaceholder } ]} weight='light'>{ selectedItem?.label ?? 'Select' }</ThemedText>
+                    <MoreIcon style={ open ? styles.iconOpen : styles.iconClose } color={ colors.iconBackground } />
                 </Pressable>
             </View>
 
@@ -132,11 +134,6 @@ const createStyles = (colors: ThemeColors) =>
             color: colors.inputFont,
         },
 
-        arrow: {
-            fontSize: 18,
-            color: colors.inputFont,
-        },
-
         modalContainer: {
             flex: 1,
         },
@@ -146,17 +143,18 @@ const createStyles = (colors: ThemeColors) =>
             maxHeight: 390,
             backgroundColor: colors.inputBackgroundDropdown,
             borderWidth: 1,
-            borderColor: colors.inputBackground,
+            borderColor: colors.inputBorderDropdown,
             borderRadius: 12,
             elevation: 10,
 
-            shadowColor: colors.inputFont,
+            shadowColor: colors.inputBackgroundDropdown,
             shadowOffset: {
                 width: 0,
                 height: 4,
             },
             shadowOpacity: 0.15,
             shadowRadius: 8,
+            overflow: 'hidden'
         },
 
         option: {
@@ -176,6 +174,15 @@ const createStyles = (colors: ThemeColors) =>
 
         selectedOptionText: {
             color: colors.inputFont,
+        },
+        
+        iconOpen: {
+            transform: [{ scale: 0.45 }, { rotate: '270deg' }],
+            right: 0,
+        },
+        
+        iconClose: {
+            transform: [{ scale: 0.45 }, { rotate: '90deg' }],
         },
     }
 );

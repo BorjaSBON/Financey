@@ -56,7 +56,7 @@ const createStyles = (colors: ThemeColors) =>
             
             shadowColor: colors.popupShadow,
             shadowOffset: {
-                width: 0,
+                width: 5,
                 height: 5,
             },
             shadowOpacity: 0.2,

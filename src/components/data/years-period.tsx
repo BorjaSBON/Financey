@@ -54,7 +54,7 @@ const YearsPediod = ({ range, months=false, onChange }: Props) => {
                 ]}
                 onPress={ () => changeRangeIndex(rangeIndex + 1) }
             >
-                <MoreIcon style={[ styles.moreIcon, { transform: [{ rotate: '180deg' }, { scale: 0.75 }] } ]} color={ colors.iconBackground } />
+                <MoreIcon style={[ styles.moreIcon, { transform: [{ rotate: '180deg' }, { scale: 0.45 }] } ]} color={ colors.iconBackground } />
             </Pressable>
 
             <ThemedText weight='light'> { months ? monthNames[range[rangeIndex] - 1] : range[rangeIndex] }</ThemedText>
@@ -66,7 +66,7 @@ const YearsPediod = ({ range, months=false, onChange }: Props) => {
                 ]}
                 onPress={ () => changeRangeIndex(rangeIndex - 1) }
             >
-                <MoreIcon style={[ styles.moreIcon, { transform: [{ scale: 0.75 }] } ]} color={ colors.iconBackground } />
+                <MoreIcon style={[ styles.moreIcon, { transform: [{ scale: 0.45 }] } ]} color={ colors.iconBackground } />
             </Pressable>
         </View>
     );

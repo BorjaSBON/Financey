@@ -7,7 +7,7 @@ import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
-import Logo from '@assets/calendar.svg';
+import DateIcon from '@assets/calendar.svg';
 
 type DateInputProps = {
     // Variables
@@ -36,10 +36,12 @@ export function ThemedDateInput({ value, onChange }: DateInputProps) {
 
     return (
         <View>
-            <Pressable style={ styles.input } onPress={ () => setOpen(true) }>
-                <ThemedText style={[ styles.text, !value && styles.placeholder ]} weight='light'>{ formattedDate }</ThemedText>
-                <Logo style={ styles.icon } />
-            </Pressable>
+            <View style={ styles.container }>
+                <Pressable style={ styles.input } onPress={ () => setOpen(true) }>
+                    <ThemedText style={[ styles.text, !value && styles.placeholder ]} weight='light'>{ formattedDate }</ThemedText>
+                    <DateIcon style={ styles.icon } color={ colors.iconBackground } />
+                </Pressable>
+            </View>
 
             { open && (
                 <DateTimePicker
@@ -55,12 +57,18 @@ export function ThemedDateInput({ value, onChange }: DateInputProps) {
 
 const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
-        input: {
-            position: 'relative',   
+        container: {
             width: '100%',
+        },
+
+        input: {
             height: 40,
+            width: '100%',
             paddingHorizontal: 15,
-            justifyContent: 'center',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+
             backgroundColor: colors.inputBackground,
             borderRadius: 12,
         },
@@ -75,9 +83,7 @@ const createStyles = (colors: ThemeColors) =>
         },
         
         icon: {
-            position: 'absolute',
-            right: 15,
-            width: 20
+            right: 7.5,
         },
     }
 );
