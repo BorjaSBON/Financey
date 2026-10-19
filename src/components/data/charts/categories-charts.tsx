@@ -80,7 +80,6 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
                     value: element.amount / 100,
                     label: element.category,
                     spacing: 10,
-                    labelWidth: 50,
                     labelTextStyle: styles.horizontalLabelText,
                     frontColor: interpolateColor((index + 1) / categoriesAmount.length),
                 });
@@ -97,6 +96,16 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
 
         loadCategoriesAmount();
     }, [getCategoriesAmount, year, month, type]);
+
+    // Bar chart parameters
+    const BAR_WIDTH = 8;
+    const BAR_SPACING = 10;
+    const INITIAL_SPACING = 2.5;
+    const END_SPACING = 10;
+    const Y_LABEL_WIDTH = 30;
+
+    // Extensión del eje de categorías (será el alto visual tras rotar)
+    const categoriesExtent = INITIAL_SPACING + (chartBarData.length + 3) * (BAR_WIDTH + BAR_SPACING) + END_SPACING;
 
     // Check if the transactions are laoded
     if (loadingTransactions) {
@@ -132,28 +141,64 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
                 />
             </View>
 
-            <View style={ styles.containerBar }>
-                <BarChart
-                    data={ chartBarData }
-                    horizontal
+            { chartBarData.length !== 0 &&
+                // <View style={ styles.containerBar }>
+                //     <BarChart
+                //         data={ chartBarData }
+                //         horizontal
 
-                    spacing={ 12 }
-                    initialSpacing={ 5 }
-                    endSpacing={ 2.5 }
-                    noOfSections={ 4 }
+                //         spacing={ 10 }
+                //         initialSpacing={ 2.5 }
+                //         endSpacing={ 10 }
 
-                    rulesType='solid'
-                    rulesColor={ colors.chartRulesColor }
-                    rulesThickness={ 1 }
+                //         noOfSections={ 4 }
+                //         rulesType='solid'
+                //         rulesColor={ colors.chartRulesColor }
+                //         rulesThickness={ 1 }
 
-                    barWidth={ 8 }
-                    barBorderRadius={ 2.5 }
+                //         barWidth={ 8 }
+                //         barBorderRadius={ 2.5 }
 
-                    xAxisThickness={ 0 }
-                    yAxisThickness={ 0 }
-                    yAxisTextStyle={ styles.verticalLabelText}
-                />
-            </View>
+                //         xAxisLabelsVerticalShift={ 50 }
+
+                //         xAxisThickness={ 0 }
+                //         yAxisThickness={ 0 }
+                //         yAxisTextStyle={ styles.verticalLabelText}
+
+                //         yAxisLabelWidth={ 30 }
+                //         yAxisTextNumberOfLines={ 2 }
+                //         height={ chartBarData.length * (8 + 10) + 16 }
+                //     />
+                // </View>
+
+                <View style={ styles.containerBar }>
+                    <View style={{ height: categoriesExtent, top: -40 }}>
+                        <BarChart
+                            data={ chartBarData }
+                            horizontal
+                            disableScroll
+
+                            spacing={ BAR_SPACING }
+                            initialSpacing={ INITIAL_SPACING }
+                            endSpacing={ END_SPACING }
+                            barWidth={ BAR_WIDTH }
+                            barBorderRadius={ 2.5 }
+
+                            noOfSections={ 4 }
+                            rulesType='solid'
+                            rulesColor={ colors.chartRulesColor }
+                            rulesThickness={ 1 }
+
+                            xAxisThickness={ 0 }
+                            yAxisThickness={ 0 }
+                            yAxisLabelWidth={ Y_LABEL_WIDTH }
+                            yAxisTextStyle={ styles.verticalLabelText }
+                            yAxisTextNumberOfLines={ 2 }
+                            xAxisLabelsVerticalShift={ 50 }
+                        />
+                    </View>
+                </View>
+            }
         </View>
     );
 };
@@ -197,8 +242,11 @@ const createStyles = (colors: ThemeColors) =>
 
         horizontalLabelText: {
             color: colors.fontSecondary,
-            fontSize: 10,
-            textAlign: 'right'
+            fontSize: 8,
+            textAlign: 'right',
+            width: 50,
+            paddingTop: 2.5,
+            marginLeft: 5,
         },
 
         verticalLabelText: {
