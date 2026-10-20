@@ -16,6 +16,7 @@ import { CategoriesIcon } from '@icons/categories';
 import { ConfIcon } from '@icons/conf';
 
 import BalanceResume from '@components/data/balance-resume';
+import CategoriesPieChart from '@components/data/charts/categories-pie-chart';
 import { TransactionElement  } from '@components/data/list-element';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
@@ -29,6 +30,9 @@ const HomeScreen = () => {
     // Database
     const { lastTransaction, getLastTransaction, loadingTransactions } = useTransactions();
     const { profile, loadingProfiles } = useProfiles();
+
+    // Current date
+    const date = new Date();
 
     // Last action variables
     const [ lastActionDate, setLastActionDate ] = useState('Month DD, YYYY - HH:MM:SS');
@@ -87,6 +91,23 @@ const HomeScreen = () => {
                     </ThemedText>
                     
                     <BalanceResume />
+
+                    <View style={ styles.sectionDoble }>
+                        <View style={ styles.sectionHalf }>
+                            <ThemedText style={ styles.title } weight='regular'>
+                                Resume
+                                <ThemedText style={ styles.subtitle } weight='light'> ({ date.toLocaleString('en-GB', { month: 'long' }) })</ThemedText>
+                            </ThemedText>
+                            <CategoriesPieChart year={ date.getUTCFullYear() } month={ date.getUTCMonth() } />
+                        </View>
+
+                        <View style={ styles.sectionHalf }>
+                            <ThemedText style={ styles.title } weight='regular'>Evolution</ThemedText>
+                            <View style={ styles.evolution }>
+
+                            </View>
+                        </View>
+                    </View>
 
                     <View style={ styles.section }>
                         <ThemedText style={ styles.title } weight='regular'>Actions</ThemedText>
@@ -163,8 +184,26 @@ const createStyles = (colors: ThemeColors) =>
             rowGap: 8,
         },
 
+        sectionDoble: {
+            display: 'flex',
+            flexDirection: 'row',
+            paddingHorizontal: Values.paddingApp,
+            columnGap: '5%',
+        },
+
+        sectionHalf: {
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 8,
+            width: '47.5%',
+        },
+
         title: {
             fontSize: 13,
+        },
+
+        subtitle: {
+            fontSize: 11,
         },
 
         elements: {
@@ -224,6 +263,13 @@ const createStyles = (colors: ThemeColors) =>
         date: {
             fontSize: 11,
             color: colors.fontSecondary,
+        },
+
+        evolution: {
+            backgroundColor: colors.backgroundSecondary,
+            borderRadius: 10,
+            width: '100%',
+            height: 147,
         },
     }
 );

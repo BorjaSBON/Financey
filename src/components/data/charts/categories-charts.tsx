@@ -85,7 +85,7 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
                 });
             });
 
-            const totalAmount = dataDonutProcessed.reduce((sum, item) => sum + item.value,0);
+            const totalAmount = dataDonutProcessed.reduce((sum, item) => sum + item.value, 0);
 
             setChartPieData(dataDonutProcessed);
             setChartBarData(dataBarProcessed);
@@ -104,7 +104,7 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
     const END_SPACING = 10;
     const Y_LABEL_WIDTH = 30;
 
-    // Extensión del eje de categorías (será el alto visual tras rotar)
+    // Extension of the axis of the categories
     const categoriesExtent = INITIAL_SPACING + (chartBarData.length + 3) * (BAR_WIDTH + BAR_SPACING) + END_SPACING;
 
     // Check if the transactions are laoded
@@ -123,8 +123,14 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
                     strokeWidth={ 1 }
                     strokeColor={ colors.backgroundPrimary }
                     onPress={ (item: { label: string, value: number }) => {
-                        setCategoryPressed(item.label);
-                        setAmountPressed(item.value);
+                        if (categoryPressed == item.label) {
+                            const totalAmount = chartPieData.reduce((sum, item) => sum + item.value, 0);
+                            setAmountPressed(totalAmount);
+                            setCategoryPressed('Total');
+                        } else {
+                            setCategoryPressed(item.label);
+                            setAmountPressed(item.value);
+                        }
                     }}
                     radius={ 80 }
                     innerRadius={ 60 }

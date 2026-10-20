@@ -31,7 +31,7 @@ export default function AppInformation() {
                         <ThemedText style={ styles.title } weight='regular'>System</ThemedText>
                         <View style={ styles.elements }>
                             <InformationElement title='Application name' data='Financey' />
-                            <InformationElement title='Version' data={ 'v' + String(appVersion) + ' (' + String(buildVersion) + ')' } />
+                            <InformationElement title='Version' data={ 'v' + String(appVersion) } />
                             <InformationElement title='Operating system' data={ os.charAt(0).toUpperCase() + os.slice(1) } />
                         </View>
                     </View>

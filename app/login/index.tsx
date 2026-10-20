@@ -9,6 +9,8 @@ import { ThemedText } from '@ui/themed-text';
 import { ThemedInput } from '@ui/themed-input';
 import { ThemedButton } from '@ui/themed-button';
 
+import { AppIcon } from '@icons/app-icon';
+
 import { AccountElement } from '@components/configuration/account-element';
 
 import { useProfiles } from '@/src/hooks/useProfiles';
@@ -63,7 +65,12 @@ const LoginScreen = () => {
         <View style={ styles.container }>
             <View style={ styles.presentation }>
                 <ThemedText weight='medium' style={ styles.title }>Financey</ThemedText>
-                <View style={ styles.image } />
+
+                <View style={ styles.image }>
+                    <AppIcon size={ 75 }/>
+                </View>
+                
+
                 <ThemedText weight='light' style={ styles.description }>
                     What would you like us to call you?
                 </ThemedText>
@@ -118,11 +125,9 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         image: {
-            width: 75,
-            height: 75,
-            borderRadius: 50,
-            backgroundColor: '#D9D9D980',
-            margin: 'auto',
+            marginHorizontal: 'auto',
+            borderRadius: 100,
+            overflow: 'hidden',
         },
 
         description: {
