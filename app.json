@@ -12,10 +12,14 @@
     },
     "android": {
       "package": "com.hobbitholes.financey",
+      "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       }
+    },
+    "ios": {
+      "bundleIdentifier": "com.hobbitholes.financey"
     },
     "plugins": [
       "expo-router",

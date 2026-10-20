@@ -4,6 +4,7 @@ import type {
     Transaction,
     CreateTransaction,
     UpdateTransaction,
+    TransactionFilters,
 } from '../../types/transaction';
 
 function mapTransaction(row: any): Transaction {
@@ -21,30 +22,85 @@ function mapTransaction(row: any): Transaction {
 }
 
 // Get all transactions
-export async function getAll(): Promise<Transaction[]> {
+export async function getAll(filters: TransactionFilters={}): Promise<Transaction[]> {
     const db = await dbPromise;
 
-    const rows = await db.getAllAsync(
-        `
-            SELECT
-                t.id,
-                t.type,
-                t.amount,
-                t.profile_id,
-                t.category_id,
-                c.name AS category_name,
-                t.date,
-                t.created_at,
-                t.updated_at
-            FROM transactions t
-            INNER JOIN categories c
-                ON c.id = t.category_id
-            INNER JOIN profiles p
-                ON p.id = t.profile_id
-            WHERE p.active = 1
-            ORDER BY t.date DESC, t.id DESC
-        `,
-    );
+    const { type, categoryId, orderBy='date', order='DESC' } = filters;
+
+    let query = `
+        SELECT
+            t.id,
+            t.type,
+            t.amount,
+            t.profile_id,
+            t.category_id,
+            c.name AS category_name,
+            t.date,
+            t.created_at,
+            t.updated_at
+        FROM transactions t
+        INNER JOIN categories c
+            ON c.id = t.category_id
+        INNER JOIN profiles p
+            ON p.id = t.profile_id
+        WHERE p.active = 1
+    `;
+
+    const params: (string | number)[] = [];
+
+    // Filter by type
+    if (type) {
+        query += ` AND t.type = ?`;
+        params.push(type);
+    }
+
+    // Filter by category
+    if (categoryId) {
+        query += ` AND t.category_id = ?`;
+        params.push(categoryId);
+    }
+
+    // Columnas de orden permitidas
+    const orderColumns = {
+        date: 't.date',
+        amount: 't.amount',
+    };
+
+    const column = orderColumns[orderBy];
+    const direction = order === 'ASC' ? 'ASC' : 'DESC';
+
+    query += ` ORDER BY ${column} ${direction}`;
+
+    // Mantener un orden estable cuando coinciden los valores
+    if (orderBy === 'date') {
+        query += ', t.id DESC';
+    } else {
+        query += ', t.date DESC, t.id DESC';
+    }
+
+    const rows = await db.getAllAsync(query, ...params);
+
+    // const rows = await db.getAllAsync(
+    //     `
+    //         SELECT
+    //             t.id,
+    //             t.type,
+    //             t.amount,
+    //             t.profile_id,
+    //             t.category_id,
+    //             c.name AS category_name,
+    //             t.date,
+    //             t.created_at,
+    //             t.updated_at
+    //         FROM transactions t
+    //         INNER JOIN categories c
+    //             ON c.id = t.category_id
+    //         INNER JOIN profiles p
+    //             ON p.id = t.profile_id
+    //         WHERE p.active = 1
+    //         ORDER BY t.date DESC, t.id DESC
+    //     `,
+    // );
 
     return rows.map(mapTransaction);
 }

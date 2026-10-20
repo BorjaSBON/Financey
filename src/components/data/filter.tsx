@@ -12,7 +12,21 @@ import { ThemedDateInput } from '@ui/themed-date-input';
 
 import Input from '@components/common/input';
 
-export default function Filter() {
+interface Props {
+    // Variables
+    type?: string;
+    categoryId?: string;
+    orderBy?: string;
+    order?: string;
+
+    // Methods
+    setType?: (value:string) => void;
+    setCategoryId?: (value:string) => void;
+    setOrderBy?: (value:string) => void;
+    setOrder?: (value:string) => void;
+}
+
+export default function Filter({}: Props) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
@@ -38,8 +52,12 @@ export default function Filter() {
         },
     ]
 
-    const [selectValueType, setSelectValueType] = useState('');
+    const [selectValueType, setSelectValueType] = useState('all');
     const dropDownListType = [
+        {
+            label: 'All',
+            value: 'all',
+        },
         {
             label: 'Income',
             value: 'income',
@@ -50,8 +68,12 @@ export default function Filter() {
         },
     ]
 
-    const [selectValueCategory, setSelectValueCategory] = useState('');
+    const [selectValueCategory, setSelectValueCategory] = useState('all');
     const dropDownListCategory = [
+        {
+            label: 'All',
+            value: 'all',
+        },
         {
             label: 'Category 01',
             value: 'category_01',
@@ -128,17 +150,18 @@ export default function Filter() {
 const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         popup: {
-            flex: 1,
+            position: 'absolute',
+            bottom: 60,
             display: 'flex',
             flexDirection: 'column',
             rowGap: 15,
-            top: 100,
             width: '100%',
             paddingTop: 25,
-            paddingBottom: 25,
+            paddingBottom: 35,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             elevation: 2,
+            backgroundColor: colors.backgroundSecondary,
             
             shadowColor: colors.popupShadow,
             shadowOffset: {

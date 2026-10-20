@@ -27,3 +27,10 @@ export type UpdateTransaction = {
     categoryId: number;
     date: string;
 };
+
+export type TransactionFilters = {
+    type?: 'expense' | 'income';
+    categoryId?: number;
+    orderBy?: 'date' | 'amount';
+    order?: 'ASC' | 'DESC';
+}

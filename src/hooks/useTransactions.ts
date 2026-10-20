@@ -6,6 +6,7 @@ import type {
     Transaction,
     CreateTransaction,
     UpdateTransaction,
+    TransactionFilters
 } from '../types/transaction';
 
 export function useTransactions() {
@@ -19,14 +20,14 @@ export function useTransactions() {
     const [errorTransactions, setError] = useState<Error | null>(null);
 
     // GET ALL TRANSACTIONS
-    const getTransactions = useCallback(async () => {
+    const getTransactions = useCallback(async (filters: TransactionFilters={}) => {
         try {
             // Set loading and error states
             setLoading(true);
             setError(null);
 
             // Get the transactions
-            const data = await transactionsRepository.getAll();
+            const data = await transactionsRepository.getAll(filters);
             setTransactions(data);
 
             // Return the transactions

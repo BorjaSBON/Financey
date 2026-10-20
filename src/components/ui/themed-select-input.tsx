@@ -17,12 +17,13 @@ interface DropdownProps {
     // Variables
     data: DropdownItem[];
     value: string;
+    maxHeight?: number;
 
     // Methods
     onSelect: (item: DropdownItem) => void;
 }
 
-export function ThemedSelectInput({ data, value, onSelect }: DropdownProps) {
+export function ThemedSelectInput({ data, value, maxHeight=390, onSelect }: DropdownProps) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
@@ -90,6 +91,7 @@ export function ThemedSelectInput({ data, value, onSelect }: DropdownProps) {
                                 top: dropdownPosition.y,
                                 left: dropdownPosition.x,
                                 width: dropdownPosition.width,
+                                maxHeight: maxHeight,
                             },
                         ]}
                     >
@@ -140,7 +142,6 @@ const createStyles = (colors: ThemeColors) =>
 
         dropdown: {
             position: 'absolute',
-            maxHeight: 390,
             backgroundColor: colors.inputBackgroundDropdown,
             borderWidth: 1,
             borderColor: colors.inputBorderDropdown,

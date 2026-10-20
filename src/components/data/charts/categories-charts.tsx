@@ -120,6 +120,8 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
                     donut
                     sectionAutoFocus
                     focusOnPress
+                    strokeWidth={ 1 }
+                    strokeColor={ colors.backgroundPrimary }
                     onPress={ (item: { label: string, value: number }) => {
                         setCategoryPressed(item.label);
                         setAmountPressed(item.value);
@@ -142,35 +144,6 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
             </View>
 
             { chartBarData.length !== 0 &&
-                // <View style={ styles.containerBar }>
-                //     <BarChart
-                //         data={ chartBarData }
-                //         horizontal
-
-                //         spacing={ 10 }
-                //         initialSpacing={ 2.5 }
-                //         endSpacing={ 10 }
-
-                //         noOfSections={ 4 }
-                //         rulesType='solid'
-                //         rulesColor={ colors.chartRulesColor }
-                //         rulesThickness={ 1 }
-
-                //         barWidth={ 8 }
-                //         barBorderRadius={ 2.5 }
-
-                //         xAxisLabelsVerticalShift={ 50 }
-
-                //         xAxisThickness={ 0 }
-                //         yAxisThickness={ 0 }
-                //         yAxisTextStyle={ styles.verticalLabelText}
-
-                //         yAxisLabelWidth={ 30 }
-                //         yAxisTextNumberOfLines={ 2 }
-                //         height={ chartBarData.length * (8 + 10) + 16 }
-                //     />
-                // </View>
-
                 <View style={ styles.containerBar }>
                     <View style={{ height: categoriesExtent, top: -40 }}>
                         <BarChart

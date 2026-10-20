@@ -120,7 +120,26 @@ export function FilterTransactions({ onPress }: NewTransactionProp) {
             onPress={ onPress }
         >
             <Filter style={ styles.actionIcon } color={ colors.iconBackground } />
-            <ThemedText style={ styles.title } weight='light'>Filter</ThemedText>
+            <ThemedText style={ styles.title } weight='light'>Display filter</ThemedText>
+        </Pressable>
+    );
+}
+
+export function DisplayTransactions({ onPress }: NewTransactionProp) {
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
+    return (
+        <Pressable 
+            style={({ pressed }) => [
+                styles.actionElement,
+                pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
+            ]}
+            onPress={ onPress }
+        >
+            <Filter style={ styles.actionIcon } color={ colors.iconBackground } />
+            <ThemedText style={ styles.title } weight='light'>Display transactions</ThemedText>
         </Pressable>
     );
 }

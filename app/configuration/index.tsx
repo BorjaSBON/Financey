@@ -165,7 +165,7 @@ const ConfigurationScreen = () => {
                     </View>
                 </View>
             </ScrollView>
-
+            
             <ModifyElement active={ changeUsernamePopup } title='New username' value={ username } placeholder='New username' error={ error } modifyAction={ changeUsernameAction } cancelAction={ activeChangeUsernamePopup } onChange={ setUsername } />
             <DeleteElement active={ deleteAccountPopup } title={ deleteAccountTitle } titleButton='Delete' deleteAction={ deleteAccountAction } cancelAction={ activeDeleteAccountPopup } />
             <DeleteElement active={ resetAppPopup } title={ resetAppTitle } titleButton='Reset' deleteAction={ resetAppAction } cancelAction={ activeResetAppPopup } />
