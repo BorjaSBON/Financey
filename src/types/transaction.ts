@@ -33,4 +33,8 @@ export type TransactionFilters = {
     categoryId?: number;
     orderBy?: 'date' | 'amount';
     order?: 'ASC' | 'DESC';
+    amountMin?: number;
+    amountMax?: number;
+    dateMin?: string;
+    dateMax?: string;
 }

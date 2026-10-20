@@ -9,8 +9,9 @@ import { useCurrency } from '@currency/useCurrency';
 
 import { ThemedText } from '@ui/themed-text';
 
-import Filter from '@assets/filter.svg';
-import Add from '@assets/add.svg';
+import AddIcon from '@assets/add.svg';
+import FilterIcon from '@assets/filter.svg';
+import { ListIcon } from '@icons/list';
 
 interface TransactionProps {
     // Variables
@@ -86,7 +87,7 @@ export function NewTransaction({ onPress }: NewTransactionProp) {
             ]}
             onPress={ onPress }
         >
-            <Add style={ styles.actionIcon } color={ colors.iconBackground } />
+            <AddIcon style={ styles.actionIcon } color={ colors.iconBackground } />
             <ThemedText style={ styles.title } weight='light'>Add new transaction</ThemedText>
         </Pressable>
     );
@@ -119,7 +120,7 @@ export function FilterTransactions({ onPress }: NewTransactionProp) {
             ]}
             onPress={ onPress }
         >
-            <Filter style={ styles.actionIcon } color={ colors.iconBackground } />
+            <FilterIcon style={ styles.actionIcon } color={ colors.iconBackground } />
             <ThemedText style={ styles.title } weight='light'>Display filter</ThemedText>
         </Pressable>
     );
@@ -138,7 +139,9 @@ export function DisplayTransactions({ onPress }: NewTransactionProp) {
             ]}
             onPress={ onPress }
         >
-            <Filter style={ styles.actionIcon } color={ colors.iconBackground } />
+            <View style={ styles.actionIcon }>
+                <ListIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
+            </View>
             <ThemedText style={ styles.title } weight='light'>Display transactions</ThemedText>
         </Pressable>
     );

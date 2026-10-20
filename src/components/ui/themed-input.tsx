@@ -27,6 +27,7 @@ export function ThemedInput({ value='', placeholder='', type='text', onChange=()
                 onChangeText={ onChange }
                 inputMode={ type }
                 autoComplete='off'
+                placeholderTextColor={ colors.inputFontPlaceholder }
             />
         </View>
     );

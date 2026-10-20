@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { router, useNavigation } from 'expo-router';
+import { useState } from 'react';
+import { FlatList, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { router } from 'expo-router';
 
 import { Values } from '@constants/values';
 
@@ -19,28 +19,12 @@ const Categories = () => {
     const { colors } = useTheme();
     const styles = createStyles(colors);
 
-    // Change the router previous page
-    const navigation = useNavigation();
-
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('beforeRemove', (event) => {
-            event.preventDefault();
-            router.push('/configuration');
-        });
-
-        return unsubscribe;
-    }, [navigation]);
-
     // Database
     const { categories, loadingCategories } = useCategories();
 
     // Active type
     const [expenseActive, setExpenseActive] = useState(true);
     let categories_selected = categories.filter(item => item.type === (expenseActive ? 'expense' : 'income'));
-
-    if (loadingCategories) {
-        return <View></View>;
-    }
 
     const expenseActivation = () => {
         setExpenseActive(true);
@@ -52,36 +36,37 @@ const Categories = () => {
     
     return (
         <View style={ styles.container }>
-            <ScrollView>
-                <View style={ styles.sections }>
-                    <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
-                        
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>New category</ThemedText>
-                        <View style={ styles.elements }>
-                            <NewCategory onPress={ () => { router.push('/configuration/data/categories/add') } } />
-                        </View>
-                    </View>
-
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>Categories</ThemedText>
-                        <View style={ styles.elements }>
-                            {
-                                categories_selected.map((category) => (
-                                    <CategoryElement key={ category.name } title={ category.name } type={ category.type } onPress={ () => {
-                                        router.push({
-                                            pathname: '/configuration/data/categories/modify/[id]',
-                                            params: {
-                                                id: category.id.toString(),
-                                            },
-                                        })
-                                    } } />
-                                )) 
-                            }
-                        </View>
+            <View style={ styles.sections }>
+                <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
+                    
+                <View style={ styles.section }>
+                    <ThemedText style={ styles.title } weight='regular'>New category</ThemedText>
+                    <View style={ styles.elements }>
+                        <NewCategory onPress={ () => { router.push('/configuration/data/categories/add') } } />
                     </View>
                 </View>
-            </ScrollView>
+
+                <View style={[ styles.section, styles.transactionsSection ]}>
+                    <ThemedText style={ styles.title } weight='regular'>Categories</ThemedText>
+                    <View style={ styles.elementsScroll }>
+                        {   loadingCategories ? 
+                            <ActivityIndicator /> : 
+                            <FlatList
+                                data={ categories_selected }
+                                keyExtractor={ (item) => item.id.toString() }
+                                renderItem={({ item }) => {
+                                    return (<CategoryElement key={ item.name } title={ item.name } type={ item.type } onPress={ () => {
+                                        router.push({
+                                            pathname: '/configuration/data/categories/modify/[id]',
+                                            params: { id: item.id.toString() },
+                                        })
+                                    }} />)
+                                }}
+                            />
+                        }
+                    </View>
+                </View>
+            </View>
         </View>
     );
 };
@@ -95,20 +80,24 @@ const createStyles = (colors: ThemeColors) =>
             top: Values.topIfHeader,
             width: '100%',
             marginTop: 10,
+            paddingBottom: 125,
         },
             
         sections: {
-            display: 'flex',
+            flex: 1,
             flexDirection: 'column',
             rowGap: 15,
             paddingHorizontal: Values.paddingApp,
-            paddingBottom: 125,
         },
 
         section: {
-            display: 'flex',
             flexDirection: 'column',
             rowGap: 8,
+        },
+
+        transactionsSection: {
+            flex: 1,
+            minHeight: 0,
         },
 
         title: {
@@ -116,6 +105,14 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         elements: {
+            backgroundColor: colors.backgroundSecondary,
+            borderRadius: 10,
+            overflow: 'hidden',
+        },
+
+        elementsScroll: {
+            flex: 1,
+            minHeight: 0,
             backgroundColor: colors.backgroundSecondary,
             borderRadius: 10,
             overflow: 'hidden',

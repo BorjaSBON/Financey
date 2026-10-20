@@ -25,7 +25,16 @@ function mapTransaction(row: any): Transaction {
 export async function getAll(filters: TransactionFilters={}): Promise<Transaction[]> {
     const db = await dbPromise;
 
-    const { type, categoryId, orderBy='date', order='DESC' } = filters;
+    const { 
+        type, 
+        categoryId, 
+        orderBy = 'date', 
+        order = 'DESC', 
+        amountMin, 
+        amountMax, 
+        dateMin, 
+        dateMax
+    } = filters;
 
     let query = `
         SELECT
@@ -60,7 +69,29 @@ export async function getAll(filters: TransactionFilters={}): Promise<Transactio
         params.push(categoryId);
     }
 
-    // Columnas de orden permitidas
+    // Filter by amounts
+    if (amountMin) {
+        query += ` AND t.amount >= ?`;
+        params.push(amountMin);
+    }
+
+    if (amountMax) {
+        query += ` AND t.amount <= ?`;
+        params.push(amountMax);
+    }
+
+    // Filter by dates
+    if (dateMin) {
+        query += ` AND t.date >= ?`;
+        params.push(dateMin);
+    }
+
+    if (dateMax) {
+        query += ` AND t.date <= ?`;
+        params.push(dateMax);
+    }
+
+    // Order type
     const orderColumns = {
         date: 't.date',
         amount: 't.amount',
@@ -71,7 +102,7 @@ export async function getAll(filters: TransactionFilters={}): Promise<Transactio
 
     query += ` ORDER BY ${column} ${direction}`;
 
-    // Mantener un orden estable cuando coinciden los valores
+    // Order
     if (orderBy === 'date') {
         query += ', t.id DESC';
     } else {
@@ -79,28 +110,6 @@ export async function getAll(filters: TransactionFilters={}): Promise<Transactio
     }
 
     const rows = await db.getAllAsync(query, ...params);
-
-    // const rows = await db.getAllAsync(
-    //     `
-    //         SELECT
-    //             t.id,
-    //             t.type,
-    //             t.amount,
-    //             t.profile_id,
-    //             t.category_id,
-    //             c.name AS category_name,
-    //             t.date,
-    //             t.created_at,
-    //             t.updated_at
-    //         FROM transactions t
-    //         INNER JOIN categories c
-    //             ON c.id = t.category_id
-    //         INNER JOIN profiles p
-    //             ON p.id = t.profile_id
-    //         WHERE p.active = 1
-    //         ORDER BY t.date DESC, t.id DESC
-    //     `,
-    // );
 
     return rows.map(mapTransaction);
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, FlatList, ScrollView, ActivityIndicator } from 'react-native';
 import { router, useNavigation } from 'expo-router';
 
 import { Values } from '@constants/values';
@@ -8,10 +8,11 @@ import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
+import { ThemedInput } from '@ui/themed-input';
 import { ThemedSelectInput } from '@ui/themed-select-input';
+import { ThemedDateInput } from '@ui/themed-date-input';
 
 import BalanceResume from '@components/data/balance-resume';
-import Filter from '@components/data/filter';
 import { TransactionElement, NewTransaction, TransactionHeader, FilterTransactions, DisplayTransactions } from '@components/data/list-element';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
@@ -46,6 +47,10 @@ const DataList = () => {
     const [categoryId, setCategoryId] = useState('');
     const [orderBy, setOrderBy] = useState<'date' | 'amount'>('date');
     const [order, setOrder] = useState('date_new');
+    const [amountMin, setAmountMin] = useState('');
+    const [amountMax, setAmountMax] = useState('');
+    const [dateMin, setDateMin] = useState<Date | null>(null);
+    const [dateMax, setDateMax] = useState<Date | null>(null);
 
     // Filters content
     const dropDownListType = [
@@ -129,14 +134,28 @@ const DataList = () => {
             if (categoryId !== '') parameters.categoryId = Number(categoryId);
 
             // Amount
+            if (amountMin !== '') {
+                if (!isNaN(Number(amountMin.replace(',', '.')))) {
+                    parameters.amountMin = Math.round(Number(amountMin.replace(',', '.')) * 100);
+                }
+            }
+
+            if (amountMax !== '') {
+                if (!isNaN(Number(amountMax.replace(',', '.')))) {
+                    parameters.amountMax = Math.round(Number(amountMax.replace(',', '.')) * 100);
+                }
+            }
 
             // Date
+            if (dateMin) parameters.dateMin = dateMin.toISOString();
+            if (dateMax) parameters.dateMax = dateMax.toISOString();
 
+            // Get the transactions
             await getTransactions(parameters);
         };
 
         loadTransactions();
-    }, [type, categoryId, order]);
+    }, [type, categoryId, order, amountMin, amountMax, dateMin, dateMax]);
 
     return (
         <View style={ styles.container }>
@@ -174,9 +193,7 @@ const DataList = () => {
                                         return (<TransactionElement type={ item.type } category={ item.categoryName } value={ item.amount } date={ item.date } onPress={ () =>
                                             router.push({
                                                 pathname: '/data/modify/[id]',
-                                                params: {
-                                                    id: item.id.toString(),
-                                                },
+                                                params: { id: item.id.toString() },
                                             })
                                         } />);
                                     }}
@@ -186,7 +203,7 @@ const DataList = () => {
                     </View>
                 </View>
                 :
-                <View>
+                <ScrollView>
                     <View style={ styles.sections }>
                         <View style={ styles.section }>
                             <ThemedText style={ styles.title } weight='regular'>Transactions</ThemedText>
@@ -218,7 +235,10 @@ const DataList = () => {
                                 Amount
                                 <ThemedText style={ styles.subtitle } weight='light'> (Min to Max)</ThemedText>
                             </ThemedText>
-                            
+                            <View style={ styles.pairButtons }>
+                                <ThemedInput type='decimal' placeholder={ '0.000' } value={ amountMin } onChange={ setAmountMin } />
+                                <ThemedInput type='decimal' placeholder={ '0.000' } value={ amountMax } onChange={ setAmountMax } />
+                            </View>
                         </View>
 
                         <View style={ styles.section }>
@@ -226,12 +246,14 @@ const DataList = () => {
                                 Date
                                 <ThemedText style={ styles.subtitle } weight='light'> (Start to End)</ThemedText>
                             </ThemedText>
-                            
+                            <View style={ styles.pairButtons }>
+                                <ThemedDateInput value={ dateMin } onChange={ setDateMin } />
+                                <ThemedDateInput value={ dateMax } onChange={ setDateMax } />
+                            </View>
                         </View>
                     </View>
-                </View>
+                </ScrollView>
             }
-            {/* <Filter /> */}
         </View>
     );
 };
@@ -286,6 +308,13 @@ const createStyles = (colors: ThemeColors) =>
             backgroundColor: colors.backgroundSecondary,
             borderRadius: 10,
             overflow: 'hidden',
+        },
+
+        pairButtons: {
+            display: 'flex',
+            flexDirection: 'row',
+            columnGap: '8%',
+            width: '48%',
         },
     }
 );

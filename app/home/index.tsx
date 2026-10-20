@@ -12,6 +12,7 @@ import { ThemedText } from '@ui/themed-text';
 import { ListIcon } from '@icons/list';
 import { ChartsIcon } from '@icons/charts';
 import AddIcon from '@assets/add.svg';
+import { CategoriesIcon } from '@icons/categories';
 import { ConfIcon } from '@icons/conf';
 
 import BalanceResume from '@components/data/balance-resume';
@@ -93,10 +94,17 @@ const HomeScreen = () => {
                             <Pressable onPress={ () => router.push('/data/charts') }>
                                 <ChartsIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
                             </Pressable>
+
                             <Pressable onPress={ () => router.push('/data/list') }>
                                 <ListIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
                             </Pressable>
+
                             <AddIcon style={ styles.actionIcon } color={ colors.iconBackground } onPress={ () => router.push('/data/add') } /> 
+
+                            <Pressable onPress={ () => router.push('/configuration/data/categories') }>
+                                <CategoriesIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
+                            </Pressable>
+
                             <Pressable onPress={ () => router.push('/configuration') }>
                                 <ConfIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
                             </Pressable>
@@ -168,8 +176,7 @@ const createStyles = (colors: ThemeColors) =>
         actionElements: {
             display: 'flex',
             flexDirection: 'row',
-            columnGap: 25,
-            justifyContent: 'center',
+            justifyContent: 'space-evenly',
             paddingHorizontal: Values.paddingElement,
             alignItems: 'center',
             backgroundColor: colors.backgroundSecondary,

@@ -49,12 +49,12 @@ const styles = StyleSheet.create({
     input: {
         display: 'flex',
         flexDirection: 'column',
-        rowGap: 6,
+        rowGap: 8,
         paddingHorizontal: Values.paddingApp,
         width: '100%',
     },
 
     title: {
-        fontSize: 15,
+        fontSize: 13,
     },
 });
