@@ -48,7 +48,7 @@ export function ConfElementSelect({ title }: Props) {
     );
 }
 
-type CurrencyCode = 'EUR' | 'USD' | 'JPY' | 'RUB';
+type CurrencyCode = 'EUR' | 'USD' | 'GBP' | 'JPY' | 'KRW' | 'RUB' | 'PHP' | 'INR';
 type CurrencySelectItem = {
     label: string;
     value: CurrencyCode;
@@ -64,8 +64,12 @@ export function ConfCurrencySelect() {
     const dataSelect: CurrencySelectItem[] = [ 
         { label: '€', value: 'EUR' },
         { label: '$', value: 'USD' },
+        { label: '£', value: 'GBP' },
         { label: '¥', value: 'JPY' },
+        { label: '₩', value: 'KRW' },
         { label: '₽', value: 'RUB' },
+        { label: '₱', value: 'PHP' },
+        { label: '₹', value: 'INR' },
     ];
 
     const onSelect = (item: CurrencySelectItem) => { 

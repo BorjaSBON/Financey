@@ -1,11 +1,16 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Pressable } from 'react-native';
+import { router } from 'expo-router';
 
 import { Values } from '@constants/values';
+
+import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedInput } from '@ui/themed-input';
 import { ThemedDateInput } from '@ui/themed-date-input';
 import { ThemedSelectInput } from '@ui/themed-select-input';
+
+import { AddIcon } from '@icons/add';
 
 type DropdownItem = {
     label: string;
@@ -16,6 +21,7 @@ interface Props {
     // Variables
     name: string;
     type?: 'text' | 'numeric' | 'date' | 'select';
+    addButton?: boolean;
 
     // Text and numeric
     value?: string;
@@ -32,10 +38,20 @@ interface Props {
     onSelect?: (item: DropdownItem) => void;
 }
 
-export default function Input({ name, type='text', value='', placeholder='', onChangeText=()=>{}, dateValue=null, onChange=()=>{}, selectData=[], selectValue='', onSelect=()=>{} }: Props) {
+export default function Input({ name, type='text', addButton=false, value='', placeholder='', onChangeText=()=>{}, dateValue=null, onChange=()=>{}, selectData=[], selectValue='', onSelect=()=>{} }: Props) {
+    // Theme
+    const { colors } = useTheme();
+
     return (
         <View style={ styles.input }>
-            <ThemedText style={ styles.title } weight='regular'>{ name }</ThemedText>
+            { addButton ?
+                <View style={ styles.header }>
+                    <ThemedText style={ styles.title } weight='regular'>{ name }</ThemedText>
+                    <Pressable onPress={ () => router.push('/configuration/data/categories/add') }>
+                        <AddIcon size={ 14 } backgroundColor={ colors.iconColor } iconColor={colors.iconBackground} />
+                    </Pressable>
+                </View> : <ThemedText style={ styles.title } weight='regular'>{ name }</ThemedText>
+            }
 
             { type === 'text' && <ThemedInput type='text' placeholder={ placeholder } value={ value } onChange={ onChangeText } /> }
             { type === 'numeric' && <ThemedInput type='decimal' placeholder={ placeholder } value={ value } onChange={ onChangeText } /> }
@@ -56,5 +72,13 @@ const styles = StyleSheet.create({
 
     title: {
         fontSize: 13,
+    },
+
+    header: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        columnGap: 8,
+        alignItems: 'center'
     },
 });

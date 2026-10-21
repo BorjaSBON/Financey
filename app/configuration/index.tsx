@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useNavigation } from 'expo-router';
 
 import { Values } from '@constants/values';
@@ -17,6 +18,8 @@ import DeleteElement from '@components/common/delete-element';
 import { useProfiles } from '@/src/hooks/useProfiles';
 import { useTransactions } from '@/src/hooks/useTransactions';
 import { useCategories } from '@/src/hooks/useCategories';
+
+import { resetDatabase } from '@/src/db/resetDatabase';
 
 const ConfigurationScreen = () => {
     // Theme
@@ -116,7 +119,15 @@ const ConfigurationScreen = () => {
     // RESET APP ACTION
     const resetAppTitle = 'Are you sure you want to reset the application? All the information will be lost'
     const resetAppAction = async () => {
-        console.log('Reset app');
+        // Reset database
+        await resetDatabase();
+
+        // Reset local preferences
+        await AsyncStorage.removeItem('@theme_preference');
+        await AsyncStorage.removeItem('@currency_preference');
+
+        // Reset navigation
+        router.replace('/');
     };
 
     // Check if the profile is loaded

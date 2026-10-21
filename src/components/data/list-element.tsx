@@ -9,8 +9,8 @@ import { useCurrency } from '@currency/useCurrency';
 
 import { ThemedText } from '@ui/themed-text';
 
-import AddIcon from '@assets/add.svg';
-import FilterIcon from '@assets/filter.svg';
+import { AddIcon } from '@icons/add';
+import { FilterIcon } from '@icons/filter';
 import { ListIcon } from '@icons/list';
 
 interface TransactionProps {
@@ -87,7 +87,7 @@ export function NewTransaction({ onPress }: NewTransactionProp) {
             ]}
             onPress={ onPress }
         >
-            <AddIcon style={ styles.actionIcon } color={ colors.iconBackground } />
+            <AddIcon size={ 20 } backgroundColor={ colors.iconColor } iconColor={ colors.iconBackground } />
             <ThemedText style={ styles.title } weight='light'>Add new transaction</ThemedText>
         </Pressable>
     );
@@ -120,7 +120,7 @@ export function FilterTransactions({ onPress }: NewTransactionProp) {
             ]}
             onPress={ onPress }
         >
-            <FilterIcon style={ styles.actionIcon } color={ colors.iconBackground } />
+            <FilterIcon size={ 20 } backgroundColor={ colors.iconColor } iconColor={colors.iconBackground} />
             <ThemedText style={ styles.title } weight='light'>Display filter</ThemedText>
         </Pressable>
     );
@@ -139,9 +139,7 @@ export function DisplayTransactions({ onPress }: NewTransactionProp) {
             ]}
             onPress={ onPress }
         >
-            <View style={ styles.actionIcon }>
-                <ListIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
-            </View>
+            <ListIcon size={ 20 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
             <ThemedText style={ styles.title } weight='light'>Display transactions</ThemedText>
         </Pressable>
     );
@@ -165,9 +163,9 @@ const createStyles = (colors: ThemeColors) =>
             alignItems: 'center',
             width: '100%',
             minHeight: 30,
-            paddingVertical: 2,
-            paddingHorizontal: 10,
-            columnGap: 5,
+            paddingVertical: 8,
+            paddingHorizontal: 15,
+            columnGap: 10,
         },
 
         headerElement: {
@@ -220,10 +218,6 @@ const createStyles = (colors: ThemeColors) =>
         date: {
             fontSize: 10,
             color: colors.fontSecondary,
-        },
-
-        actionIcon: {
-            transform: [{ scale: 0.6 }]
         },
 
         header: {

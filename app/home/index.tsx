@@ -11,7 +11,7 @@ import { ThemedText } from '@ui/themed-text';
 
 import { ListIcon } from '@icons/list';
 import { ChartsIcon } from '@icons/charts';
-import AddIcon from '@assets/add.svg';
+import { AddIcon } from '@icons/add';
 import { CategoriesIcon } from '@icons/categories';
 import { ConfIcon } from '@icons/conf';
 
@@ -120,7 +120,9 @@ const HomeScreen = () => {
                                 <ListIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
                             </Pressable>
 
-                            <AddIcon style={ styles.actionIcon } color={ colors.iconBackground } onPress={ () => router.push('/data/add') } /> 
+                            <Pressable onPress={ () => router.push('/data/add') }>
+                                <AddIcon backgroundColor={ colors.iconColor } iconColor={colors.iconBackground} />
+                            </Pressable>
 
                             <Pressable onPress={ () => router.push('/configuration/data/categories') }>
                                 <CategoriesIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
@@ -129,14 +131,6 @@ const HomeScreen = () => {
                             <Pressable onPress={ () => router.push('/configuration') }>
                                 <ConfIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
                             </Pressable>
-                        </View>
-                    </View>
-
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>Last action</ThemedText>
-                        <View style={ styles.lastActionElement }>
-                            <ThemedText style={ styles.name } weight='light'>{ profile?.last_action || 'Action name' }</ThemedText>
-                            <ThemedText style={ styles.date } weight='light'>{ lastActionDate }</ThemedText>
                         </View>
                     </View>
 
@@ -152,6 +146,14 @@ const HomeScreen = () => {
                                         },
                                     })} } />
                             }
+                        </View>
+                    </View>
+
+                    <View style={ styles.section }>
+                        <ThemedText style={ styles.title } weight='regular'>Last action</ThemedText>
+                        <View style={ styles.lastActionElement }>
+                            <ThemedText style={ styles.name } weight='light'>{ profile?.last_action || 'Action name' }</ThemedText>
+                            <ThemedText style={ styles.date } weight='light'>{ lastActionDate }</ThemedText>
                         </View>
                     </View>
                 </View>

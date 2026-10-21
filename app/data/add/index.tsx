@@ -31,9 +31,16 @@ const DataAdd = () => {
     const { categories, loadingCategories } = useCategories();
     const { createTransaction } = useTransactions();
     const { profile, modifyProfileDataAdded, loadingProfiles } = useProfiles();
-
-    // Active type
+    
+    // Inputs values
     const [expenseActive, setExpenseActive] = useState(true);
+    const [categorySelect, setCategorySelect] = useState('');
+    const [amount, setAmount] = useState('');
+    const [dateStart, setDateStart] = useState<Date | null>(null);
+    const [repeatedSelect, setRepeatedSelect] = useState('no');
+    const [dateEnd, setDateEnd] = useState<Date | null>(null);
+
+    // Categories
     let categories_selected = categories.filter(item => item.type === (expenseActive ? 'expense' : 'income'));
     let categories_formatted = categories_selected.map((item) => {
         return {
@@ -42,27 +49,46 @@ const DataAdd = () => {
         };
     });
 
-    const expenseActivation = () => {
-        setExpenseActive(true);
-    }
-
-    const incomeActivation = () => {
-        setExpenseActive(false);
-    }
-
-    // Category select
-    const [selectValue, setSelectValue] = useState('');
-
-    // Amount and date value
-    const [amount, setAmount] = useState('');
-    const [date, setDate] = useState<Date | null>(null);
+    // Repeat options
+    const repeat_options = [
+        { value: 'no', label: 'No'},
+        { value: 'daily', label: 'Daily'},
+        { value: 'weekly', label: 'Weekly'},
+        { value: 'monthly', label: 'Monthly'}
+    ];
 
     // Error
     const [error, setError] = useState<String | null>(null);
 
+    // Function to calculate the monthlt increase
+    const getMontlyDate = (date: Date, originalDay: number) => {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const desiredDay = originalDay;
+
+        // First date of the next month
+        const result = new Date(
+            year,
+            month,
+            1,
+            date.getHours(),
+            date.getMinutes(),
+            date.getSeconds(),
+            date.getMilliseconds()
+        );
+
+        // Last day of the next month
+        const lastDay = new Date(year, month + 1, 0).getDate();
+
+        // Utiliza el día deseado o el último disponible
+        result.setDate(Math.min(desiredDay, lastDay));
+
+        return result;
+    };
+
     // Add button
     async function addTransaction() {
-        if (!amount || !selectValue || !date) {
+        if (!amount || !categorySelect || !dateStart) {
             setError('Fill all the inputs');
             return;
         }
@@ -76,15 +102,43 @@ const DataAdd = () => {
 
         const amountInCents = Math.round(Number(amount) * 100);
 
-        await createTransaction({
-            type: expenseActive ? 'expense' : 'income',
-            amount: amountInCents,
-            profileId: profile?.id || 1,
-            categoryId: categories_selected.find(item => item.name.toLowerCase() === selectValue)?.id || 1,
-            date: date ? date.toISOString() : new Date().toISOString(),
-        });
+        let currentDate = new Date(dateStart);
+        if (repeatedSelect !== 'no' && dateEnd) {
+            if (currentDate > dateEnd) {
+                setError('The final date is earlier than the initial one');
+                return;
+            }
 
-        await modifyProfileDataAdded();
+            while (currentDate <= dateEnd) {
+                await createTransaction({
+                    type: expenseActive ? 'expense' : 'income',
+                    amount: amountInCents,
+                    profileId: profile?.id || 1,
+                    categoryId: categories_selected.find(item => item.name.toLowerCase() === categorySelect)?.id || 1,
+                    date: currentDate.toISOString(),
+                });
+
+                await modifyProfileDataAdded();
+
+                if (repeatedSelect === 'daily') {
+                    currentDate.setDate(currentDate.getUTCDate() + 1);
+                } else if (repeatedSelect === 'weekly') {
+                    currentDate.setDate(currentDate.getUTCDate() + 7);
+                } else if (repeatedSelect === 'monthly') {
+                    currentDate = getMontlyDate(currentDate, dateStart.getUTCDate());
+                }
+            }
+        } else {
+            await createTransaction({
+                type: expenseActive ? 'expense' : 'income',
+                amount: amountInCents,
+                profileId: profile?.id || 1,
+                categoryId: categories_selected.find(item => item.name.toLowerCase() === categorySelect)?.id || 1,
+                date: dateStart ? dateStart.toISOString() : new Date().toISOString(),
+            });
+
+            await modifyProfileDataAdded();
+        }
 
         router.push('/data/list');
     };
@@ -95,7 +149,7 @@ const DataAdd = () => {
 
     return (
         <View style={ styles.container }>
-            <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
+            <TypeButtons expenseActive={ expenseActive } expenseOnPress={() => { setExpenseActive(true); }} incomeOnPress={() => { setExpenseActive(false); }} />
 
             <View style={ styles.amountInput }>
                 <TextInput
@@ -111,8 +165,11 @@ const DataAdd = () => {
             </View>
 
             <View style={ styles.inputs }>
-                <Input name='Category' type='select' selectData={ categories_formatted } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
-                <Input name='Date' type='date' dateValue={ date } onChange={ setDate } />
+                <Input name='Category' type='select' addButton selectData={ categories_formatted } selectValue={ categorySelect } onSelect={ (item) => { setCategorySelect(item.value); }} />
+                <Input name='Date' type='date' dateValue={ dateStart } onChange={ setDateStart } />
+                <Input name='Repeated' type='select' selectData={ repeat_options } selectValue={ repeatedSelect } onSelect={ (item) => { setRepeatedSelect(item.value); }} />
+                { repeatedSelect !== 'no' && <Input name='End date' type='date' dateValue={ dateEnd } onChange={ setDateEnd } /> }
+                
             </View>
 
             { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }

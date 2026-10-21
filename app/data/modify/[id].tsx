@@ -160,7 +160,7 @@ const DataModify = () => {
                 </View>
 
                 <View style={ styles.inputs }>
-                    <Input name='Category' type='select' selectData={ categories_formatted } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
+                    <Input name='Category' type='select' addButton selectData={ categories_formatted } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
                     <Input name='Date' type='date' dateValue={ date } onChange={ setDate } />
                 </View>
 

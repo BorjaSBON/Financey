@@ -7,7 +7,7 @@ import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
-import Add from '@assets/add.svg';
+import { AddIcon } from '@icons/add';
 
 interface AccountProps {
     // Variables
@@ -80,7 +80,9 @@ export function NewAccount({ onPress }: NewAccountProp) {
             ]}
             onPress={ onPress }
         >
-            <Add style={ styles.actionIcon } color={ colors.iconBackground } />
+            <View style={ styles.actionIcon }>
+                <AddIcon backgroundColor={ colors.iconColor } iconColor={ colors.iconBackground } />
+            </View>
             <ThemedText style={ styles.title } weight='light'>Create new account</ThemedText>
         </Pressable>
     );
@@ -142,7 +144,6 @@ const createStyles = (colors: ThemeColors) =>
 
         actionIcon: {
             marginTop: 3,
-            transform: [{ scale: 0.9 }]
         },
     }
 );

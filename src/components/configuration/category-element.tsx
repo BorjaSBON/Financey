@@ -6,7 +6,7 @@ import { useTheme } from '@theme/useTheme';
 
 import { ThemedText } from '@ui/themed-text';
 
-import Add from '@assets/add.svg';
+import { AddIcon } from '@icons/add';
 
 interface CategoryProps {
     // Variables
@@ -54,7 +54,7 @@ export function NewCategory({ onPress }: NewCategoryProp) {
             ]}
             onPress={ onPress }
         >
-            <Add style={ styles.actionIcon } color={ colors.iconBackground } />
+            <AddIcon size={ 20 } backgroundColor={ colors.iconColor } iconColor={ colors.iconBackground } />
             <ThemedText style={ styles.title } weight='light'>Add new category</ThemedText>
         </Pressable>
     );
@@ -77,9 +77,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         minHeight: 30,
-        paddingVertical: 2,
-        paddingHorizontal: 10,
-        columnGap: 5,
+        paddingVertical: 8,
+        paddingHorizontal: 15,
+        columnGap: 10,
     },
 
     name: {
@@ -99,9 +99,5 @@ const styles = StyleSheet.create({
 
     title: {
         fontSize: 14,
-    },
-
-    actionIcon: {
-        transform: [{ scale: 0.6 }]
     },
 });
