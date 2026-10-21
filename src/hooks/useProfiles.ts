@@ -105,7 +105,6 @@ export function useProfiles() {
     }, []);
 
     // MODIFY LAST ACTION
-    // MODIFY
     const modifyProfileLastAction = useCallback(async (data: LastActionProfile) => {
         try {
             // Set loading and error states
@@ -186,14 +185,14 @@ export function useProfiles() {
     }, []);
 
     // MODIFY DATA DELETED
-    const modifyProfileDataDeleted = useCallback(async () => {
+    const modifyProfileDataDeleted = useCallback(async (count: number = 1) => {
         try {
             // Set loading and error states
             setLoading(true);
             setError(null);
 
             // Modify the data deleted
-            await profilesRepository.modifyDataDeleted();
+            await profilesRepository.modifyDataDeleted(count);
         } catch (err) {
             // Error handling
             const error = err instanceof Error ? err : new Error('Error modifying deleted data');

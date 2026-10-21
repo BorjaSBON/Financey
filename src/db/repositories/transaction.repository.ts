@@ -230,8 +230,17 @@ export async function removeAll(): Promise<void> {
 }
 
 // Delete all transactions
-export async function removeByCategory(categoryId: number): Promise<void> {
+export async function removeByCategory(categoryId: number): Promise<number> {
     const db = await dbPromise;
+
+    const transactionCount = await db.getFirstAsync<{ count: number }>(
+        `
+            SELECT COUNT(*) as count
+            FROM transactions
+            WHERE category_id = ?
+        `,
+        categoryId
+    );
 
     await db.runAsync(
         `
@@ -245,6 +254,8 @@ export async function removeByCategory(categoryId: number): Promise<void> {
         `,
         categoryId
     );
+
+    return transactionCount?.count ?? 0;
 }
 
 // Get the balance for a given date range

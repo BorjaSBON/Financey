@@ -151,7 +151,7 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
 
             { chartBarData.length !== 0 &&
                 <View style={ styles.containerBar }>
-                    <View style={{ height: categoriesExtent, top: -40 }}>
+                    <View style={{ height: categoriesExtent, top: -50 }}>
                         <BarChart
                             data={ chartBarData }
                             horizontal
@@ -167,6 +167,7 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
                             rulesType='solid'
                             rulesColor={ colors.chartRulesColor }
                             rulesThickness={ 1 }
+                            rulesLength={ categoriesExtent - 65 }
 
                             xAxisThickness={ 0 }
                             yAxisThickness={ 0 }

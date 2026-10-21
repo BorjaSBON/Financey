@@ -155,7 +155,10 @@ export function useTransactions() {
             setError(null);
 
             // Remove all transactions
-            await transactionsRepository.removeByCategory(categoryId);
+            const count = await transactionsRepository.removeByCategory(categoryId);
+
+            // Return the number of transactions removed
+            return count;
         } catch (err) {
             // Error handling
             const error = err instanceof Error ? err : new Error('Error removing all transactions');

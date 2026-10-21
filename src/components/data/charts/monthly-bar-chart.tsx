@@ -50,12 +50,15 @@ const MonthlyBarChart = ({ year }: Props) => {
         loadBalanceMonthly();
     }, [year]);
 
+    // Calculate the radius of the container
+    const [containerWidth, setContainerWidth] = useState(0);
+
     if (!chartData) {
         return;
     }
 
     return (
-        <View style={ styles.container }>
+        <View style={ styles.container } onLayout={(event) => { setContainerWidth(event.nativeEvent.layout.width); }}>
             <BarChart
                 data={ chartData }
                 
@@ -69,6 +72,7 @@ const MonthlyBarChart = ({ year }: Props) => {
                 rulesType='solid'
                 rulesColor={ colors.chartRulesColor }
                 rulesThickness={ 1 }
+                rulesLength={ containerWidth - 50 }
 
                 barWidth={ 4 }
                 barBorderRadius={ 1.5 }

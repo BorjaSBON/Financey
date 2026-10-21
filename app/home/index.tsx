@@ -98,15 +98,15 @@ const HomeScreen = () => {
                                 Resume
                                 <ThemedText style={ styles.subtitle } weight='light'> ({ date.toLocaleString('en-GB', { month: 'long' }) })</ThemedText>
                             </ThemedText>
-                            <CategoriesPieChart year={ date.getUTCFullYear() } month={ date.getUTCMonth() } />
+                            <CategoriesPieChart year={ date.getUTCFullYear() } month={ date.getUTCMonth() + 1 } />
                         </View>
 
-                        <View style={ styles.sectionHalf }>
+                        {/* <View style={ styles.sectionHalf }>
                             <ThemedText style={ styles.title } weight='regular'>Evolution</ThemedText>
                             <View style={ styles.evolution }>
 
                             </View>
-                        </View>
+                        </View> */}
                     </View>
 
                     <View style={ styles.section }>
@@ -196,6 +196,7 @@ const createStyles = (colors: ThemeColors) =>
             flexDirection: 'column',
             rowGap: 8,
             width: '47.5%',
+            marginHorizontal: 'auto',
         },
 
         title: {

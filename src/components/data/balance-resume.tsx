@@ -129,7 +129,7 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         title: {
-            fontSize: 14,
+            fontSize: 13,
             textAlign: 'center',
         },
 

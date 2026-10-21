@@ -7,9 +7,6 @@ export async function initializeDatabase() {
     // DROP TABLE IF EXISTS transactions;
     // DROP TABLE IF EXISTS profiles;
 
-    // INSERT INTO profiles (username, creation_date, last_action_date, data_added, data_modified, data_deleted)
-    // VALUES ('Borchax', '19/09/2026', '19/09/2026', 0, 0, 0);
-
     await db.execAsync(`
         PRAGMA journal_mode = WAL;
         PRAGMA foreign_keys = ON;

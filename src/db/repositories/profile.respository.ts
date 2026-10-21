@@ -201,7 +201,7 @@ export async function modifyDataModified(): Promise<void> {
 }
 
 // Modify the data deleted for a profile by ID
-export async function modifyDataDeleted(): Promise<void> {
+export async function modifyDataDeleted(count: number): Promise<void> {
     const db = await dbPromise;
 
     // Get the date of the action
@@ -210,7 +210,7 @@ export async function modifyDataDeleted(): Promise<void> {
     await db.runAsync(
         `
             UPDATE profiles
-            SET last_action_date = ?, last_action = ?, number_actions = number_actions + 1, number_transactions = number_transactions - 1, number_transactions_deleted = number_transactions_deleted + 1
+            SET last_action_date = ?, last_action = ?, number_actions = number_actions + ?, number_transactions = number_transactions - ?, number_transactions_deleted = number_transactions_deleted + ?
             WHERE id = (
                 SELECT id
                 FROM profiles
@@ -220,7 +220,10 @@ export async function modifyDataDeleted(): Promise<void> {
             )
         `,
         now,
-        'Delete transaction'
+        'Delete transaction',
+        count,
+        count,
+        count
     );
 }
 

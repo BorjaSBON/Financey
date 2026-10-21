@@ -26,7 +26,7 @@ const DataModify = () => {
     // Database
     const { removeTransactionsByCategory, loadingTransactions } = useTransactions();
     const { category, getCategory, modifyCategory, removeCategory, loadingCategories } = useCategories();
-    const { modifyProfileLastAction } = useProfiles();
+    const { modifyProfileLastAction, modifyProfileDataDeleted } = useProfiles();
 
     // ID of the element
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -95,12 +95,13 @@ const DataModify = () => {
     // DELETE CATEGORY ACTION
     async function deleteCategoryAction() {
         // Remove the transactions related to the category
-        await removeTransactionsByCategory(Number(id));
+        const count = await removeTransactionsByCategory(Number(id));
 
         // Remove the category
         await removeCategory(Number(id));
 
         // Modify the profile
+        await modifyProfileDataDeleted(count);
         await modifyProfileLastAction({ lastAction: 'Delete category' });
 
         // Return to the prevous page

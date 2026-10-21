@@ -67,7 +67,6 @@ const CategoriesPieChart = ({ year, month }: Props) => {
     useEffect(() => {
         const loadCategoriesAmount = async () => {
             const categoriesAmount = await getCategoriesAmount(year, month, 'expense');
-            
             let dataDonutProcessed:any[] = [];
 
             categoriesAmount.forEach((element, index) => {
@@ -82,7 +81,7 @@ const CategoriesPieChart = ({ year, month }: Props) => {
         };
 
         loadCategoriesAmount();
-    }, [getCategoriesAmount, year, month]);
+    }, [getCategoriesAmount]);
 
     // Calculate the radius of the container
     const [containerWidth, setContainerWidth] = useState(0);
@@ -103,7 +102,7 @@ const CategoriesPieChart = ({ year, month }: Props) => {
                 sectionAutoFocus
                 focusOnPress
                 strokeWidth={ 0.5 }
-                strokeColor={ colors.backgroundPrimary }
+                strokeColor={ colors.backgroundSecondary }
                 onPress={ (item: { label: string, value: number }) => {
                     if (categoryPressed == item.label) {
                         const totalAmount = chartPieData.reduce((sum, item) => sum + item.value, 0);
@@ -116,7 +115,7 @@ const CategoriesPieChart = ({ year, month }: Props) => {
                 }}
                 radius={ radius }
                 innerRadius={ innerRadius }
-                innerCircleColor={ colors.backgroundPrimary }
+                innerCircleColor={ colors.backgroundSecondary }
                 centerLabelComponent={() => {
                     return (
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
