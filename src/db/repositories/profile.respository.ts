@@ -1,6 +1,6 @@
 import { dbPromise } from '../database';
 
-import type { LastActionProfile, Profile, UsernameProfile } from '../../types/profile';
+import type { LastActionProfile, Profile, CreateProfile } from '../../types/profile';
 
 function mapProfile(row: any): Profile {
     return {
@@ -68,7 +68,7 @@ export async function getById(id: number): Promise<Profile | null> {
 }
 
 // Create a new profile
-export async function create(profile: UsernameProfile): Promise<number> {
+export async function create(profile: CreateProfile): Promise<number> {
     try {
         const db = await dbPromise;
 
@@ -83,7 +83,7 @@ export async function create(profile: UsernameProfile): Promise<number> {
             profile.username,
             now,
             now,
-            'Create account',
+            'createAccount',
             1,
             0,
             0,
@@ -125,7 +125,7 @@ export async function modifyLastAction(data: LastActionProfile): Promise<void> {
 }
 
 // Modify the username for a profile by ID
-export async function modifyUsername(data: UsernameProfile): Promise<void> {
+export async function modifyUsername(data: CreateProfile): Promise<void> {
     const db = await dbPromise;
 
     // Get the date of the action
@@ -148,7 +148,7 @@ export async function modifyUsername(data: UsernameProfile): Promise<void> {
         `,
         data.username,
         now,
-        'Modify username',
+        'modifyAccount',
     );
 }
 
@@ -172,7 +172,7 @@ export async function modifyDataAdded(): Promise<void> {
             )
         `,
         now,
-        'Add new transaction'
+        'addTransaction'
     );
 }
 
@@ -196,7 +196,7 @@ export async function modifyDataModified(): Promise<void> {
             )
         `,
         now,
-        'Modify transaction'
+        'modifyTransaction'
     );
 }
 
@@ -220,7 +220,7 @@ export async function modifyDataDeleted(count: number): Promise<void> {
             )
         `,
         now,
-        'Delete transaction',
+        'deleteTransaction',
         count,
         count,
         count

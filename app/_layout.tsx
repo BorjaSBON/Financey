@@ -11,6 +11,8 @@ import { useTheme } from '@theme/useTheme';
 
 import { CurrencyProvider } from '@currency/CurrencyContext';
 
+import { LanguageProvider } from '@language/LanguageContext';
+
 SplashScreen.preventAutoHideAsync();
 
 const RootLayoutContent = () => {
@@ -65,7 +67,9 @@ const RootLayout = () => {
     return (
 		<ThemeProvider>
 			<CurrencyProvider>
-				<RootLayoutContent />
+				<LanguageProvider>
+					<RootLayoutContent />
+				</LanguageProvider>
 			</CurrencyProvider>
 		</ThemeProvider>
 	);

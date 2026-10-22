@@ -4,31 +4,31 @@ import { Values } from '@constants/values';
 
 import { ThemeColors, ThemePreference } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useCurrency } from '@currency/useCurrency';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedSelectInputMini } from '@ui/themed-select-input-mini';
-import { useCurrency } from '@/src/currency/useCurrency';
 
 type ThemeSelectItem = {
     label: string;
     value: ThemePreference;
 };
 
-interface Props {
-    title: string;
-}
-
-export function ConfElementSelect({ title }: Props) {
+export function ConfThemeSelect() {
     // Theme
     const { colors, themePreference, setThemePreference } = useTheme();
     const styles = createStyles(colors);
 
+    // Traductions
+    const { languages } = useLanguage();
+
     // Select data
     let valueSelect: ThemePreference = themePreference;
     let dataSelect: ThemeSelectItem[] = [
-        { label: 'Light', value: 'light' },
-        { label: 'Dark', value: 'dark' },
-        { label: 'System', value: 'system' },
+        { label: languages['light'], value: 'light' },
+        { label: languages['dark'], value: 'dark' },
+        { label: languages['system'], value: 'system' },
     ];
 
     const onSelect = (item: ThemeSelectItem) => {
@@ -42,9 +42,44 @@ export function ConfElementSelect({ title }: Props) {
                 pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
             ]}
         >
-            <ThemedText style={styles.title} weight='light'>{ title }</ThemedText>
+            <ThemedText style={styles.title} weight='light'>{ languages['theme'] }</ThemedText>
             <ThemedSelectInputMini data={ dataSelect } value={ valueSelect } onSelect={ onSelect }/>
         </Pressable>
+    );
+}
+
+type LanguageCode = 'en' | 'es';
+type LanguageSelectItem = {
+    label: string;
+    value: LanguageCode;
+};
+
+export function ConfLanguageSelect() { 
+    // Theme
+    const { colors } = useTheme();
+    const styles = createStyles(colors);
+
+    // Languages
+    const { languages, languagePreference, setLanguagePreference } = useLanguage();
+    const dataSelect: LanguageSelectItem[] = [ 
+        { label: 'EN', value: 'en' },
+        { label: 'ES', value: 'es' },
+    ];
+
+    const onSelect = (item: LanguageSelectItem) => { 
+        setLanguagePreference(item.value);
+    };
+
+    return (
+        <Pressable 
+            style={({ pressed }) => [
+                styles.informationElement,
+                pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
+            ]} 
+        >
+            <ThemedText style={ styles.title } weight="light">{ languages['language'] }</ThemedText>
+            <ThemedSelectInputMini data={ dataSelect } value={ languagePreference } widthInput={ 50 } onSelect={ onSelect } />
+        </Pressable> 
     );
 }
 
@@ -58,6 +93,9 @@ export function ConfCurrencySelect() {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Traductions
+    const { languages } = useLanguage();
 
     // Currency
     const { currency, setCurrency } = useCurrency();
@@ -83,7 +121,7 @@ export function ConfCurrencySelect() {
                 pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
             ]} 
         >
-            <ThemedText style={ styles.title } weight="light">Currency</ThemedText>
+            <ThemedText style={ styles.title } weight="light">{ languages['currency'] }</ThemedText>
             <ThemedSelectInputMini data={ dataSelect } value={ currency } widthInput={ 40 } onSelect={ onSelect } />
         </Pressable> 
     );

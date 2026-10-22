@@ -7,11 +7,12 @@ import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 
 import ConfElement from '@components/configuration/conf-element';
-import { ConfElementSelect, ConfCurrencySelect } from '@components/configuration/conf-element-select';
+import { ConfThemeSelect, ConfLanguageSelect, ConfCurrencySelect } from '@components/configuration/conf-element-select';
 import ModifyElement from '@components/common/modify-element';
 import DeleteElement from '@components/common/delete-element';
 
@@ -25,6 +26,9 @@ const ConfigurationScreen = () => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Traductions
+    const { languages } = useLanguage();
 
     // Change the router previous page
     const navigation = useNavigation();
@@ -88,20 +92,19 @@ const ConfigurationScreen = () => {
         setError(null);
 
         if (username.length > 15) {
-            setError('The username must be less than 15 characters');
+            setError(languages['errorLimitUsername']);
             return;
         }
 
         try {
-            await modifyProfileUsername({ username });
+            await modifyProfileUsername({ username: username });
             router.push('/');
         } catch (error) {
-            setError('The username must be unique');
+            setError(languages['errorUsernameUnique']);
         }
     };
 
     // DELETE ACCOUNT ACTION
-    const deleteAccountTitle = 'Are you sure you want to delete the account? All the information will be permanently lost';
     const deleteAccountAction = async () => {
         // Remove transactions
         await removeTransactions();
@@ -117,7 +120,6 @@ const ConfigurationScreen = () => {
     };
 
     // RESET APP ACTION
-    const resetAppTitle = 'Are you sure you want to reset the application? All the information will be lost'
     const resetAppAction = async () => {
         // Reset database
         await resetDatabase();
@@ -125,6 +127,7 @@ const ConfigurationScreen = () => {
         // Reset local preferences
         await AsyncStorage.removeItem('@theme_preference');
         await AsyncStorage.removeItem('@currency_preference');
+        await AsyncStorage.removeItem('@language_preference');
 
         // Reset navigation
         router.replace('/');
@@ -140,46 +143,46 @@ const ConfigurationScreen = () => {
             <ScrollView>
                 <View style={ styles.sections }>
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>General</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['general'] }</ThemedText>
                         <View style={ styles.elements }>
-                            <ConfElementSelect title='Theme' />
-                            <ConfElementSelect title='Language' />
+                            <ConfThemeSelect />
+                            <ConfLanguageSelect />
                         </View>
                     </View>
 
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>Data</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['data'] }</ThemedText>
                         <View style={ styles.elements }>
                             <ConfCurrencySelect />
-                            <ConfElement title='Categories' onPress={ () => router.push('/configuration/data/categories') } />
-                            <ConfElement title='Import data' onPress={ () => router.push('/configuration/data/import_data') } />
-                            <ConfElement title='Export data' onPress={ () => router.push('/future') } />
+                            <ConfElement title={ languages['categories'] } onPress={ () => router.push('/configuration/data/categories') } />
+                            <ConfElement title={ languages['importData'] } onPress={ () => router.push({pathname: '/future', params: { information01: languages['futureImportInfo1'], information02: languages['futureImportInfo2'] }}) } />
+                            <ConfElement title={ languages['exportData'] } onPress={ () => router.push({pathname: '/future', params: { information01: languages['futureExportInfo'] }}) } />
                         </View>
                     </View>
                     
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>Account</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['account'] }</ThemedText>
                         <View style={ styles.elements }>
-                            <ConfElement title='Information of the account' onPress={ () => router.push('/configuration/account/information') } />
-                            <ConfElement title='Change account' onPress={ () => router.push('/configuration/account/change_account') } />
-                            <ConfElement title='Change username' iconDisplay={ false } onPress={ activeChangeUsernamePopup } />
-                            <ConfElement title='Delete account' colorText={ colors.negative } iconDisplay={ false } onPress={ activeDeleteAccountPopup } />
+                            <ConfElement title={ languages['informationAccount'] } onPress={ () => router.push('/configuration/account/information') } />
+                            <ConfElement title={ languages['changeAccount'] } onPress={ () => router.push('/configuration/account/change_account') } />
+                            <ConfElement title={ languages['changeUsername'] } iconDisplay={ false } onPress={ activeChangeUsernamePopup } />
+                            <ConfElement title={ languages['deleteAccount'] } colorText={ colors.negative } iconDisplay={ false } onPress={ activeDeleteAccountPopup } />
                         </View>
                     </View>
                     
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>Application</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['app'] }</ThemedText>
                         <View style={ styles.elements }>
-                            <ConfElement title='Information of the app' onPress={ () => router.push('/configuration/application') } />
-                            <ConfElement title='Reset application' colorText={ colors.negative } iconDisplay={ false } onPress={ activeResetAppPopup } />
+                            <ConfElement title={ languages['informationApp'] } onPress={ () => router.push('/configuration/application') } />
+                            <ConfElement title={ languages['resetApp'] } colorText={ colors.negative } iconDisplay={ false } onPress={ activeResetAppPopup } />
                         </View>
                     </View>
                 </View>
             </ScrollView>
             
-            <ModifyElement active={ changeUsernamePopup } title='Change username' value={ username } placeholder='New username' error={ error } modifyAction={ changeUsernameAction } cancelAction={ activeChangeUsernamePopup } onChange={ setUsername } />
-            <DeleteElement active={ deleteAccountPopup } title={ deleteAccountTitle } titleButton='Delete' deleteAction={ deleteAccountAction } cancelAction={ activeDeleteAccountPopup } />
-            <DeleteElement active={ resetAppPopup } title={ resetAppTitle } titleButton='Reset' deleteAction={ resetAppAction } cancelAction={ activeResetAppPopup } />
+            <ModifyElement active={ changeUsernamePopup } title={ languages['changeUsername'] } value={ username } placeholder={ languages['newUsername'] } error={ error } modifyAction={ changeUsernameAction } cancelAction={ activeChangeUsernamePopup } onChange={ setUsername } />
+            <DeleteElement active={ deleteAccountPopup } title={ languages['deleteAccountTitle'] } titleButton='delete' deleteAction={ deleteAccountAction } cancelAction={ activeDeleteAccountPopup } />
+            <DeleteElement active={ resetAppPopup } title={ languages['resetAppTitle'] } titleButton='reset' deleteAction={ resetAppAction } cancelAction={ activeResetAppPopup } />
         </View>
     );
 };

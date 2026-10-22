@@ -6,6 +6,7 @@ import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -19,35 +20,30 @@ const Categories = () => {
     const { colors } = useTheme();
     const styles = createStyles(colors);
 
+    // Traductions
+    const { languages } = useLanguage();
+
     // Database
     const { categories, loadingCategories } = useCategories();
 
     // Active type
     const [expenseActive, setExpenseActive] = useState(true);
     let categories_selected = categories.filter(item => item.type === (expenseActive ? 'expense' : 'income'));
-
-    const expenseActivation = () => {
-        setExpenseActive(true);
-    }
-
-    const incomeActivation = () => {
-        setExpenseActive(false);
-    }
     
     return (
         <View style={ styles.container }>
             <View style={ styles.sections }>
-                <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
+                <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => { setExpenseActive(true); } } incomeOnPress={ () => { setExpenseActive(false); } } />
                     
                 <View style={ styles.section }>
-                    <ThemedText style={ styles.title } weight='regular'>New category</ThemedText>
+                    <ThemedText style={ styles.title } weight='regular'>{ languages['newCategory'] }</ThemedText>
                     <View style={ styles.elements }>
                         <NewCategory onPress={ () => { router.push('/configuration/data/categories/add') } } />
                     </View>
                 </View>
 
                 <View style={[ styles.section, styles.transactionsSection ]}>
-                    <ThemedText style={ styles.title } weight='regular'>Categories</ThemedText>
+                    <ThemedText style={ styles.title } weight='regular'>{ languages['categories'] }</ThemedText>
                     <View style={ styles.elementsScroll }>
                         {   loadingCategories ? 
                             <ActivityIndicator /> : 

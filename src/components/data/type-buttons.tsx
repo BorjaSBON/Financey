@@ -1,5 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
+import { useLanguage } from '@language/useLanguage';
+
 import { ThemedButton } from '@ui/themed-button';
 
 interface Props {
@@ -15,10 +17,13 @@ interface Props {
 }
 
 export default function TypeButtons({ expenseActive, expenseOnPress, expenseOnLongPress, incomeOnPress, incomeOnLongPress }: Props) {
+    // Traductions
+    const { languages } = useLanguage();
+
     return (
         <View style={ styles.typeButtons }>
-            <ThemedButton label='Expense' type={ expenseActive ? 'default' : 'clear' } onPress={ expenseOnPress } onLongPress={ expenseOnLongPress } />
-            <ThemedButton label='Income' type={ !expenseActive ? 'default' : 'clear' } onPress={ incomeOnPress } onLongPress={ incomeOnLongPress } />
+            <ThemedButton label={ languages['expense'] } type={ expenseActive ? 'default' : 'clear' } onPress={ expenseOnPress } onLongPress={ expenseOnLongPress } />
+            <ThemedButton label={ languages['income'] } type={ !expenseActive ? 'default' : 'clear' } onPress={ incomeOnPress } onLongPress={ incomeOnLongPress } />
         </View>
     );
 }

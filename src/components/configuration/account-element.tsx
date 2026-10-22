@@ -4,6 +4,7 @@ import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -44,9 +45,12 @@ export function AccountElement({ username, last_action_date, active, onPress }: 
     const { colors } = useTheme();
     const styles = createStyles(colors);
 
+    // Traductions
+    const { languages } = useLanguage();
+
     // Data
-    const activeText = active === 1 ? <ThemedText style={ styles.active } weight='light'>(Active)</ThemedText> : '';
-    const dateFormatted = new Date(last_action_date).toLocaleDateString('en-GB');
+    const activeText = active === 1 ? <ThemedText style={ styles.active } weight='light'>({ languages['active'] })</ThemedText> : '';
+    const dateFormatted = new Date(last_action_date).toLocaleDateString(languages['dateFormat']);
 
     return (
         <Pressable 
@@ -61,7 +65,7 @@ export function AccountElement({ username, last_action_date, active, onPress }: 
             </View>
             <View style={ styles.information }>
                 <ThemedText style={ styles.username } weight='regular'>{ username } { activeText }</ThemedText>
-                <ThemedText style={ styles.date } weight='light'>Last action: { dateFormatted }</ThemedText>
+                <ThemedText style={ styles.date } weight='light'>{ languages['lastAction'] }: { dateFormatted }</ThemedText>
             </View>
         </Pressable>
     );
@@ -71,6 +75,9 @@ export function NewAccount({ onPress }: NewAccountProp) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Traductions
+    const { languages } = useLanguage();
 
     return (
         <Pressable 
@@ -83,7 +90,7 @@ export function NewAccount({ onPress }: NewAccountProp) {
             <View style={ styles.actionIcon }>
                 <AddIcon backgroundColor={ colors.iconColor } iconColor={ colors.iconBackground } />
             </View>
-            <ThemedText style={ styles.title } weight='light'>Create new account</ThemedText>
+            <ThemedText style={ styles.title } weight='light'>{ languages['createNewAccount'] }</ThemedText>
         </Pressable>
     );
 }

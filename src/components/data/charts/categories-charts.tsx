@@ -3,8 +3,10 @@ import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { PieChart, BarChart } from 'react-native-gifted-charts';
 
 import { Values } from '@constants/values';
+
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { useCurrency } from '@currency/useCurrency';
 
@@ -23,6 +25,9 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+    
+    // Traductions
+    const { languages } = useLanguage();
     
     // Currency
     const { currencyInfo } = useCurrency();
@@ -91,7 +96,7 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
             setChartBarData(dataBarProcessed);
 
             setAmountPressed(totalAmount);
-            setCategoryPressed('Total');
+            setCategoryPressed(languages['total']);
         };
 
         loadCategoriesAmount();
@@ -126,7 +131,7 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
                         if (categoryPressed == item.label) {
                             const totalAmount = chartPieData.reduce((sum, item) => sum + item.value, 0);
                             setAmountPressed(totalAmount);
-                            setCategoryPressed('Total');
+                            setCategoryPressed(languages['total']);
                         } else {
                             setCategoryPressed(item.label);
                             setAmountPressed(item.value);

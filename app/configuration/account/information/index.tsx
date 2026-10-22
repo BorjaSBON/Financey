@@ -5,6 +5,7 @@ import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -17,17 +18,20 @@ export default function AccountInformation() {
     const { colors } = useTheme();
     const styles = createStyles(colors);
 
+    // Traductions
+    const { languages } = useLanguage();
+
     // Get the profile
     const { profile, loadingProfiles } = useProfiles();
 
     // Variables
-    const [ creationDate, setCreationDate ] = useState('Month DD, YYYY - HH:MM:SS');
-    const [ lastActionDate, setLastActionDate ] = useState('Month DD, YYYY - HH:MM:SS');
+    const [ creationDate, setCreationDate ] = useState(languages['dateEmpty']);
+    const [ lastActionDate, setLastActionDate ] = useState(languages['dateEmpty']);
 
     useEffect(() => {
         if (profile) {
             const formatDate = (date: string) => {
-                return (new Date(date)).toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' }) + ' - ' + new Date(date).toLocaleTimeString('en-GB');
+                return (new Date(date)).toLocaleDateString(languages['dateFormat'], { month: 'long', day: '2-digit', year: 'numeric' }) + ' - ' + new Date(date).toLocaleTimeString(languages['dateFormat']);
             };
 
             setCreationDate(formatDate(profile.creation_date));
@@ -45,29 +49,29 @@ export default function AccountInformation() {
             <ScrollView>
                 <View style={ styles.sections }>
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>Profile</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['profile'] }</ThemedText>
                         <View style={ styles.elements }>
-                            <InformationElement title='Username' data={ profile?.username || 'Username' } />
-                            <InformationElement title='Creation date' data={ creationDate } />
+                            <InformationElement title={ languages['username'] } data={ profile?.username || languages['username'] } />
+                            <InformationElement title={ languages['creationDate'] } data={ creationDate } />
                         </View>
                     </View>
                     
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>Actions</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['actions'] }</ThemedText>
                         <View style={ styles.elements }>
-                            <InformationElement title='Last action date' data={ lastActionDate } />
-                            <InformationElement title='Last action' data={ profile?.last_action || 'Action name' } />
-                            <InformationElement title='Number of actions' data={ String(profile?.number_actions) || '000' } />
+                            <InformationElement title={ languages['lastActionDate'] } data={ lastActionDate } />
+                            <InformationElement title={ languages['lastAction'] } data={ profile?.last_action || languages['actionEmpty'] } />
+                            <InformationElement title={ languages['numberActions'] } data={ String(profile?.number_actions) || '000' } />
                         </View>
                     </View>
                     
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>Transactions</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['transactions'] }</ThemedText>
                         <View style={ styles.elements }>
-                            <InformationElement title='Current number of transactions' data={ String(profile?.number_transactions) || '000' } />
-                            <InformationElement title='Number of transactions added' data={ String(profile?.number_transactions_added) || '000' } />
-                            <InformationElement title='Number of transactions modified' data={ String(profile?.number_transactions_modified) || '000' } />
-                            <InformationElement title='Number of transactions deleted' data={ String(profile?.number_transactions_deleted) || '000' } />
+                            <InformationElement title={ languages['currentNumberTransactions'] } data={ String(profile?.number_transactions) || '000' } />
+                            <InformationElement title={ languages['transactionsAdded'] } data={ String(profile?.number_transactions_added) || '000' } />
+                            <InformationElement title={ languages['transactionsModified'] } data={ String(profile?.number_transactions_modified) || '000' } />
+                            <InformationElement title={ languages['transactionsDeleted'] } data={ String(profile?.number_transactions_deleted) || '000' } />
                         </View>
                     </View>
                 </View>

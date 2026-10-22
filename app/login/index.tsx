@@ -4,6 +4,7 @@ import { router } from 'expo-router';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedInput } from '@ui/themed-input';
@@ -21,12 +22,15 @@ const LoginScreen = () => {
     const { colors } = useTheme();
     const styles = createStyles(colors);
 
+    // Traductions
+    const { languages } = useLanguage();
+
     // Variables
     const [username, setUsername] = useState('');
     const [error, setError] = useState<string | null>(null);
 
     // Database
-    const { profiles, UsernameProfile, loginById, loadingProfiles } = useProfiles();
+    const { profiles, CreateProfile, loginById, loadingProfiles } = useProfiles();
     const { createCategory } = useCategories();
     
     // Validate username and create account
@@ -36,13 +40,13 @@ const LoginScreen = () => {
             setError(null);
 
             if (username.length > 15) {
-                setError('The user must be less than 15 characters')
+                setError(languages['errorLimitUsername'])
                 return;
             };
 
             try {
                 // Create the profile
-                await UsernameProfile({ 'username': username });
+                await CreateProfile({ username: username });
 
                 // Create the default categories
                 await createCategory({ name: 'General', type: 'expense' });
@@ -51,7 +55,7 @@ const LoginScreen = () => {
                 // Redirect
                 router.push('/home');
             } catch (err) {
-                setError('The username must be unique');
+                setError(languages['errorUsernameUnique']);
             }
         }
     }
@@ -71,18 +75,16 @@ const LoginScreen = () => {
                 </View>
                 
 
-                <ThemedText weight='light' style={ styles.description }>
-                    What would you like us to call you?
-                </ThemedText>
+                <ThemedText weight='light' style={ styles.description }>{ languages['quesionWelcome'] }</ThemedText>
             </View>
 
             <View style={ styles.input }>
-                <ThemedInput placeholder='Username' type='text' value={ username } onChange={ setUsername } />
+                <ThemedInput placeholder={ languages['username'] } type='text' value={ username } onChange={ setUsername } />
                 { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
             </View>
 
             <View style={ styles.button }>
-                <ThemedButton label='Enter' type='default' onPress={ validateUsername } />
+                <ThemedButton label={ languages['enter'] } type='default' onPress={ validateUsername } />
             </View>
 
             <View style={[ styles.accounts, { height: Math.min(profiles.length * 50, 175)} ]}>

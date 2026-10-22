@@ -6,6 +6,7 @@ import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedButton } from '@ui/themed-button';
@@ -22,6 +23,9 @@ const DataModify = () => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Traductions
+    const { languages } = useLanguage();
     
     // Database
     const { removeTransactionsByCategory, loadingTransactions } = useTransactions();
@@ -76,7 +80,7 @@ const DataModify = () => {
     async function modidyCategoryAction() {
         // Check if the values are valid
         if (!name) {
-            setError('Fill the name input');
+            setError(languages['errorInputs']);
             return;
         }
 
@@ -86,7 +90,7 @@ const DataModify = () => {
         await modifyCategory({ id: Number(id), name: name, type: expenseActive ? 'expense' : 'income' });
 
         // Modify profile
-        await modifyProfileLastAction({ lastAction: 'Modify category' });
+        await modifyProfileLastAction({ lastAction: 'modifyCategory' });
 
         // Return to the prevous page
         router.back();
@@ -101,8 +105,8 @@ const DataModify = () => {
         await removeCategory(Number(id));
 
         // Modify the profile
-        await modifyProfileDataDeleted(count);
-        await modifyProfileLastAction({ lastAction: 'Delete category' });
+        await modifyProfileDataDeleted('deleteCategory', count);
+        await modifyProfileLastAction({ lastAction: 'deleteCategory' });
 
         // Return to the prevous page
         router.back();
@@ -119,19 +123,19 @@ const DataModify = () => {
                 <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
 
                 <View style={ styles.inputs }>
-                    <Input name='Name' type='text' placeholder='Category name' value={ name } onChangeText={ setName } />
+                    <Input name={ languages['name'] } type='text' placeholder={ languages['categoryPlaceholder'] } value={ name } onChangeText={ setName } />
                 </View>
 
                 { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
 
                 <View style={ styles.buttons }>
-                    <ThemedButton label='Delete' type='delete' onPress={ activeDeleteElementPopup } />
-                    <ThemedButton label='Modify' type='default' onPress={ modidyCategoryAction }/>
-                    <ThemedButton label='Cancel' type='default' onPress={ () => { router.back() } }/>
+                    <ThemedButton label={ languages['delete'] } type='delete' onPress={ activeDeleteElementPopup } />
+                    <ThemedButton label={ languages['modify'] } type='default' onPress={ modidyCategoryAction }/>
+                    <ThemedButton label={ languages['cancel'] } type='default' onPress={ () => { router.back() } }/>
                 </View>
             </View>
 
-            <DeleteElement active={ deleteElementPopup } title='Are you sure you want to delete the element? All the related transactions will be lost.' titleButton='Delete' deleteAction={ deleteCategoryAction } cancelAction={ activeDeleteElementPopup } />
+            <DeleteElement active={ deleteElementPopup } title={ languages['deleteCategoryTitle'] } titleButton='delete' deleteAction={ deleteCategoryAction } cancelAction={ activeDeleteElementPopup } />
         </View>
     );
 };

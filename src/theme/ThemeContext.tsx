@@ -21,20 +21,15 @@ export const ThemeContext = createContext<ThemeContextType | undefined>(undefine
 export function ThemeProvider({ children }: { children: React.ReactNode; }) {
     const systemTheme = useColorScheme();
 
-    const [themePreference, setThemePreferenceState] =
-        useState<ThemePreference>('system');
+    const [themePreference, setThemePreferenceState] = useState<ThemePreference>('system');
 
     useEffect(() => {
         loadThemePreference();
     }, []);
 
-
     const loadThemePreference = async () => {
         try {
-            const savedTheme =
-                await AsyncStorage.getItem(
-                    THEME_STORAGE_KEY
-                );
+            const savedTheme = await AsyncStorage.getItem(THEME_STORAGE_KEY);
 
             if (
                 savedTheme === 'light' ||
@@ -44,30 +39,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode; }) {
                 setThemePreferenceState(savedTheme);
             }
         } catch (error) {
-            console.error(
-                'Error loading theme preference:',
-                error
-            );
+            console.error('Error loading theme preference:', error);
         }
     };
-
 
     const setThemePreference = async (preference: ThemePreference) => {
         try {
             setThemePreferenceState(preference);
 
-            await AsyncStorage.setItem(
-                THEME_STORAGE_KEY,
-                preference
-            );
+            await AsyncStorage.setItem(THEME_STORAGE_KEY, preference);
         } catch (error) {
-            console.error(
-                'Error saving theme preference:',
-                error
-            );
+            console.error('Error saving theme preference:', error);
         }
     };
-
 
     const resolvedTheme: ThemeName =
         themePreference === 'system'

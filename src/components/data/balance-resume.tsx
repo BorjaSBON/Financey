@@ -5,6 +5,7 @@ import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { useCurrency } from '@currency/useCurrency';
 
@@ -23,6 +24,9 @@ export default function BalanceResume({ squareEnable=false, from='0000-01-01T00:
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Traductions
+    const { languages } = useLanguage();
 
     // Currency
     const { currencyInfo } = useCurrency();
@@ -65,7 +69,7 @@ export default function BalanceResume({ squareEnable=false, from='0000-01-01T00:
                 <View style={ styles.section }>
                     <View style= { styles.titleRow }>
                         { squareEnable === true && <View style={[ styles.square, styles.incomes ]} /> }
-                        <ThemedText style={ styles.title } weight='regular'>Incomes</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['incomes'] }</ThemedText>
                     </View>
                     <ThemedText style={ styles.data } weight='light' numberOfLines={ 1 } adjustsFontSizeToFit>
                         { ReadableNumber(income) }
@@ -74,7 +78,7 @@ export default function BalanceResume({ squareEnable=false, from='0000-01-01T00:
                 </View>
 
                 <View style={ styles.section }>
-                    <ThemedText style={ styles.title } weight='regular'>Balance</ThemedText>
+                    <ThemedText style={ styles.title } weight='regular'>{ languages['balance'] }</ThemedText>
                     <ThemedText style={[ styles.data, balanceColor ]} weight='regular' numberOfLines={ 1 } adjustsFontSizeToFit>
                         { ReadableNumber(balance) }
                         <ThemedText style={[ styles.currency, balanceColor ]} weight='light'> { currencyInfo.symbol }</ThemedText>
@@ -84,7 +88,7 @@ export default function BalanceResume({ squareEnable=false, from='0000-01-01T00:
                 <View style={ styles.section }>
                     <View style= { styles.titleRow }>
                         { squareEnable === true && <View style={[ styles.square, styles.expenses ]} /> }
-                        <ThemedText style={ styles.title } weight='regular'>Expenses</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['expenses'] }</ThemedText>
                     </View>
                     <ThemedText style={ styles.data } weight='light' numberOfLines={ 1 } adjustsFontSizeToFit>
                         { ReadableNumber(expense) }

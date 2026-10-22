@@ -3,8 +3,10 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { router, useNavigation } from 'expo-router';
 
 import { Values } from '@constants/values';
+
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -26,6 +28,9 @@ type AvailablePeriod = {
 const DataCharts = () => {
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Traductions
+    const { languages } = useLanguage();
 
     // Database
     const { getAvailablePeriods } = useTransactions();
@@ -89,7 +94,7 @@ const DataCharts = () => {
         return (
             <View style={styles.container}>
                 <BalanceResume squareEnable={ false } />
-                <ThemedText style={ styles.noData } weight='regular'>No transactions added</ThemedText>
+                <ThemedText style={ styles.noData } weight='regular'>{ languages['noTransactions'] }</ThemedText>
             </View>
         )
     };

@@ -6,6 +6,7 @@ import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { useCurrency } from '@currency/useCurrency';
 
@@ -24,6 +25,9 @@ const DataModify = () => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+    
+    // Traductions
+    const { languages } = useLanguage();
     
     // Currency
     const { currencyInfo } = useCurrency();
@@ -53,14 +57,6 @@ const DataModify = () => {
             label: item.name,
         };
     });
-
-    const expenseActivation = () => {
-        setExpenseActive(true);
-    }
-
-    const incomeActivation = () => {
-        setExpenseActive(false);
-    }
 
     // Category select
     const [selectValue, setSelectValue] = useState('');
@@ -94,14 +90,14 @@ const DataModify = () => {
     async function modidyTransactionAction() {
         // Check if the values are valid
         if (!amount || !selectValue || !date) {
-            setError('Fill all the inputs');
+            setError(languages['errorInputs']);
             return;
         }
 
         setError(null);
 
         if (isNaN(Number(amount.replace(',', '.')))) {
-            setError('The amount is not a valid number');
+            setError(languages['errorAmount']);
             return;
         }
 
@@ -144,7 +140,7 @@ const DataModify = () => {
     return (
         <View style={ styles.container }>
             <View>
-                <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
+                <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => { setExpenseActive(true); } } incomeOnPress={ () => { setExpenseActive(false); } } />
 
                 <View style={ styles.amountInput }>
                     <TextInput
@@ -160,20 +156,20 @@ const DataModify = () => {
                 </View>
 
                 <View style={ styles.inputs }>
-                    <Input name='Category' type='select' addButton selectData={ categories_formatted } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
-                    <Input name='Date' type='date' dateValue={ date } onChange={ setDate } />
+                    <Input name={ languages['category'] } type='select' addButton selectData={ categories_formatted } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
+                    <Input name={ languages['date'] } type='date' dateValue={ date } onChange={ setDate } />
                 </View>
 
                 { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
 
                 <View style={ styles.buttons }>
-                    <ThemedButton label='Delete' type='delete' onPress={ activeDeleteElementPopup } />
-                    <ThemedButton label='Modify' type='default' onPress={ modidyTransactionAction }/>
-                    <ThemedButton label='Cancel' type='default' onPress={ () => { router.back() } }/>
+                    <ThemedButton label={ languages['delete'] } type='delete' onPress={ activeDeleteElementPopup } />
+                    <ThemedButton label={ languages['modify'] } type='default' onPress={ modidyTransactionAction }/>
+                    <ThemedButton label={ languages['cancel'] } type='default' onPress={ () => { router.back() } }/>
                 </View>
             </View>
 
-            <DeleteElement active={ deleteElementPopup } title='Are you sure you want to delete the element?' titleButton='Delete' deleteAction={ deleteTransactionAction } cancelAction={ activeDeleteElementPopup } />
+            <DeleteElement active={ deleteElementPopup } title={ languages['deleteTransactionText'] } titleButton='delete' deleteAction={ deleteTransactionAction } cancelAction={ activeDeleteElementPopup } />
         </View>
     );
 };

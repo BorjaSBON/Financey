@@ -12,7 +12,7 @@ export type Profile = {
     active: number;
 };
 
-export type UsernameProfile = {
+export type CreateProfile = {
     username: string;
 };
 

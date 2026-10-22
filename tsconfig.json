@@ -24,6 +24,9 @@
 			"@currency/*": [
 				"./src/currency/*"
 			],
+			"@language/*": [
+				"./src/language/*"
+			],
 			"@assets/*": [
 				"./assets/svg/*"
 			],

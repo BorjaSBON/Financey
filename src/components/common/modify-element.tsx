@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedInput } from '@ui/themed-input';
@@ -22,10 +23,13 @@ interface Props {
     onChange?: (value:string) => void;
 }
 
-export default function ModifyElement({ active=false, title='Modify element', titleButton='Change', value='', placeholder='Element name', error, modifyAction, cancelAction, onChange }: Props) {
+export default function ModifyElement({ active=false, title='Modify element', titleButton='change', value='', placeholder='Element name', error, modifyAction, cancelAction, onChange }: Props) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Traductions
+    const { languages } = useLanguage();
 
     return (
         <View style={[ 
@@ -37,8 +41,8 @@ export default function ModifyElement({ active=false, title='Modify element', ti
             { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
 
             <View style={ styles.buttons }>
-                <ThemedButton label={ titleButton } type='default' onPress={ modifyAction } />
-                <ThemedButton label='Cancel' type='default' onPress={ cancelAction } />
+                <ThemedButton label={ titleButton in languages ? languages[titleButton as keyof typeof languages] : languages['name']} type='default' onPress={ modifyAction } />
+                <ThemedButton label={ languages['cancel'] } type='default' onPress={ cancelAction } />
             </View>
         </View>
     );
@@ -77,7 +81,7 @@ const createStyles = (colors: ThemeColors) =>
         buttons: {
             display: 'flex',
             flexDirection: 'column',
-            rowGap: 7,
+            rowGap: 10,
             marginHorizontal: 'auto',
         },
         

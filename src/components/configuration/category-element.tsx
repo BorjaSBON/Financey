@@ -3,6 +3,7 @@ import { StyleSheet, Pressable, View } from 'react-native';
 import { Values } from '@constants/values';
 
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -45,6 +46,9 @@ export function CategoryElement({ title, type, onPress }: CategoryProps) {
 export function NewCategory({ onPress }: NewCategoryProp) {
     // Theme
     const { colors } = useTheme();
+
+    // Traductions
+    const { languages } = useLanguage();
     
     return (
         <Pressable 
@@ -55,7 +59,7 @@ export function NewCategory({ onPress }: NewCategoryProp) {
             onPress={ onPress }
         >
             <AddIcon size={ 20 } backgroundColor={ colors.iconColor } iconColor={ colors.iconBackground } />
-            <ThemedText style={ styles.title } weight='light'>Add new category</ThemedText>
+            <ThemedText style={ styles.title } weight='light'>{ languages['addNewCategory'] }</ThemedText>
         </Pressable>
     );
 }

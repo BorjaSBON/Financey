@@ -3,6 +3,7 @@ import { View, Pressable, FlatList, StyleSheet, Modal } from 'react-native';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -27,6 +28,9 @@ export function ThemedSelectInput({ data, value, maxHeight=390, onSelect }: Drop
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+    
+    // Traductions
+    const { languages } = useLanguage();
 
     // Data
     const [open, setOpen] = useState(false);
@@ -70,7 +74,7 @@ export function ThemedSelectInput({ data, value, maxHeight=390, onSelect }: Drop
         <View>
             <View style={styles.container}>
                 <Pressable ref={ selectRef } style={ styles.select } onPress={ openDropdown }>
-                    <ThemedText style={[ styles.selectedText, !selectedItem?.label && { color: colors.inputFontPlaceholder } ]} weight='light'>{ selectedItem?.label ?? 'Select' }</ThemedText>
+                    <ThemedText style={[ styles.selectedText, !selectedItem?.label && { color: colors.inputFontPlaceholder } ]} weight='light'>{ selectedItem?.label ?? languages['select'] }</ThemedText>
                     <MoreIcon style={ open ? styles.iconOpen : styles.iconClose } color={ colors.iconBackground } />
                 </Pressable>
             </View>

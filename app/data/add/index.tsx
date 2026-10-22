@@ -6,6 +6,7 @@ import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { useCurrency } from '@currency/useCurrency';
 
@@ -23,6 +24,9 @@ const DataAdd = () => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Traductions
+    const { languages } = useLanguage();
 
     // Currency
     const { currencyInfo } = useCurrency();
@@ -51,10 +55,10 @@ const DataAdd = () => {
 
     // Repeat options
     const repeat_options = [
-        { value: 'no', label: 'No'},
-        { value: 'daily', label: 'Daily'},
-        { value: 'weekly', label: 'Weekly'},
-        { value: 'monthly', label: 'Monthly'}
+        { value: 'no', label: languages['no']},
+        { value: 'daily', label: languages['daily']},
+        { value: 'weekly', label: languages['weekly']},
+        { value: 'monthly', label: languages['monthly']}
     ];
 
     // Error
@@ -89,14 +93,14 @@ const DataAdd = () => {
     // Add button
     async function addTransaction() {
         if (!amount || !categorySelect || !dateStart) {
-            setError('Fill all the inputs');
+            setError(languages['errorInputs']);
             return;
         }
 
         setError(null);
 
         if (isNaN(Number(amount.replace(',', '.')))) {
-            setError('The amount is not a valid number');
+            setError(languages['errorAmount']);
             return;
         }
 
@@ -105,7 +109,7 @@ const DataAdd = () => {
         let currentDate = new Date(dateStart);
         if (repeatedSelect !== 'no' && dateEnd) {
             if (currentDate > dateEnd) {
-                setError('The final date is earlier than the initial one');
+                setError(languages['errorDates']);
                 return;
             }
 
@@ -165,17 +169,17 @@ const DataAdd = () => {
             </View>
 
             <View style={ styles.inputs }>
-                <Input name='Category' type='select' addButton selectData={ categories_formatted } selectValue={ categorySelect } onSelect={ (item) => { setCategorySelect(item.value); }} />
-                <Input name='Date' type='date' dateValue={ dateStart } onChange={ setDateStart } />
-                <Input name='Repeated' type='select' selectData={ repeat_options } selectValue={ repeatedSelect } onSelect={ (item) => { setRepeatedSelect(item.value); }} />
-                { repeatedSelect !== 'no' && <Input name='End date' type='date' dateValue={ dateEnd } onChange={ setDateEnd } /> }
+                <Input name={ languages['category'] } type='select' addButton selectData={ categories_formatted } selectValue={ categorySelect } onSelect={ (item) => { setCategorySelect(item.value); }} />
+                <Input name={ languages['date'] } type='date' dateValue={ dateStart } onChange={ setDateStart } />
+                <Input name={ languages['repeated'] } type='select' selectData={ repeat_options } selectValue={ repeatedSelect } onSelect={ (item) => { setRepeatedSelect(item.value); }} />
+                { repeatedSelect !== 'no' && <Input name={ languages['endDate'] } type='date' dateValue={ dateEnd } onChange={ setDateEnd } /> }
                 
             </View>
 
             { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
 
             <View style={ styles.add }>
-                <ThemedButton label='Add' type='default' onPress={ addTransaction } />
+                <ThemedButton label={ languages['add'] } type='default' onPress={ addTransaction } />
             </View>
         </View>
     );

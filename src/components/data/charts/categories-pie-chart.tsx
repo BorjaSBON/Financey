@@ -4,6 +4,7 @@ import { PieChart } from 'react-native-gifted-charts';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { useCurrency } from '@currency/useCurrency';
 
@@ -21,6 +22,9 @@ const CategoriesPieChart = ({ year, month }: Props) => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Traductions
+    const { languages } = useLanguage();
     
     // Currency
     const { currencyInfo } = useCurrency();
@@ -77,7 +81,7 @@ const CategoriesPieChart = ({ year, month }: Props) => {
 
             setChartPieData(dataDonutProcessed);
             setAmountPressed(totalAmount);
-            setCategoryPressed('Total');
+            setCategoryPressed(languages['total']);
         };
 
         loadCategoriesAmount();
@@ -107,7 +111,7 @@ const CategoriesPieChart = ({ year, month }: Props) => {
                     if (categoryPressed == item.label) {
                         const totalAmount = chartPieData.reduce((sum, item) => sum + item.value, 0);
                         setAmountPressed(totalAmount);
-                        setCategoryPressed('Total');
+                        setCategoryPressed(languages['total']);
                     } else {
                         setCategoryPressed(item.label);
                         setAmountPressed(item.value);

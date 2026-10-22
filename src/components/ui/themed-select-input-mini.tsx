@@ -141,6 +141,7 @@ const createStyles = (colors: ThemeColors) =>
             borderColor: colors.inputMiniBorderDropdown,
             borderRadius: 5,
             elevation: 10,
+            overflow: 'hidden',
 
             shadowColor: colors.inputMiniBackgroundDropdown,
             shadowOffset: {

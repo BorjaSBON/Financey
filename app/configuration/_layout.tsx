@@ -2,6 +2,7 @@ import { View } from 'react-native';
 import { Slot, usePathname } from 'expo-router';
 
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import Header from '@components/layout/header';
 
@@ -9,29 +10,34 @@ const ConfigurationLayout = () => {
     // Theme
     const { colors } = useTheme();
 
+    // Traductions
+    const { languages } = useLanguage();
+
     // Navigation
     const pathname = usePathname();
 
     const getTitle = () => {
         if (/^\/configuration\/data\/categories\/modify\/\d+$/.test(pathname)) {
-            return 'Modify category';
+            return languages['modifyCategory'];
         }
 
         switch (pathname) {
             case '/configuration/account/information':
-                return 'Information of the account';
+                return languages['informationAccount'];
             case '/configuration/account/change_account':
-                return 'Change account';
+                return languages['changeAccount'];
             case '/configuration/application':
-                return 'Information of the application';
+                return languages['informationApp'];
             case '/configuration/data/categories':
-                return 'Categories';
+                return languages['categories'];
             case '/configuration/data/categories/add':
-                return 'Add category';
+                return languages['addCategory'];
             case '/configuration/data/import_data':
-                return 'Import data';
+                return languages['importData'];
+            case '/configuration/data/export_data':
+                return languages['exportData'];
             default:
-                return 'Configuration';
+                return languages['configuration'];
         }
     };
 

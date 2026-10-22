@@ -6,6 +6,7 @@ import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedButton } from '@ui/themed-button';
@@ -20,6 +21,9 @@ const DataAdd = () => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Traductions
+    const { languages } = useLanguage();
 
     // Database
     const { createCategory, loadingCategories } = useCategories();
@@ -45,7 +49,7 @@ const DataAdd = () => {
     // Add button
     async function addCategory() {
         if (!name) {
-            setError('Fill all the inputs');
+            setError(languages['errorInputs']);
             return;
         }
 
@@ -56,11 +60,11 @@ const DataAdd = () => {
             await createCategory({ name: name, type: expenseActive ? 'expense' : 'income' });
 
             // Modify profile
-            await modifyProfileLastAction({ lastAction: 'Create category' });
+            await modifyProfileLastAction({ lastAction: 'createCategory' });
 
             router.back();
         } catch (err) {
-            const error = err instanceof Error ? err : new Error('Error creating category');
+            const error = err instanceof Error ? err : new Error(languages['errorCreateCategory']);
             setError(error.message);
         }
     };
@@ -74,13 +78,13 @@ const DataAdd = () => {
             <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
 
             <View style={ styles.inputs }>
-                <Input name='Name' type='text' placeholder='Category name' value={ name } onChangeText={ setName } />
+                <Input name={ languages['name'] } type='text' placeholder={ languages['categoryPlaceholder'] } value={ name } onChangeText={ setName } />
             </View>
 
             { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
 
             <View style={ styles.add }>
-                <ThemedButton label='Add' type='default' onPress={ addCategory } />
+                <ThemedButton label={ languages['add'] } type='default' onPress={ addCategory } />
             </View>
         </View>
     );

@@ -6,6 +6,7 @@ import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -15,6 +16,9 @@ export default function AppInformation() {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Traductions
+    const { languages } = useLanguage();
 
     // Data of the system
     const appVersion = Application.nativeApplicationVersion;
@@ -28,28 +32,28 @@ export default function AppInformation() {
             <ScrollView>
                 <View style={ styles.sections }>
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>System</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['system'] }</ThemedText>
                         <View style={ styles.elements }>
-                            <InformationElement title='Application name' data='Financey' />
-                            <InformationElement title='Version' data={ 'v' + String(appVersion) } />
-                            <InformationElement title='Operating system' data={ os.charAt(0).toUpperCase() + os.slice(1) } />
+                            <InformationElement title={ languages['applicationName'] } data='Financey' />
+                            <InformationElement title={ languages['version'] } data={ 'v' + String(appVersion) } />
+                            <InformationElement title={ languages['os'] } data={ os.charAt(0).toUpperCase() + os.slice(1) } />
                         </View>
                     </View>
 
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>Developers</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['developers'] }</ThemedText>
                         <View style={ styles.elements }>
-                            <InformationElement title='Creator' data='Borja Sanz de Bremond' onPress={ () => {Linking.openURL(urlCreator);} } />
-                            <InformationElement title='Team' data='Hobbit Holes' />
+                            <InformationElement title={ languages['creator'] } data='Borja Sanz de Bremond' onPress={ () => {Linking.openURL(urlCreator);} } />
+                            <InformationElement title={ languages['team'] } data='Hobbit Holes' />
                         </View>
                     </View>
 
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>Additional information</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['additionalInformation'] }</ThemedText>
                         <View style={ styles.elements }>
-                            <InformationElement title='Description' data='Application that allows you to view your day-to-day income and expenditure clearly and simply. Thanks to the charts and statistics generated from the information collected, you will gain a clearer understanding of how your money is being spent.' />
-                            <InformationElement title='Security' data='None of the data collected can be viewed or processed by external parties, as this app has no internet connection and there is no intention to extract the data for analysis.' />
-                            <InformationElement title='Repository' data={ urlRepository } onPress={ () => {Linking.openURL(urlRepository);} } />
+                            <InformationElement title={ languages['description'] } data={ languages['descriptionText'] } />
+                            <InformationElement title={ languages['security'] } data={ languages['securityText'] } />
+                            <InformationElement title={ languages['repository'] } data={ urlRepository } onPress={ () => {Linking.openURL(urlRepository);} } />
                         </View>
                     </View>
                 </View>

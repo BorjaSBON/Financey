@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { profilesRepository } from '../db/repositories/profile.respository';
 
-import type { LastActionProfile, Profile, UsernameProfile } from '../types/profile';
+import type { LastActionProfile, Profile, CreateProfile } from '../types/profile';
 
 export function useProfiles() {
     // Profiles information
@@ -85,7 +85,7 @@ export function useProfiles() {
     }, []);
 
     // CREATE
-    const UsernameProfile = useCallback(async (data: UsernameProfile) => {
+    const CreateProfile = useCallback(async (data: CreateProfile) => {
         try {
             // Set loading and error states
             setLoading(true);
@@ -125,7 +125,7 @@ export function useProfiles() {
     }, []);
 
     // MODIFY USERNAME
-    const modifyProfileUsername = useCallback(async (data: UsernameProfile) => {
+    const modifyProfileUsername = useCallback(async (data: CreateProfile) => {
         try {
             // Set loading and error states
             setLoading(true);
@@ -225,7 +225,7 @@ export function useProfiles() {
     }, []);
 
     // LOGIN
-    const loginById = useCallback(async (id:number) => {
+    const loginById = useCallback(async (id: number) => {
         try {
             // Set loading and error states
             setLoading(true);
@@ -281,7 +281,7 @@ export function useProfiles() {
 
         getProfiles,
         getProfile,
-        UsernameProfile,
+        CreateProfile,
 
         modifyProfileLastAction,
         modifyProfileUsername,

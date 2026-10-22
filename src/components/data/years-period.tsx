@@ -5,6 +5,7 @@ import { ThemedText } from '@ui/themed-text';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import MoreIcon from '@assets/more.svg';
 
@@ -21,6 +22,9 @@ const YearsPediod = ({ range, months=false, onChange }: Props) => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Traductions
+    const { languages } = useLanguage();
 
     // Year / Month
     const [rangeIndex, setRangeIndex] = useState<number>(0);
@@ -39,7 +43,7 @@ const YearsPediod = ({ range, months=false, onChange }: Props) => {
 
     // Generate the months
     const monthNames = Array.from({ length: 12 }, (_, i) => {
-        const month = new Date(2026, i, 1).toLocaleDateString('es-ES', { month: 'long' });
+        const month = new Date(2026, i, 1).toLocaleDateString(languages['dateFormat'], { month: 'long' });
         return month.charAt(0).toUpperCase() + month.slice(1);
     });
 

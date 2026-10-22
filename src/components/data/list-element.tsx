@@ -4,6 +4,7 @@ import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { useCurrency } from '@currency/useCurrency';
 
@@ -38,6 +39,9 @@ export function TransactionElement({ type, category, value, date, onPress }: Tra
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+    
+    // Traductions
+    const { languages } = useLanguage();
 
     // Currency
     const { currencyInfo } = useCurrency();
@@ -48,7 +52,7 @@ export function TransactionElement({ type, category, value, date, onPress }: Tra
     }
 
     // Get the formatted date
-    const dateFormatted = new Date(date).toLocaleDateString('en-GB');
+    const dateFormatted = new Date(date).toLocaleDateString(languages['dateFormat']);
 
     // Color of the money depending on the type of data
     const valueColor = type=='income' ? styles.positive : styles.negative;
@@ -78,6 +82,9 @@ export function NewTransaction({ onPress }: NewTransactionProp) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+    
+    // Traductions
+    const { languages } = useLanguage();
 
     return (
         <Pressable 
@@ -88,7 +95,7 @@ export function NewTransaction({ onPress }: NewTransactionProp) {
             onPress={ onPress }
         >
             <AddIcon size={ 20 } backgroundColor={ colors.iconColor } iconColor={ colors.iconBackground } />
-            <ThemedText style={ styles.title } weight='light'>Add new transaction</ThemedText>
+            <ThemedText style={ styles.title } weight='light'>{ languages['addNewTransaction'] }</ThemedText>
         </Pressable>
     );
 }
@@ -111,6 +118,9 @@ export function FilterTransactions({ onPress }: NewTransactionProp) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+    
+    // Traductions
+    const { languages } = useLanguage();
 
     return (
         <Pressable 
@@ -121,7 +131,7 @@ export function FilterTransactions({ onPress }: NewTransactionProp) {
             onPress={ onPress }
         >
             <FilterIcon size={ 20 } backgroundColor={ colors.iconColor } iconColor={colors.iconBackground} />
-            <ThemedText style={ styles.title } weight='light'>Display filter</ThemedText>
+            <ThemedText style={ styles.title } weight='light'>{ languages['displayFilter'] }</ThemedText>
         </Pressable>
     );
 }
@@ -130,6 +140,9 @@ export function DisplayTransactions({ onPress }: NewTransactionProp) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+    
+    // Traductions
+    const { languages } = useLanguage();
 
     return (
         <Pressable 
@@ -140,7 +153,7 @@ export function DisplayTransactions({ onPress }: NewTransactionProp) {
             onPress={ onPress }
         >
             <ListIcon size={ 20 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
-            <ThemedText style={ styles.title } weight='light'>Display transactions</ThemedText>
+            <ThemedText style={ styles.title } weight='light'>{ languages['displayTransactions'] }</ThemedText>
         </Pressable>
     );
 }
@@ -222,6 +235,7 @@ const createStyles = (colors: ThemeColors) =>
 
         header: {
             fontSize: 14,
+            textTransform: 'capitalize',
         },
 
         divider: {

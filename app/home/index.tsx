@@ -6,6 +6,7 @@ import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 
@@ -27,6 +28,9 @@ const HomeScreen = () => {
     const { colors } = useTheme();
     const styles = createStyles(colors);
 
+    // Traductions
+    const { languages } = useLanguage();
+
     // Database
     const { lastTransaction, getLastTransaction, loadingTransactions } = useTransactions();
     const { profile, loadingProfiles } = useProfiles();
@@ -35,7 +39,7 @@ const HomeScreen = () => {
     const date = new Date();
 
     // Last action variables
-    const [ lastActionDate, setLastActionDate ] = useState('Month DD, YYYY - HH:MM:SS');
+    const [ lastActionDate, setLastActionDate ] = useState(languages['dateEmpty']);
 
     // Last transaction variables
     const [ idLastTransaction, setIdLastTransaction ] = useState(0);
@@ -47,7 +51,7 @@ const HomeScreen = () => {
     useEffect(() => {
         if (profile) {
             const formatDate = (date: string) => {
-                return (new Date(date)).toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' }) + ' - ' + new Date(date).toLocaleTimeString('en-GB');
+                return (new Date(date)).toLocaleDateString(languages['dateFormat'], { month: 'long', day: '2-digit', year: 'numeric' }) + ' - ' + new Date(date).toLocaleTimeString(languages['dateFormat']);
             };
 
             setLastActionDate(formatDate(profile.last_action_date));
@@ -87,7 +91,7 @@ const HomeScreen = () => {
             <ScrollView>
                 <View style={ styles.sections }>
                     <ThemedText weight='light' style={ styles.welcome }>
-                        Welcome <ThemedText weight='regular'>{ profile?.username || 'username' }</ThemedText>!
+                        { languages['welcome'] } <ThemedText weight='regular'>{ profile?.username || 'username' }</ThemedText>!
                     </ThemedText>
                     
                     <BalanceResume />
@@ -95,14 +99,14 @@ const HomeScreen = () => {
                     <View style={ styles.sectionDoble }>
                         <View style={ styles.sectionHalf }>
                             <ThemedText style={ styles.title } weight='regular'>
-                                Resume
-                                <ThemedText style={ styles.subtitle } weight='light'> ({ date.toLocaleString('en-GB', { month: 'long' }) })</ThemedText>
+                                { languages['resume'] }
+                                <ThemedText style={ styles.subtitle } weight='light'> ({ date.toLocaleString(languages['dateFormat'], { month: 'long' }) })</ThemedText>
                             </ThemedText>
                             <CategoriesPieChart year={ date.getUTCFullYear() } month={ date.getUTCMonth() + 1 } />
                         </View>
 
                         {/* <View style={ styles.sectionHalf }>
-                            <ThemedText style={ styles.title } weight='regular'>Evolution</ThemedText>
+                            <ThemedText style={ styles.title } weight='regular'>{ languages['evolution'] }</ThemedText>
                             <View style={ styles.evolution }>
 
                             </View>
@@ -110,7 +114,7 @@ const HomeScreen = () => {
                     </View>
 
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>Actions</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['actions'] }</ThemedText>
                         <View style={ styles.actionElements }>
                             <Pressable onPress={ () => router.push('/data/charts') }>
                                 <ChartsIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
@@ -135,24 +139,23 @@ const HomeScreen = () => {
                     </View>
 
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>Last transaction</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['lastTransaction'] }</ThemedText>
                         <View style={ styles.elements }>
-                            {
-                                lastTransaction == null ? <View style={ styles.emptyElement } /> :
-                                    <TransactionElement type={ typeLastTransaction } category={ categoryLastTransaction } value={ amountLastTransaction } date={ String(dateLastTransaction) } onPress={ () => { router.push({
-                                        pathname: '/data/modify/[id]',
-                                        params: {
-                                            id: idLastTransaction.toString(),
-                                        },
-                                    })} } />
+                            { lastTransaction == null ? <View style={ styles.emptyElement } /> :
+                                <TransactionElement type={ typeLastTransaction } category={ categoryLastTransaction } value={ amountLastTransaction } date={ String(dateLastTransaction) } onPress={ () => { router.push({
+                                    pathname: '/data/modify/[id]',
+                                    params: {
+                                        id: idLastTransaction.toString(),
+                                    },
+                                })} } />
                             }
                         </View>
                     </View>
 
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>Last action</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['lastAction'] }</ThemedText>
                         <View style={ styles.lastActionElement }>
-                            <ThemedText style={ styles.name } weight='light'>{ profile?.last_action || 'Action name' }</ThemedText>
+                            <ThemedText style={ styles.name } weight='light'>{ profile?.last_action || 'name' in languages ? languages[profile?.last_action as keyof typeof languages] : languages['name']}</ThemedText>
                             <ThemedText style={ styles.date } weight='light'>{ lastActionDate }</ThemedText>
                         </View>
                     </View>
@@ -207,6 +210,7 @@ const createStyles = (colors: ThemeColors) =>
 
         subtitle: {
             fontSize: 11,
+            textTransform: 'capitalize',
         },
 
         elements: {

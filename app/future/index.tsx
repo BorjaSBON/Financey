@@ -1,10 +1,11 @@
 import { StyleSheet, View, ScrollView, Pressable } from 'react-native';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 
 import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedButton } from '@ui/themed-button';
@@ -16,26 +17,62 @@ const UnderConstruction = () => {
     const { colors } = useTheme();
     const styles = createStyles(colors);
 
+    // Traductions
+    const { languages } = useLanguage();
+
+    const { information01 } = useLocalSearchParams<{ information01: string }>();
+    const { information02 } = useLocalSearchParams<{ information02: string }>();
+
     return (
         <View style={ styles.container }>
             <ScrollView>
                 <View style={ styles.sections }>
-                    <ThemedText weight='medium' style={ styles.title }>Under Construction</ThemedText>
+                    <ThemedText weight='medium' style={ styles.title }>{ languages['futureTitle'] }</ThemedText>
 
                     <View style={ styles.elements }>
-                        <Pressable 
-                            style={({ pressed }) => [
-                                styles.element,
-                                pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
-                            ]}
-                        >
-                            <HelpIcon size={ 18 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
-                            <ThemedText style={ styles.elementText } weight='light'>This feature will be included in future updates</ThemedText>
-                        </Pressable>
+                        <View style={ styles.element }>
+                            <Pressable 
+                                style={({ pressed }) => [
+                                    styles.pressable,
+                                    pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
+                                ]}
+                            >
+                                <HelpIcon size={ 18 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
+                                <ThemedText style={ styles.elementText } weight='light'>{ languages['futureInformation'] }</ThemedText>
+                            </Pressable>
+                        </View>
+
+                        { information01 && 
+                            <View style={ styles.element }>
+                                <Pressable 
+                                    style={({ pressed }) => [
+                                        styles.pressable,
+                                        pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
+                                    ]}
+                                >
+                                    <HelpIcon size={ 18 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
+                                    <ThemedText style={ styles.elementText } weight='light'>{ information01 }</ThemedText>
+                                </Pressable>
+                            </View>
+                        }
+
+                        { information02 && 
+                            <View style={ styles.element }>
+                                <Pressable 
+                                    style={({ pressed }) => [
+                                        styles.pressable,
+                                        pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
+                                    ]}
+                                >
+                                    <HelpIcon size={ 18 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
+                                    <ThemedText style={ styles.elementText } weight='light'>{ information02 }</ThemedText>
+                                </Pressable>
+                            </View>
+                        }
                     </View>
 
                     <View style={ styles.button }>
-                        <ThemedButton label='Go back' type='default' onPress={ () => { router.back() } }/>
+                        <ThemedButton label={ languages['goBack'] } type='default' onPress={ () => { router.back() } }/>
                     </View>
                 </View>
             </ScrollView>
@@ -69,12 +106,18 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         elements: {
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 10,
+        },
+
+        element: {
             backgroundColor: colors.backgroundSecondary,
             borderRadius: 10,
             overflow: 'hidden',
         },
 
-        element: {
+        pressable: {
             flexDirection: 'row',
             alignItems: 'center',
             width: '100%',

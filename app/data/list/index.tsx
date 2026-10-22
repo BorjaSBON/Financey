@@ -6,6 +6,7 @@ import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedInput } from '@ui/themed-input';
@@ -23,6 +24,9 @@ const DataList = () => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+
+    // Traductions
+    const { languages } = useLanguage();
 
     // Change the router previous page
     const navigation = useNavigation();
@@ -54,16 +58,16 @@ const DataList = () => {
 
     // Filters content
     const dropDownListType = [
-        { label: 'All', value: '' },
-        { label: 'Income', value: 'income' },
-        { label: 'Expense', value: 'expense' },
+        { label: languages['all'], value: '' },
+        { label: languages['incomes'], value: 'income' },
+        { label: languages['expenses'], value: 'expense' },
     ];
 
     const dropDownListOrder = [
-        { label: 'Date (New to Old)', value: 'date_new' },
-        { label: 'Date (Old to New)', value: 'date_old' },
-        { label: 'Amount (Higher to Lower)', value: 'amount_higher' },
-        { label: 'Amount (Lower to Higher)', value: 'amount_lower' },
+        { label: languages['dateNewer'], value: 'date_new' },
+        { label: languages['dateOlder'], value: 'date_old' },
+        { label: languages['amountHigher'], value: 'amount_higher' },
+        { label: languages['amountLower'], value: 'amount_lower' },
     ];
 
     let categories_selected = categories;
@@ -89,7 +93,7 @@ const DataList = () => {
                 result.push({
                     type: 'header',
                     id: `month-${monthKey}`,
-                    title: date.toLocaleDateString('en-GB', {
+                    title: date.toLocaleDateString(languages['dateFormat'], {
                         month: 'long',
                         year: 'numeric',
                     }),
@@ -164,21 +168,21 @@ const DataList = () => {
             { displayFilter === false ? 
                 <View style={ styles.sections }>
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>Filter</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['filter'] }</ThemedText>
                         <View style={ styles.elements }>
                             <FilterTransactions onPress={ ()=>{ setDisplayFilter(true); }} />
                         </View>
                     </View>
 
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>New transaction</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['newTransaction'] }</ThemedText>
                         <View style={ styles.elements }>
                             <NewTransaction onPress={ () => { router.push('/data/add') }} />
                         </View>
                     </View>
                     
                     <View style={[ styles.section, styles.transactionsSection ]}>
-                        <ThemedText style={ styles.title } weight='regular'>Transactions</ThemedText>
+                        <ThemedText style={ styles.title } weight='regular'>{ languages['transactions'] }</ThemedText>
                         <View style={ styles.elementsScroll }>
                             {   loadingTransactions ? 
                                 <ActivityIndicator/> :
@@ -206,19 +210,19 @@ const DataList = () => {
                 <ScrollView>
                     <View style={ styles.sections }>
                         <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='regular'>Transactions</ThemedText>
+                            <ThemedText style={ styles.title } weight='regular'>{ languages['transactions'] }</ThemedText>
                             <View style={ styles.elements }>
                                 <DisplayTransactions onPress={ ()=>{ setDisplayFilter(false); } } />
                             </View>
                         </View>
 
                         <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='regular'>Order by</ThemedText>
+                            <ThemedText style={ styles.title } weight='regular'>{ languages['orderBy'] }</ThemedText>
                             <ThemedSelectInput data={ dropDownListOrder } value={ order } onSelect={ (item) => { setOrder(item.value); } } />
                         </View>
 
                         <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='regular'>Type</ThemedText>
+                            <ThemedText style={ styles.title } weight='regular'>{ languages['type'] }</ThemedText>
                             <ThemedSelectInput data={ dropDownListType } value={ type } onSelect={ (item) => { 
                                 setType(item.value as "" | "income" | "expense");
                                 setCategoryId('');
@@ -226,14 +230,14 @@ const DataList = () => {
                         </View>
 
                         <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='regular'>Category</ThemedText>
+                            <ThemedText style={ styles.title } weight='regular'>{ languages['category'] }</ThemedText>
                             <ThemedSelectInput data={ dropDownListCategory } value={ categoryId } maxHeight={ 200 } onSelect={ (item) => { setCategoryId(item.value); } } />
                         </View>
 
                         <View style={ styles.section }>
                             <ThemedText style={ styles.title } weight='regular'>
-                                Amount
-                                <ThemedText style={ styles.subtitle } weight='light'> (Min to Max)</ThemedText>
+                                { languages['amount'] }
+                                <ThemedText style={ styles.subtitle } weight='light'> ({ languages['minMax'] })</ThemedText>
                             </ThemedText>
                             <View style={ styles.pairButtons }>
                                 <ThemedInput type='decimal' placeholder={ '0.000' } value={ amountMin } onChange={ setAmountMin } />
@@ -243,8 +247,8 @@ const DataList = () => {
 
                         <View style={ styles.section }>
                             <ThemedText style={ styles.title } weight='regular'>
-                                Date
-                                <ThemedText style={ styles.subtitle } weight='light'> (Start to End)</ThemedText>
+                                { languages['dates'] }
+                                <ThemedText style={ styles.subtitle } weight='light'> ({ languages['startEnd'] })</ThemedText>
                             </ThemedText>
                             <View style={ styles.pairButtons }>
                                 <ThemedDateInput value={ dateMin } onChange={ setDateMin } />
