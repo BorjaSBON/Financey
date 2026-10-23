@@ -29,7 +29,7 @@ export const LanguageES = {
 
     // HOME
     welcome: '¡Bienvenido',
-    lastTransaction: 'Últuna transacción',
+    lastTransaction: 'Última transacción',
 
     // LOGIN
     quesionWelcome: '¿Cómo quieres que te llamemos?',
@@ -57,7 +57,7 @@ export const LanguageES = {
     amountLower: 'Cantidad (Menor a Mayor)',
 
     // Add and Modify
-    repeated: 'Repetición',
+    frequency: 'Periocidad',
     no: 'No',
     daily: 'Diario',
     weekly: 'Semanal',
@@ -165,9 +165,9 @@ export const LanguageES = {
     // Additional
     additionalInformation: 'Información adicional',
     description: 'Descripción',
-    descriptionText: 'Aplicación que te permite ver tus ingresos y gastos diarios de forma clara y sencilla. Gracias a los gráficos y estadísticas generados a partir de la información recopilada, comprenderás mejor en qué gastas tu dinero.',
+    descriptionText: 'Financey te permite gestionar tus ingresos y gastos diarios de forma clara y sencilla. Gracias a los gráficos y estadísticas generados a partir de la información recopilada, comprenderás mejor en qué gastas tu dinero.',
     security: 'Seguridad',
-    securityText: 'Ningún tercero puede consultar ni procesar los datos recopilados, ya que esta aplicación no dispone de conexión a internet y no existe intención alguna de extraer los datos para su análisis.',
+    securityText: 'Ningún tercero puede consultar ni procesar los datos recopilados y no existe intención alguna de extraer los datos para su análisis.',
     repository: 'Repositorio',
 
     // FUTURE

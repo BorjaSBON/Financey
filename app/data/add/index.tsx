@@ -171,8 +171,8 @@ const DataAdd = () => {
             <View style={ styles.inputs }>
                 <Input name={ languages['category'] } type='select' addButton selectData={ categories_formatted } selectValue={ categorySelect } onSelect={ (item) => { setCategorySelect(item.value); }} />
                 <Input name={ languages['date'] } type='date' dateValue={ dateStart } onChange={ setDateStart } />
-                <Input name={ languages['repeated'] } type='select' selectData={ repeat_options } selectValue={ repeatedSelect } onSelect={ (item) => { setRepeatedSelect(item.value); }} />
-                { repeatedSelect !== 'no' && <Input name={ languages['endDate'] } type='date' dateValue={ dateEnd } onChange={ setDateEnd } /> }
+                <Input name={ languages['frequency'] } type='select' selectData={ repeat_options } selectValue={ repeatedSelect } onSelect={ (item) => { setRepeatedSelect(item.value); }} />
+                { repeatedSelect !== 'no' && <Input name={ languages['endDate'] } type='date' dateValue={ dateEnd } minimumDate={ dateStart } onChange={ setDateEnd } /> }
                 
             </View>
 

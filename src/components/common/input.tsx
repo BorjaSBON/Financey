@@ -30,6 +30,7 @@ interface Props {
 
     // Date
     dateValue?: Date | null;
+    minimumDate?: Date | null;
     onChange?: (date: Date) => void;
 
     // Select
@@ -38,7 +39,7 @@ interface Props {
     onSelect?: (item: DropdownItem) => void;
 }
 
-export default function Input({ name, type='text', addButton=false, value='', placeholder='', onChangeText=()=>{}, dateValue=null, onChange=()=>{}, selectData=[], selectValue='', onSelect=()=>{} }: Props) {
+export default function Input({ name, type='text', addButton=false, value='', placeholder='', onChangeText=()=>{}, dateValue=null, minimumDate=null, onChange=()=>{}, selectData=[], selectValue='', onSelect=()=>{} }: Props) {
     // Theme
     const { colors } = useTheme();
 
@@ -55,7 +56,7 @@ export default function Input({ name, type='text', addButton=false, value='', pl
 
             { type === 'text' && <ThemedInput type='text' placeholder={ placeholder } value={ value } onChange={ onChangeText } /> }
             { type === 'numeric' && <ThemedInput type='decimal' placeholder={ placeholder } value={ value } onChange={ onChangeText } /> }
-            { type === 'date' && <ThemedDateInput value={ dateValue } onChange={ onChange } /> }
+            { type === 'date' && <ThemedDateInput value={ dateValue } minimumDate={ minimumDate }onChange={ onChange } /> }
             { type === 'select' && <ThemedSelectInput data={ selectData } value={ selectValue } onSelect={ onSelect } /> }
         </View>
     );

@@ -12,12 +12,13 @@ import DateIcon from '@assets/calendar.svg';
 type DateInputProps = {
     // Variables
     value: Date | null;
+    minimumDate?: Date | null;
 
     // Methods
     onChange: (date: Date) => void;
 };
 
-export function ThemedDateInput({ value, onChange }: DateInputProps) {
+export function ThemedDateInput({ value, minimumDate, onChange }: DateInputProps) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
@@ -49,6 +50,7 @@ export function ThemedDateInput({ value, onChange }: DateInputProps) {
                     mode="date"
                     display={ Platform.OS === 'android' ? 'calendar' : 'spinner' }
                     onValueChange={ handleChange }
+                    minimumDate={ minimumDate ? minimumDate : new Date(0,0,0) }
                 />
             )}
         </View>

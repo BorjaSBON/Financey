@@ -252,7 +252,7 @@ const DataList = () => {
                             </ThemedText>
                             <View style={ styles.pairButtons }>
                                 <ThemedDateInput value={ dateMin } onChange={ setDateMin } />
-                                <ThemedDateInput value={ dateMax } onChange={ setDateMax } />
+                                <ThemedDateInput value={ dateMax } minimumDate={ dateMin } onChange={ setDateMax } />
                             </View>
                         </View>
                     </View>

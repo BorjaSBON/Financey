@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
-import { router } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
@@ -24,6 +24,16 @@ const LoginScreen = () => {
 
     // Traductions
     const { languages } = useLanguage();
+
+    // Router
+    const navigation = useNavigation();
+    
+    useEffect(() => {
+        if (navigation.canGoBack()) {
+            router.dismissAll();
+            router.replace('/login')
+        }
+    }, [navigation]);
 
     // Variables
     const [username, setUsername] = useState('');

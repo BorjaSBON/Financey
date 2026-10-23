@@ -57,7 +57,7 @@ export const LanguageEN = {
     amountLower: 'Amount (Lower to Higher)',
 
     // Add and Modify
-    repeated: 'Repeated',
+    frequency: 'Frequency',
     no: 'No',
     daily: 'Daily',
     weekly: 'Weekly',
@@ -165,9 +165,9 @@ export const LanguageEN = {
     // Additional
     additionalInformation: 'Additional information',
     description: 'Description',
-    descriptionText: 'Application that allows you to view your day-to-day income and expenditure clearly and simply. Thanks to the charts and statistics generated from the information collected, you will gain a clearer understanding of how your money is being spent.',
+    descriptionText: 'Financey allows you to manage your day-to-day income and expenditure clearly and simply. Thanks to the charts and statistics generated from the information collected, you will gain a clearer understanding of how your money is being spent.',
     security: 'Security',
-    securityText: 'None of the data collected can be viewed or processed by external parties, as this app has no internet connection and there is no intention to extract the data for analysis.',
+    securityText: 'None of the data collected can be viewed or processed by external parties and there is no intention to extract the data for analysis.',
     repository: 'Repository',
 
     // FUTURE

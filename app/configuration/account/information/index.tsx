@@ -60,7 +60,7 @@ export default function AccountInformation() {
                         <ThemedText style={ styles.title } weight='regular'>{ languages['actions'] }</ThemedText>
                         <View style={ styles.elements }>
                             <InformationElement title={ languages['lastActionDate'] } data={ lastActionDate } />
-                            <InformationElement title={ languages['lastAction'] } data={ profile?.last_action || languages['actionEmpty'] } />
+                            <InformationElement title={ languages['lastAction'] } data={ profile?.last_action || 'actionEmpty' in languages ? languages[profile?.last_action as keyof typeof languages] : languages['actionEmpty']} />
                             <InformationElement title={ languages['numberActions'] } data={ String(profile?.number_actions) || '000' } />
                         </View>
                     </View>

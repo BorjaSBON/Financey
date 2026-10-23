@@ -24,7 +24,15 @@
     "plugins": [
       "expo-router",
       "expo-sqlite",
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#F7F7F7",
+          "image": "./assets/splash_icon.png",
+          "imageWidth": 150
+        }
+      ]
     ]
   }
 }
