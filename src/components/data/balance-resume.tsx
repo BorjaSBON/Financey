@@ -69,28 +69,28 @@ export default function BalanceResume({ squareEnable=false, from='0000-01-01T00:
                 <View style={ styles.section }>
                     <View style= { styles.titleRow }>
                         { squareEnable === true && <View style={[ styles.square, styles.incomes ]} /> }
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['incomes'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['incomes'] }</ThemedText>
                     </View>
-                    <ThemedText style={ styles.data } weight='light' numberOfLines={ 1 } adjustsFontSizeToFit>
+                    <ThemedText style={ styles.data } weight='regular' numberOfLines={ 1 } adjustsFontSizeToFit>
                         { ReadableNumber(income) }
-                        <ThemedText style={ styles.currency }  weight='light'> { currencyInfo.symbol }</ThemedText>
+                        <ThemedText style={ styles.currency } weight='light'> { currencyInfo.symbol }</ThemedText>
                     </ThemedText>
                 </View>
 
                 <View style={ styles.section }>
-                    <ThemedText style={ styles.title } weight='regular'>{ languages['balance'] }</ThemedText>
-                    <ThemedText style={[ styles.data, balanceColor ]} weight='regular' numberOfLines={ 1 } adjustsFontSizeToFit>
+                    <ThemedText style={ styles.title } weight='medium'>{ languages['balance'] }</ThemedText>
+                    <ThemedText style={[ styles.data, balanceColor ]} weight='medium' numberOfLines={ 1 } adjustsFontSizeToFit>
                         { ReadableNumber(balance) }
-                        <ThemedText style={[ styles.currency, balanceColor ]} weight='light'> { currencyInfo.symbol }</ThemedText>
+                        <ThemedText style={[ styles.currency, balanceColor ]} weight='regular'> { currencyInfo.symbol }</ThemedText>
                     </ThemedText>
                 </View>
 
                 <View style={ styles.section }>
                     <View style= { styles.titleRow }>
                         { squareEnable === true && <View style={[ styles.square, styles.expenses ]} /> }
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['expenses'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['expenses'] }</ThemedText>
                     </View>
-                    <ThemedText style={ styles.data } weight='light' numberOfLines={ 1 } adjustsFontSizeToFit>
+                    <ThemedText style={ styles.data } weight='regular' numberOfLines={ 1 } adjustsFontSizeToFit>
                         { ReadableNumber(expense) }
                         <ThemedText style={ styles.currency } weight='light'> { currencyInfo.symbol }</ThemedText>
                     </ThemedText>
@@ -142,6 +142,7 @@ const createStyles = (colors: ThemeColors) =>
             textAlign: 'center',
             height: 17,
             verticalAlign: 'bottom',
+            letterSpacing: 0,
         },
 
         currency: {

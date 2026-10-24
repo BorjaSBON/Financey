@@ -39,6 +39,7 @@ export interface ThemeColors {
 
     // Popup
     popupShadow: string;
+    popupBackground: string;
 
     // Icon
     iconColor: string;
@@ -91,6 +92,7 @@ export const LightColors: ThemeColors = {
 
     // Popup
     popupShadow: '#111A3040',
+    popupBackground: '#0F172A40',
 
     // Icon
     iconColor: '#FFFFFF',
@@ -143,6 +145,7 @@ export const DarkColors: ThemeColors = {
 
     // Popup
     popupShadow: '#FFFFFF40',
+    popupBackground: '#0F172A90',
 
     // Icon
     iconColor: '#111A30',

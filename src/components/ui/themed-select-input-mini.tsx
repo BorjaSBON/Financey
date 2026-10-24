@@ -68,7 +68,7 @@ export function ThemedSelectInputMini<T extends string = string>({ data, value, 
         <View>
             <View style={ styles.container }>
                 <Pressable ref={ selectRef } style={[ styles.select, { width: widthInput } ]} onPress={ openDropdown }>
-                    <ThemedText style={styles.selectedText} weight='light'>{ selectedItem?.label ?? 'Select' }</ThemedText>
+                    <ThemedText style={styles.selectedText} weight='regular'>{ selectedItem?.label ?? 'Select' }</ThemedText>
                 </Pressable>
             </View>
 
@@ -153,7 +153,7 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         option: {
-            height: 30,
+            height: 28,
             paddingHorizontal: 15,
             justifyContent: 'center',
         },

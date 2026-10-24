@@ -32,7 +32,7 @@ export default function AppInformation() {
             <ScrollView>
                 <View style={ styles.sections }>
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['system'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['system'] }</ThemedText>
                         <View style={ styles.elements }>
                             <InformationElement title={ languages['applicationName'] } data='Financey' />
                             <InformationElement title={ languages['version'] } data={ 'v' + String(appVersion) } />
@@ -41,7 +41,7 @@ export default function AppInformation() {
                     </View>
 
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['developers'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['developers'] }</ThemedText>
                         <View style={ styles.elements }>
                             <InformationElement title={ languages['creator'] } data='Borja Sanz de Bremond' onPress={ () => {Linking.openURL(urlCreator);} } />
                             <InformationElement title={ languages['team'] } data='Hobbit Holes' />
@@ -49,7 +49,7 @@ export default function AppInformation() {
                     </View>
 
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['additionalInformation'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['additionalInformation'] }</ThemedText>
                         <View style={ styles.elements }>
                             <InformationElement title={ languages['description'] } data={ languages['descriptionText'] } />
                             <InformationElement title={ languages['security'] } data={ languages['securityText'] } />
@@ -82,7 +82,7 @@ const createStyles = (colors: ThemeColors) =>
         section: {
             display: 'flex',
             flexDirection: 'column',
-            rowGap: 8,
+            rowGap: Values.rowGapSection,
         },
 
         title: {

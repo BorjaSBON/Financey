@@ -33,7 +33,7 @@ const AccountInformation = () => {
             <ScrollView>
                 <View style={ styles.sections }>
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['newAccount'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['newAccount'] }</ThemedText>
                         <View style={ styles.elements }>
                             <NewAccount onPress={ async () => {
                                 await logout();
@@ -43,14 +43,14 @@ const AccountInformation = () => {
                     </View>
 
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['activeAccount'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['activeAccount'] }</ThemedText>
                         <View style={ styles.elements }>
                             <AccountElement username={ profile?.username || languages['username'] } last_action_date={ profile?.last_action_date || 'DD/MM/YYYY' } active={ profile?.active || 0 } />
                         </View>
                     </View>
                     
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['accounts'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['accounts'] }</ThemedText>
                         <View style={ styles.elements }>
                             {
                                 profiles.map((profile) => ( 
@@ -92,7 +92,7 @@ const createStyles = (colors: ThemeColors) =>
         section: {
             display: 'flex',
             flexDirection: 'column',
-            rowGap: 8,
+            rowGap: Values.rowGapSection,
         },
 
         title: {

@@ -33,7 +33,7 @@ export default function ConfElement({ title, colorText='', iconDisplay=true, onP
             ]}
             onPress={ onPress }
         >
-            <ThemedText style={[ styles.title, { color:colorText } ]} weight='light'>{ title }</ThemedText>
+            <ThemedText style={[ styles.title, { color:colorText } ]} weight='regular'>{ title }</ThemedText>
             <MoreIcon style={[ styles.icon, iconDisplay ? { display: 'flex' } : { display: 'none' } ]} color={ colors.iconBackground } />
         </Pressable>
     );
@@ -44,11 +44,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         width: '100%',
-        maxHeight: 36,
+        height: 34,
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingTop: 6,
-        paddingBottom: 8,
         paddingHorizontal: Values.paddingElement,
     },
 

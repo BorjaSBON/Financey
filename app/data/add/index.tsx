@@ -165,7 +165,7 @@ const DataAdd = () => {
                     autoComplete='off'
                     placeholderTextColor={ colors.fontSecondary }
                 />
-                <ThemedText style={ styles.amountUnit } weight='light'>{ currencyInfo.symbol }</ThemedText>
+                <ThemedText style={ styles.amountUnit } weight='regular'>{ currencyInfo.symbol }</ThemedText>
             </View>
 
             <View style={ styles.inputs }>
@@ -176,7 +176,7 @@ const DataAdd = () => {
                 
             </View>
 
-            { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
+            { error && <ThemedText weight='light' style={ styles.error }>{ error }</ThemedText> }
 
             <View style={ styles.add }>
                 <ThemedButton label={ languages['add'] } type='default' onPress={ addTransaction } />
@@ -207,6 +207,8 @@ const createStyles = (colors: ThemeColors) =>
         amountValue: {
             fontSize: 28,
             color: colors.fontPrimary,
+            fontFamily: 'MontserratMedium',
+            includeFontPadding: false,
         },
 
         amountUnit: {

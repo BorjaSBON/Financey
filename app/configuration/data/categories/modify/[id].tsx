@@ -105,7 +105,7 @@ const DataModify = () => {
         await removeCategory(Number(id));
 
         // Modify the profile
-        await modifyProfileDataDeleted('deleteCategory', count);
+        await modifyProfileDataDeleted(count);
         await modifyProfileLastAction({ lastAction: 'deleteCategory' });
 
         // Return to the prevous page
@@ -118,15 +118,15 @@ const DataModify = () => {
     }
     
     return (
-        <View style={ styles.container }>
-            <View>
+        <View style={{ height: '100%', width: '100%' }}>
+            <View style={ styles.container }>
                 <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
 
                 <View style={ styles.inputs }>
                     <Input name={ languages['name'] } type='text' placeholder={ languages['categoryPlaceholder'] } value={ name } onChangeText={ setName } />
                 </View>
 
-                { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
+                { error && <ThemedText weight='light' style={ styles.error }>{ error }</ThemedText> }
 
                 <View style={ styles.buttons }>
                     <ThemedButton label={ languages['delete'] } type='delete' onPress={ activeDeleteElementPopup } />

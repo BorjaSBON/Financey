@@ -36,43 +36,36 @@ const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         general: {
             color: colors.fontPrimary,
+            includeFontPadding: false,
+            letterSpacing: -0.25,
         },
 
         thin: {
             fontFamily: 'MontserratThin',
-            fontWeight: 100,
         },
         extraLight: {
             fontFamily: 'MontserratExtraLight',
-            fontWeight: 100,
         },
         light: {
             fontFamily: 'MontserratLight',
-            fontWeight: 100,
         },
         regular: {
             fontFamily: 'MontserratRegular',
-            fontWeight: 900,
         },
         medium: {
             fontFamily: 'MontserratMedium',
-            fontWeight: 900,
         },
         semiBold: {
             fontFamily: 'MontserratSemiBold',
-            fontWeight: 900,
         },
         bold: {
             fontFamily: 'MontserratBold',
-            fontWeight: 900,
         },
         extraBold: {
             fontFamily: 'MontserratExtraBold',
-            fontWeight: 900,
         },
         black: {
             fontFamily: 'MontserratBlack',
-            fontWeight: 900,
         },
     }
 );

@@ -81,7 +81,7 @@ const DataAdd = () => {
                 <Input name={ languages['name'] } type='text' placeholder={ languages['categoryPlaceholder'] } value={ name } onChangeText={ setName } />
             </View>
 
-            { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
+            { error && <ThemedText weight='light' style={ styles.error }>{ error }</ThemedText> }
 
             <View style={ styles.add }>
                 <ThemedButton label={ languages['add'] } type='default' onPress={ addCategory } />

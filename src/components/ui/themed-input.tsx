@@ -53,6 +53,9 @@ const createStyles = (colors: ThemeColors) =>
             paddingStart: 15,
             paddingEnd: 35,
             borderRadius: 12,
+            fontFamily: 'MontserratRegular',
+            includeFontPadding: false,
+            fontSize: 13,
         },
 
         icon: {

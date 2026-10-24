@@ -61,11 +61,14 @@ export function AccountElement({ username, last_action_date, active, onPress }: 
             onPress={ onPress }
         >
             <View style={[ styles.icon, {backgroundColor: stringToPastelColor(username)} ]}>
-                <ThemedText style={ styles.letter } weight='medium'>{ username[0].toUpperCase() }</ThemedText>
+                <ThemedText style={ styles.letter } weight='semiBold'>{ username[0].toUpperCase() }</ThemedText>
             </View>
             <View style={ styles.information }>
                 <ThemedText style={ styles.username } weight='regular'>{ username } { activeText }</ThemedText>
-                <ThemedText style={ styles.date } weight='light'>{ languages['lastAction'] }: { dateFormatted }</ThemedText>
+                <ThemedText style={ styles.date } weight='light'>
+                    { languages['lastAction'] }: 
+                    <ThemedText style={ styles.dateValue } weight='light'> { dateFormatted.replaceAll('/', ' / ') }</ThemedText>
+                </ThemedText>
             </View>
         </Pressable>
     );
@@ -90,7 +93,7 @@ export function NewAccount({ onPress }: NewAccountProp) {
             <View style={ styles.actionIcon }>
                 <AddIcon backgroundColor={ colors.iconColor } iconColor={ colors.iconBackground } />
             </View>
-            <ThemedText style={ styles.title } weight='light'>{ languages['createNewAccount'] }</ThemedText>
+            <ThemedText style={ styles.title } weight='regular'>{ languages['createNewAccount'] }</ThemedText>
         </Pressable>
     );
 }
@@ -102,10 +105,9 @@ const createStyles = (colors: ThemeColors) =>
             flexDirection: 'row',
             columnGap: 15,
             width: '100%',
-            minHeight: 48,
-            alignItems: 'flex-start',
-            paddingTop: 6,
-            paddingBottom: 8,
+            minHeight: 50,
+            alignItems: 'center',
+            paddingVertical: 'auto',
             paddingHorizontal: Values.paddingElement,
         },
 
@@ -113,7 +115,7 @@ const createStyles = (colors: ThemeColors) =>
             width: 30,
             height: 30,
             borderRadius: 50,
-            marginVertical: 'auto'
+            marginVertical: 'auto',
         },
 
         letter: {
@@ -128,7 +130,6 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         title: {
-            width: '100%',
             fontSize: 14,
             marginVertical: 'auto',
         },
@@ -149,8 +150,13 @@ const createStyles = (colors: ThemeColors) =>
             color: colors.fontSecondary,
         },
 
+        dateValue: {
+            color: colors.fontSecondary,
+            letterSpacing: 0,
+        },
+
         actionIcon: {
-            marginTop: 3,
+            marginVertical: 'auto',
         },
     }
 );

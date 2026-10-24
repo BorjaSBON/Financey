@@ -1,7 +1,9 @@
-import { Pressable, Text, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+
+import { ThemedText } from '@ui/themed-text';
 
 interface Props {
     // Variables
@@ -30,7 +32,7 @@ export function ThemedButton({ label, type, onPress, onLongPress }: Props) {
             onPress={ onPress }
             onLongPress={ onLongPress }
         >
-            <Text style={ styles.text }>{ label }</Text>
+            <ThemedText style={ styles.text } weight='regular'>{ label }</ThemedText>
         </Pressable>
     );
 }
@@ -59,8 +61,7 @@ const createStyles = (colors: ThemeColors) =>
 
         text: {
             color: colors.buttonFont,
-            fontFamily: 'Montserrat-Medium',
-            fontSize: 15,
+            fontSize: 14,
         }
     }
 );

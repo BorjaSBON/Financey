@@ -27,7 +27,7 @@ const UnderConstruction = () => {
         <View style={ styles.container }>
             <ScrollView>
                 <View style={ styles.sections }>
-                    <ThemedText weight='medium' style={ styles.title }>{ languages['futureTitle'] }</ThemedText>
+                    <ThemedText weight='semiBold' style={ styles.title }>{ languages['futureTitle'] }</ThemedText>
 
                     <View style={ styles.elements }>
                         <View style={ styles.element }>
@@ -38,7 +38,7 @@ const UnderConstruction = () => {
                                 ]}
                             >
                                 <HelpIcon size={ 18 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
-                                <ThemedText style={ styles.elementText } weight='light'>{ languages['futureInformation'] }</ThemedText>
+                                <ThemedText style={ styles.elementText } weight='regular'>{ languages['futureInformation'] }</ThemedText>
                             </Pressable>
                         </View>
 
@@ -51,7 +51,7 @@ const UnderConstruction = () => {
                                     ]}
                                 >
                                     <HelpIcon size={ 18 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
-                                    <ThemedText style={ styles.elementText } weight='light'>{ information01 }</ThemedText>
+                                    <ThemedText style={ styles.elementText } weight='regular'>{ information01 }</ThemedText>
                                 </Pressable>
                             </View>
                         }
@@ -65,7 +65,7 @@ const UnderConstruction = () => {
                                     ]}
                                 >
                                     <HelpIcon size={ 18 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
-                                    <ThemedText style={ styles.elementText } weight='light'>{ information02 }</ThemedText>
+                                    <ThemedText style={ styles.elementText } weight='regular'>{ information02 }</ThemedText>
                                 </Pressable>
                             </View>
                         }

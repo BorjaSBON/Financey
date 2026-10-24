@@ -90,23 +90,23 @@ const HomeScreen = () => {
         <View style={ styles.container }>
             <ScrollView>
                 <View style={ styles.sections }>
-                    <ThemedText weight='light' style={ styles.welcome }>
-                        { languages['welcome'] } <ThemedText weight='regular'>{ profile?.username || 'username' }</ThemedText>!
+                    <ThemedText weight='regular' style={ styles.welcome }>
+                        { languages['welcome'] } <ThemedText weight='medium'>{ profile?.username || 'username' }</ThemedText>!
                     </ThemedText>
                     
                     <BalanceResume />
 
                     <View style={ styles.sectionDoble }>
                         <View style={ styles.sectionHalf }>
-                            <ThemedText style={ styles.title } weight='regular'>
+                            <ThemedText style={ styles.title } weight='medium'>
                                 { languages['resume'] }
-                                <ThemedText style={ styles.subtitle } weight='light'> ({ date.toLocaleString(languages['dateFormat'], { month: 'long' }) })</ThemedText>
+                                <ThemedText style={ styles.subtitle } weight='regular'> ({ date.toLocaleString(languages['dateFormat'], { month: 'long' }) })</ThemedText>
                             </ThemedText>
                             <CategoriesPieChart year={ date.getUTCFullYear() } month={ date.getUTCMonth() + 1 } />
                         </View>
 
                         {/* <View style={ styles.sectionHalf }>
-                            <ThemedText style={ styles.title } weight='regular'>{ languages['evolution'] }</ThemedText>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['evolution'] }</ThemedText>
                             <View style={ styles.evolution }>
 
                             </View>
@@ -114,7 +114,7 @@ const HomeScreen = () => {
                     </View>
 
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['actions'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['actions'] }</ThemedText>
                         <View style={ styles.actionElements }>
                             <Pressable onPress={ () => router.push('/data/charts') }>
                                 <ChartsIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
@@ -139,7 +139,7 @@ const HomeScreen = () => {
                     </View>
 
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['lastTransaction'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['lastTransaction'] }</ThemedText>
                         <View style={ styles.elements }>
                             { lastTransaction == null ? <View style={ styles.emptyElement } /> :
                                 <TransactionElement type={ typeLastTransaction } category={ categoryLastTransaction } value={ amountLastTransaction } date={ String(dateLastTransaction) } onPress={ () => { router.push({
@@ -153,9 +153,9 @@ const HomeScreen = () => {
                     </View>
 
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['lastAction'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['lastAction'] }</ThemedText>
                         <View style={ styles.lastActionElement }>
-                            <ThemedText style={ styles.name } weight='light'>{ profile?.last_action || 'name' in languages ? languages[profile?.last_action as keyof typeof languages] : languages['name']}</ThemedText>
+                            <ThemedText style={ styles.name } weight='regular'>{ profile?.last_action || 'name' in languages ? languages[profile?.last_action as keyof typeof languages] : languages['name']}</ThemedText>
                             <ThemedText style={ styles.date } weight='light'>{ lastActionDate }</ThemedText>
                         </View>
                     </View>
@@ -186,7 +186,7 @@ const createStyles = (colors: ThemeColors) =>
             display: 'flex',
             flexDirection: 'column',
             paddingHorizontal: Values.paddingApp,
-            rowGap: 8,
+            rowGap: Values.rowGapSection,
         },
 
         sectionDoble: {
@@ -199,7 +199,7 @@ const createStyles = (colors: ThemeColors) =>
         sectionHalf: {
             display: 'flex',
             flexDirection: 'column',
-            rowGap: 8,
+            rowGap: Values.rowGapSection,
             width: '47.5%',
             marginHorizontal: 'auto',
         },
@@ -232,6 +232,9 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         lastActionElement: {
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 2,
             backgroundColor: colors.backgroundSecondary,
             borderRadius: 10,
             overflow: 'hidden',

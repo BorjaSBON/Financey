@@ -39,7 +39,7 @@ export function ThemedDateInput({ value, minimumDate, onChange }: DateInputProps
         <View>
             <View style={ styles.container }>
                 <Pressable style={ styles.input } onPress={ () => setOpen(true) }>
-                    <ThemedText style={[ styles.text, !value && styles.placeholder ]} weight='light'>{ formattedDate }</ThemedText>
+                    <ThemedText style={[ styles.text, !value && styles.placeholder ]} weight='regular'>{ formattedDate }</ThemedText>
                     <DateIcon style={ styles.icon } color={ colors.iconBackground } />
                 </Pressable>
             </View>
@@ -66,7 +66,8 @@ const createStyles = (colors: ThemeColors) =>
         input: {
             height: 40,
             width: '100%',
-            paddingHorizontal: 15,
+            paddingLeft: 15,
+            paddingRight: 10,
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',

@@ -168,21 +168,21 @@ const DataList = () => {
             { displayFilter === false ? 
                 <View style={ styles.sections }>
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['filter'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['filter'] }</ThemedText>
                         <View style={ styles.elements }>
                             <FilterTransactions onPress={ ()=>{ setDisplayFilter(true); }} />
                         </View>
                     </View>
 
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['newTransaction'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['newTransaction'] }</ThemedText>
                         <View style={ styles.elements }>
                             <NewTransaction onPress={ () => { router.push('/data/add') }} />
                         </View>
                     </View>
                     
                     <View style={[ styles.section, styles.transactionsSection ]}>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['transactions'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['transactions'] }</ThemedText>
                         <View style={ styles.elementsScroll }>
                             {   loadingTransactions ? 
                                 <ActivityIndicator/> :
@@ -210,19 +210,19 @@ const DataList = () => {
                 <ScrollView>
                     <View style={ styles.sections }>
                         <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='regular'>{ languages['transactions'] }</ThemedText>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['transactions'] }</ThemedText>
                             <View style={ styles.elements }>
                                 <DisplayTransactions onPress={ ()=>{ setDisplayFilter(false); } } />
                             </View>
                         </View>
 
                         <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='regular'>{ languages['orderBy'] }</ThemedText>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['orderBy'] }</ThemedText>
                             <ThemedSelectInput data={ dropDownListOrder } value={ order } onSelect={ (item) => { setOrder(item.value); } } />
                         </View>
 
                         <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='regular'>{ languages['type'] }</ThemedText>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['type'] }</ThemedText>
                             <ThemedSelectInput data={ dropDownListType } value={ type } onSelect={ (item) => { 
                                 setType(item.value as "" | "income" | "expense");
                                 setCategoryId('');
@@ -230,14 +230,14 @@ const DataList = () => {
                         </View>
 
                         <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='regular'>{ languages['category'] }</ThemedText>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['category'] }</ThemedText>
                             <ThemedSelectInput data={ dropDownListCategory } value={ categoryId } maxHeight={ 200 } onSelect={ (item) => { setCategoryId(item.value); } } />
                         </View>
 
                         <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='regular'>
+                            <ThemedText style={ styles.title } weight='medium'>
                                 { languages['amount'] }
-                                <ThemedText style={ styles.subtitle } weight='light'> ({ languages['minMax'] })</ThemedText>
+                                <ThemedText style={ styles.subtitle } weight='regular'> ({ languages['minMax'] })</ThemedText>
                             </ThemedText>
                             <View style={ styles.pairButtons }>
                                 <ThemedInput type='decimal' placeholder={ '0.000' } value={ amountMin } onChange={ setAmountMin } />
@@ -246,9 +246,9 @@ const DataList = () => {
                         </View>
 
                         <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='regular'>
+                            <ThemedText style={ styles.title } weight='medium'>
                                 { languages['dates'] }
-                                <ThemedText style={ styles.subtitle } weight='light'> ({ languages['startEnd'] })</ThemedText>
+                                <ThemedText style={ styles.subtitle } weight='regular'> ({ languages['startEnd'] })</ThemedText>
                             </ThemedText>
                             <View style={ styles.pairButtons }>
                                 <ThemedDateInput value={ dateMin } onChange={ setDateMin } />
@@ -284,7 +284,7 @@ const createStyles = (colors: ThemeColors) =>
 
         section: {
             flexDirection: 'column',
-            rowGap: 8,
+            rowGap: Values.rowGapSection,
         },
 
         transactionsSection: {

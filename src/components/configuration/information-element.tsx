@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     informationElement: {
         display: 'flex',
         flexDirection: 'column',
-        rowGap: 0,
+        rowGap: 3,
         width: '100%',
         alignItems: 'flex-start',
         paddingTop: 6,

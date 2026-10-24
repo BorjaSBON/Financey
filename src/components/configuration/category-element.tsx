@@ -37,7 +37,7 @@ export function CategoryElement({ title, type, onPress }: CategoryProps) {
         >
             <View style={ styles.name }>
                 <View style={[ styles.color, type === 'expense' ? { backgroundColor: colors.negative } : { backgroundColor: colors.positive } ]} />
-                <ThemedText style={ styles.title } weight='light'>{ title }</ThemedText>
+                <ThemedText style={ styles.title } weight='regular'>{ title }</ThemedText>
             </View>
         </Pressable>
     );
@@ -59,7 +59,7 @@ export function NewCategory({ onPress }: NewCategoryProp) {
             onPress={ onPress }
         >
             <AddIcon size={ 20 } backgroundColor={ colors.iconColor } iconColor={ colors.iconBackground } />
-            <ThemedText style={ styles.title } weight='light'>{ languages['addNewCategory'] }</ThemedText>
+            <ThemedText style={ styles.title } weight='regular'>{ languages['addNewCategory'] }</ThemedText>
         </Pressable>
     );
 }

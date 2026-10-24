@@ -74,7 +74,7 @@ export function ThemedSelectInput({ data, value, maxHeight=390, onSelect }: Drop
         <View>
             <View style={styles.container}>
                 <Pressable ref={ selectRef } style={ styles.select } onPress={ openDropdown }>
-                    <ThemedText style={[ styles.selectedText, !selectedItem?.label && { color: colors.inputFontPlaceholder } ]} weight='light'>{ selectedItem?.label ?? languages['select'] }</ThemedText>
+                    <ThemedText style={[ styles.selectedText, !selectedItem?.label && { color: colors.inputFontPlaceholder } ]} weight='regular'>{ selectedItem?.label ?? languages['select'] }</ThemedText>
                     <MoreIcon style={ open ? styles.iconOpen : styles.iconClose } color={ colors.iconBackground } />
                 </Pressable>
             </View>
@@ -106,7 +106,7 @@ export function ThemedSelectInput({ data, value, maxHeight=390, onSelect }: Drop
                             keyboardShouldPersistTaps="handled"
                             renderItem={({ item }) => (
                                 <Pressable style={[ styles.option, item.value === value && styles.selectedOption ]} onPress={ () => handleSelect(item) }>
-                                    <ThemedText style={[ styles.optionText, item.value === value && styles.selectedOptionText ]} weight='light'>{ item.label }</ThemedText>
+                                    <ThemedText style={[ styles.optionText, item.value === value && styles.selectedOptionText ]} weight='regular'>{ item.label }</ThemedText>
                                 </Pressable>
                             )}
                         />
@@ -126,7 +126,8 @@ const createStyles = (colors: ThemeColors) =>
         select: {
             height: 40,
             width: '100%',
-            paddingHorizontal: 15,
+            paddingLeft: 15,
+            paddingRight: 10,
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -163,7 +164,7 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         option: {
-            height: 35,
+            height: 32,
             paddingHorizontal: 15,
             justifyContent: 'center',
         },
@@ -173,7 +174,7 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         optionText: {
-            fontSize: 12,
+            fontSize: 11,
             color: colors.inputFontPlaceholder,
         },
 

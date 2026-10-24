@@ -29,7 +29,7 @@ export default function Header({ title }: Props) {
             >
                 <ReturnIcon style={ styles.icon } color={ colors.iconBackground } />
             </Pressable>
-            <ThemedText style={ styles.title }>{ title }</ThemedText>
+            <ThemedText style={ styles.title } weight='medium'>{ title }</ThemedText>
         </View>
     );
 }
@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
         fontSize: 17,
         marginStart: 5,
         marginVertical: 'auto',
+        letterSpacing: -0.5,
     },
 
     return: {

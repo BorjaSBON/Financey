@@ -42,7 +42,7 @@ export function ConfThemeSelect() {
                 pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
             ]}
         >
-            <ThemedText style={styles.title} weight='light'>{ languages['theme'] }</ThemedText>
+            <ThemedText style={styles.title} weight='regular'>{ languages['theme'] }</ThemedText>
             <ThemedSelectInputMini data={ dataSelect } value={ valueSelect } onSelect={ onSelect }/>
         </Pressable>
     );
@@ -77,7 +77,7 @@ export function ConfLanguageSelect() {
                 pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
             ]} 
         >
-            <ThemedText style={ styles.title } weight="light">{ languages['language'] }</ThemedText>
+            <ThemedText style={ styles.title } weight="regular">{ languages['language'] }</ThemedText>
             <ThemedSelectInputMini data={ dataSelect } value={ languagePreference } widthInput={ 50 } onSelect={ onSelect } />
         </Pressable> 
     );
@@ -121,7 +121,7 @@ export function ConfCurrencySelect() {
                 pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
             ]} 
         >
-            <ThemedText style={ styles.title } weight="light">{ languages['currency'] }</ThemedText>
+            <ThemedText style={ styles.title } weight="regular">{ languages['currency'] }</ThemedText>
             <ThemedSelectInputMini data={ dataSelect } value={ currency } widthInput={ 40 } onSelect={ onSelect } />
         </Pressable> 
     );
@@ -135,8 +135,8 @@ const createStyles = (colors: ThemeColors) =>
             width: '100%',
             justifyContent: 'space-between',
             alignItems: 'center',
-            paddingTop: 6,
-            paddingBottom: 6,
+            paddingVertical: 0,
+            height: 34,
             paddingHorizontal: Values.paddingElement,
         },
 

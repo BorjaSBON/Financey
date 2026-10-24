@@ -139,46 +139,48 @@ const ConfigurationScreen = () => {
     }
 
     return (
-        <View style={ styles.container }>
-            <ScrollView>
-                <View style={ styles.sections }>
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['general'] }</ThemedText>
-                        <View style={ styles.elements }>
-                            <ConfThemeSelect />
-                            <ConfLanguageSelect />
+        <View style={{ height: '100%', width: '100%' }}>
+            <View style={ styles.container }>
+                <ScrollView>
+                    <View style={ styles.sections }>
+                        <View style={ styles.section }>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['general'] }</ThemedText>
+                            <View style={ styles.elements }>
+                                <ConfThemeSelect />
+                                <ConfLanguageSelect />
+                            </View>
                         </View>
-                    </View>
 
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['data'] }</ThemedText>
-                        <View style={ styles.elements }>
-                            <ConfCurrencySelect />
-                            <ConfElement title={ languages['categories'] } onPress={ () => router.push('/configuration/data/categories') } />
-                            <ConfElement title={ languages['importData'] } onPress={ () => router.push({pathname: '/future', params: { information01: languages['futureImportInfo1'], information02: languages['futureImportInfo2'] }}) } />
-                            <ConfElement title={ languages['exportData'] } onPress={ () => router.push({pathname: '/future', params: { information01: languages['futureExportInfo'] }}) } />
+                        <View style={ styles.section }>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['data'] }</ThemedText>
+                            <View style={ styles.elements }>
+                                <ConfCurrencySelect />
+                                <ConfElement title={ languages['categories'] } onPress={ () => router.push('/configuration/data/categories') } />
+                                <ConfElement title={ languages['importData'] } onPress={ () => router.push({pathname: '/future', params: { information01: languages['futureImportInfo1'], information02: languages['futureImportInfo2'] }}) } />
+                                <ConfElement title={ languages['exportData'] } onPress={ () => router.push({pathname: '/future', params: { information01: languages['futureExportInfo'] }}) } />
+                            </View>
+                        </View>
+                        
+                        <View style={ styles.section }>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['account'] }</ThemedText>
+                            <View style={ styles.elements }>
+                                <ConfElement title={ languages['informationAccount'] } onPress={ () => router.push('/configuration/account/information') } />
+                                <ConfElement title={ languages['changeAccount'] } onPress={ () => router.push('/configuration/account/change_account') } />
+                                <ConfElement title={ languages['changeUsername'] } iconDisplay={ false } onPress={ activeChangeUsernamePopup } />
+                                <ConfElement title={ languages['deleteAccount'] } colorText={ colors.negative } iconDisplay={ false } onPress={ activeDeleteAccountPopup } />
+                            </View>
+                        </View>
+                        
+                        <View style={ styles.section }>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['app'] }</ThemedText>
+                            <View style={ styles.elements }>
+                                <ConfElement title={ languages['informationApp'] } onPress={ () => router.push('/configuration/application') } />
+                                <ConfElement title={ languages['resetApp'] } colorText={ colors.negative } iconDisplay={ false } onPress={ activeResetAppPopup } />
+                            </View>
                         </View>
                     </View>
-                    
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['account'] }</ThemedText>
-                        <View style={ styles.elements }>
-                            <ConfElement title={ languages['informationAccount'] } onPress={ () => router.push('/configuration/account/information') } />
-                            <ConfElement title={ languages['changeAccount'] } onPress={ () => router.push('/configuration/account/change_account') } />
-                            <ConfElement title={ languages['changeUsername'] } iconDisplay={ false } onPress={ activeChangeUsernamePopup } />
-                            <ConfElement title={ languages['deleteAccount'] } colorText={ colors.negative } iconDisplay={ false } onPress={ activeDeleteAccountPopup } />
-                        </View>
-                    </View>
-                    
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['app'] }</ThemedText>
-                        <View style={ styles.elements }>
-                            <ConfElement title={ languages['informationApp'] } onPress={ () => router.push('/configuration/application') } />
-                            <ConfElement title={ languages['resetApp'] } colorText={ colors.negative } iconDisplay={ false } onPress={ activeResetAppPopup } />
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </View>
             
             <ModifyElement active={ changeUsernamePopup } title={ languages['changeUsername'] } value={ username } placeholder={ languages['newUsername'] } error={ error } modifyAction={ changeUsernameAction } cancelAction={ activeChangeUsernamePopup } onChange={ setUsername } />
             <DeleteElement active={ deleteAccountPopup } title={ languages['deleteAccountTitle'] } titleButton='delete' deleteAction={ deleteAccountAction } cancelAction={ activeDeleteAccountPopup } />
@@ -209,7 +211,7 @@ const createStyles = (colors: ThemeColors) =>
         section: {
             display: 'flex',
             flexDirection: 'column',
-            rowGap: 8,
+            rowGap: Values.rowGapSection,
         },
 
         title: {

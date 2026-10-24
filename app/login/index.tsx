@@ -78,19 +78,19 @@ const LoginScreen = () => {
     return (
         <View style={ styles.container }>
             <View style={ styles.presentation }>
-                <ThemedText weight='medium' style={ styles.title }>Financey</ThemedText>
+                <ThemedText weight='semiBold' style={ styles.title }>Financey</ThemedText>
 
                 <View style={ styles.image }>
                     <AppIcon size={ 75 }/>
                 </View>
                 
 
-                <ThemedText weight='light' style={ styles.description }>{ languages['quesionWelcome'] }</ThemedText>
+                <ThemedText weight='regular' style={ styles.description }>{ languages['quesionWelcome'] }</ThemedText>
             </View>
 
             <View style={ styles.input }>
                 <ThemedInput placeholder={ languages['username'] } type='text' value={ username } onChange={ setUsername } />
-                { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
+                { error && <ThemedText weight='light' style={ styles.error }>{ error }</ThemedText> }
             </View>
 
             <View style={ styles.button }>

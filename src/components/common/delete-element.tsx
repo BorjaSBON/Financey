@@ -27,20 +27,18 @@ export default function DeleteElement({ active=false, title='', titleButton='del
     // Traductions
     const { languages } = useLanguage();
 
-    // Calculate the position of the container
-    const [containerHeight, setContainerHeight] = useState(0);
-
     return (
         <View style={[ 
-            styles.popup,
+            styles.container,
             active ? { display: 'flex' } : { display: 'none' },
-            { bottom: (containerHeight - 60) / 2 }
-        ]} onLayout={(event) => { setContainerHeight(event.nativeEvent.layout.height); }}>
-            <ThemedText style={ styles.message } weight='light'>{ title }</ThemedText>
+        ]}>
+            <View style={ styles.popup }>
+                <ThemedText style={ styles.message } weight='regular'>{ title }</ThemedText>
 
-            <View style={ styles.buttons }>
-                <ThemedButton label={ titleButton in languages ? languages[titleButton as keyof typeof languages] : languages['name']} type='delete' onPress={ deleteAction } />
-                <ThemedButton label={ languages['cancel'] } type='default' onPress={ cancelAction } />
+                <View style={ styles.buttons }>
+                    <ThemedButton label={ titleButton in languages ? languages[titleButton as keyof typeof languages] : languages['name']} type='delete' onPress={ deleteAction } />
+                    <ThemedButton label={ languages['cancel'] } type='default' onPress={ cancelAction } />
+                </View>
             </View>
         </View>
     );
@@ -48,18 +46,26 @@ export default function DeleteElement({ active=false, title='', titleButton='del
 
 const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
+        container: {
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            backgroundColor: colors.popupBackground,
+        },
+
         popup: {
             position: 'absolute',
+            bottom: 0,
             display: 'flex',
             flexDirection: 'column',
-            rowGap: 15,
+            rowGap: 20,
             width: '100%',
             paddingTop: 25,
             paddingBottom: 55,
             paddingHorizontal: 30,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
-            elevation: 2,
+            elevation: 10,
             backgroundColor: colors.backgroundSecondary,
             
             shadowColor: colors.popupShadow,
@@ -73,7 +79,7 @@ const createStyles = (colors: ThemeColors) =>
 
         message: {
             textAlign: 'center',
-            fontSize: 12,
+            fontSize: 13,
         },
 
         buttons: {

@@ -61,7 +61,7 @@ const YearsPediod = ({ range, months=false, onChange }: Props) => {
                 <MoreIcon style={[ styles.moreIcon, { transform: [{ rotate: '180deg' }, { scale: 0.45 }] } ]} color={ colors.iconBackground } />
             </Pressable>
 
-            <ThemedText weight='light'> { months ? monthNames[range[rangeIndex] - 1] : range[rangeIndex] }</ThemedText>
+            <ThemedText weight='medium'> { months ? monthNames[range[rangeIndex] - 1] : range[rangeIndex] }</ThemedText>
 
             <Pressable 
                 style={({ pressed }) => [

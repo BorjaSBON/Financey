@@ -138,37 +138,38 @@ const DataModify = () => {
     }
     
     return (
-        <View style={ styles.container }>
-            <View>
-                <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => { setExpenseActive(true); } } incomeOnPress={ () => { setExpenseActive(false); } } />
+        <View style={{ height: '100%', width: '100%' }}>
+            <View style={ styles.container }>
+                <View>
+                    <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => { setExpenseActive(true); } } incomeOnPress={ () => { setExpenseActive(false); } } />
 
-                <View style={ styles.amountInput }>
-                    <TextInput
-                        style={ styles.amountValue }
-                        value={ String(amount) }
-                        placeholder='0000.00'
-                        onChangeText={ setAmount }
-                        inputMode='decimal'
-                        autoComplete='off'
-                        placeholderTextColor={ colors.fontSecondary }
-                    />
-                    <ThemedText style={ styles.amountUnit } weight='light'>{ currencyInfo.symbol }</ThemedText>
-                </View>
+                    <View style={ styles.amountInput }>
+                        <TextInput
+                            style={ styles.amountValue }
+                            value={ String(amount) }
+                            placeholder='0000.00'
+                            onChangeText={ setAmount }
+                            inputMode='decimal'
+                            autoComplete='off'
+                            placeholderTextColor={ colors.fontSecondary }
+                        />
+                        <ThemedText style={ styles.amountUnit } weight='regular'>{ currencyInfo.symbol }</ThemedText>
+                    </View>
 
-                <View style={ styles.inputs }>
-                    <Input name={ languages['category'] } type='select' addButton selectData={ categories_formatted } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
-                    <Input name={ languages['date'] } type='date' dateValue={ date } onChange={ setDate } />
-                </View>
+                    <View style={ styles.inputs }>
+                        <Input name={ languages['category'] } type='select' addButton selectData={ categories_formatted } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
+                        <Input name={ languages['date'] } type='date' dateValue={ date } onChange={ setDate } />
+                    </View>
 
-                { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
+                    { error && <ThemedText weight='light' style={ styles.error }>{ error }</ThemedText> }
 
-                <View style={ styles.buttons }>
-                    <ThemedButton label={ languages['delete'] } type='delete' onPress={ activeDeleteElementPopup } />
-                    <ThemedButton label={ languages['modify'] } type='default' onPress={ modidyTransactionAction }/>
-                    <ThemedButton label={ languages['cancel'] } type='default' onPress={ () => { router.back() } }/>
+                    <View style={ styles.buttons }>
+                        <ThemedButton label={ languages['delete'] } type='delete' onPress={ activeDeleteElementPopup } />
+                        <ThemedButton label={ languages['modify'] } type='default' onPress={ modidyTransactionAction }/>
+                        <ThemedButton label={ languages['cancel'] } type='default' onPress={ () => { router.back() } }/>
+                    </View>
                 </View>
             </View>
-
             <DeleteElement active={ deleteElementPopup } title={ languages['deleteTransactionText'] } titleButton='delete' deleteAction={ deleteTransactionAction } cancelAction={ activeDeleteElementPopup } />
         </View>
     );
@@ -196,6 +197,8 @@ const createStyles = (colors: ThemeColors) =>
         amountValue: {
             fontSize: 28,
             color: colors.fontPrimary,
+            fontFamily: 'MontserratMedium',
+            includeFontPadding: false,
         },
 
         amountUnit: {

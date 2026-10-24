@@ -66,14 +66,14 @@ export function TransactionElement({ type, category, value, date, onPress }: Tra
             onPress={ onPress }
         >
             <View style={ styles.transactionHeader }>
-                <ThemedText style={ styles.category } weight='light'>{ category }</ThemedText>
+                <ThemedText style={ styles.category } weight='regular'>{ category }</ThemedText>
                 <ThemedText style={[ styles.value, valueColor ]} weight='medium'>
                     { ReadableNumber(value) }
-                    <ThemedText style={[ styles.unit, valueColor ]} weight='light'> { currencyInfo.symbol }</ThemedText>
+                    <ThemedText style={[ styles.unit, valueColor ]} weight='regular'> { currencyInfo.symbol }</ThemedText>
                 </ThemedText>
             </View>
             
-            <ThemedText style={ styles.date } weight='light'>{ dateFormatted }</ThemedText>
+            <ThemedText style={ styles.date } weight='light'>{ dateFormatted.replaceAll('/', ' / ') }</ThemedText>
         </Pressable>
     );
 }
@@ -95,7 +95,7 @@ export function NewTransaction({ onPress }: NewTransactionProp) {
             onPress={ onPress }
         >
             <AddIcon size={ 20 } backgroundColor={ colors.iconColor } iconColor={ colors.iconBackground } />
-            <ThemedText style={ styles.title } weight='light'>{ languages['addNewTransaction'] }</ThemedText>
+            <ThemedText style={ styles.title } weight='regular'>{ languages['addNewTransaction'] }</ThemedText>
         </Pressable>
     );
 }
@@ -108,7 +108,7 @@ export function TransactionHeader({ title }: TransactionHeaderProp) {
     return (
         <View style={ styles.headerElement }>
             <View style={ styles.divider } />
-            <ThemedText style={ styles.header } weight='regular'>{ title }</ThemedText>
+            <ThemedText style={ styles.header } weight='medium'>{ title }</ThemedText>
             <View style={ styles.divider } />
         </View>
     );
@@ -131,7 +131,7 @@ export function FilterTransactions({ onPress }: NewTransactionProp) {
             onPress={ onPress }
         >
             <FilterIcon size={ 20 } backgroundColor={ colors.iconColor } iconColor={colors.iconBackground} />
-            <ThemedText style={ styles.title } weight='light'>{ languages['displayFilter'] }</ThemedText>
+            <ThemedText style={ styles.title } weight='regular'>{ languages['displayFilter'] }</ThemedText>
         </Pressable>
     );
 }
@@ -153,7 +153,7 @@ export function DisplayTransactions({ onPress }: NewTransactionProp) {
             onPress={ onPress }
         >
             <ListIcon size={ 20 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
-            <ThemedText style={ styles.title } weight='light'>{ languages['displayTransactions'] }</ThemedText>
+            <ThemedText style={ styles.title } weight='regular'>{ languages['displayTransactions'] }</ThemedText>
         </Pressable>
     );
 }
@@ -163,7 +163,7 @@ const createStyles = (colors: ThemeColors) =>
         transactionElement: {
             display: 'flex',
             flexDirection: 'column',
-            rowGap: 0,
+            rowGap: 2,
             alignItems: 'flex-start',
             width: '100%',
             minHeight: 36,
@@ -215,6 +215,7 @@ const createStyles = (colors: ThemeColors) =>
             fontSize: 13,
             height: '100%',
             textAlignVertical: 'bottom',
+            letterSpacing: 0,
         },
 
         unit: {
@@ -231,6 +232,7 @@ const createStyles = (colors: ThemeColors) =>
         date: {
             fontSize: 10,
             color: colors.fontSecondary,
+            letterSpacing: 0,
         },
 
         header: {

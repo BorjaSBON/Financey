@@ -47,11 +47,11 @@ export default function Input({ name, type='text', addButton=false, value='', pl
         <View style={ styles.input }>
             { addButton ?
                 <View style={ styles.header }>
-                    <ThemedText style={ styles.title } weight='regular'>{ name }</ThemedText>
+                    <ThemedText style={ styles.title } weight='medium'>{ name }</ThemedText>
                     <Pressable onPress={ () => router.push('/configuration/data/categories/add') }>
                         <AddIcon size={ 14 } backgroundColor={ colors.iconColor } iconColor={colors.iconBackground} />
                     </Pressable>
-                </View> : <ThemedText style={ styles.title } weight='regular'>{ name }</ThemedText>
+                </View> : <ThemedText style={ styles.title } weight='medium'>{ name }</ThemedText>
             }
 
             { type === 'text' && <ThemedInput type='text' placeholder={ placeholder } value={ value } onChange={ onChangeText } /> }
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     input: {
         display: 'flex',
         flexDirection: 'column',
-        rowGap: 8,
+        rowGap: Values.rowGapSection,
         paddingHorizontal: Values.paddingApp,
         width: '100%',
     },

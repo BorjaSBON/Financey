@@ -49,7 +49,7 @@ export default function AccountInformation() {
             <ScrollView>
                 <View style={ styles.sections }>
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['profile'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['profile'] }</ThemedText>
                         <View style={ styles.elements }>
                             <InformationElement title={ languages['username'] } data={ profile?.username || languages['username'] } />
                             <InformationElement title={ languages['creationDate'] } data={ creationDate } />
@@ -57,7 +57,7 @@ export default function AccountInformation() {
                     </View>
                     
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['actions'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['actions'] }</ThemedText>
                         <View style={ styles.elements }>
                             <InformationElement title={ languages['lastActionDate'] } data={ lastActionDate } />
                             <InformationElement title={ languages['lastAction'] } data={ profile?.last_action || 'actionEmpty' in languages ? languages[profile?.last_action as keyof typeof languages] : languages['actionEmpty']} />
@@ -66,7 +66,7 @@ export default function AccountInformation() {
                     </View>
                     
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='regular'>{ languages['transactions'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['transactions'] }</ThemedText>
                         <View style={ styles.elements }>
                             <InformationElement title={ languages['currentNumberTransactions'] } data={ String(profile?.number_transactions) || '000' } />
                             <InformationElement title={ languages['transactionsAdded'] } data={ String(profile?.number_transactions_added) || '000' } />
@@ -100,7 +100,7 @@ const createStyles = (colors: ThemeColors) =>
         section: {
             display: 'flex',
             flexDirection: 'column',
-            rowGap: 8,
+            rowGap: Values.rowGapSection,
         },
 
         title: {

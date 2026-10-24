@@ -44,15 +44,15 @@ const RootLayout = () => {
 
 	// Load custom fonts
     const [fontsLoaded, error] = useFonts({
-		MontserratThin: require('@fonts/Montserrat-Thin.otf'),
-		MontserratExtraLight: require('@fonts/Montserrat-ExtraLight.otf'),
-		MontserratLight: require('@fonts/Montserrat-Light.otf'),
-		MontserratRegular: require('@fonts/Montserrat-Regular.otf'),
-		MontserratMedium: require('@fonts/Montserrat-Medium.otf'),
-		MontserratSemiBold: require('@fonts/Montserrat-SemiBold.otf'),
-		MontserratBold: require('@fonts/Montserrat-Bold.otf'),
-		MontserratExtraBold: require('@fonts/Montserrat-ExtraBold.otf'),
-		MontserratBlack: require('@fonts/Montserrat-Black.otf'),
+		MontserratThin: require('@fonts/Montserrat-Thin.ttf'),
+		MontserratExtraLight: require('@fonts/Montserrat-ExtraLight.ttf'),
+		MontserratLight: require('@fonts/Montserrat-Light.ttf'),
+		MontserratRegular: require('@fonts/Montserrat-Regular.ttf'),
+		MontserratMedium: require('@fonts/Montserrat-Medium.ttf'),
+		MontserratSemiBold: require('@fonts/Montserrat-SemiBold.ttf'),
+		MontserratBold: require('@fonts/Montserrat-Bold.ttf'),
+		MontserratExtraBold: require('@fonts/Montserrat-ExtraBold.ttf'),
+		MontserratBlack: require('@fonts/Montserrat-Black.ttf'),
 	});
 
 	// Handle font loading and errors

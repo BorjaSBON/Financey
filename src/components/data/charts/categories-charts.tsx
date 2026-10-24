@@ -145,7 +145,7 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
                             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                 <ThemedText style={ styles.data } weight='medium' numberOfLines={ 1 } adjustsFontSizeToFit>
                                     { ReadableNumber(amountPressed) }
-                                    <ThemedText style={ styles.currency }  weight='light'> { currencyInfo.symbol }</ThemedText>
+                                    <ThemedText style={ styles.currency }  weight='regular'> { currencyInfo.symbol }</ThemedText>
                                 </ThemedText>
                                 <ThemedText style={ styles.category } weight='light'>{ categoryPressed }</ThemedText>
                             </View>
@@ -214,6 +214,7 @@ const createStyles = (colors: ThemeColors) =>
         data: {
             fontSize: 14,
             textAlign: 'center',
+            letterSpacing: 0,
         },
 
         currency: {

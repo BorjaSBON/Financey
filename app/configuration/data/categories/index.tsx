@@ -36,14 +36,14 @@ const Categories = () => {
                 <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => { setExpenseActive(true); } } incomeOnPress={ () => { setExpenseActive(false); } } />
                     
                 <View style={ styles.section }>
-                    <ThemedText style={ styles.title } weight='regular'>{ languages['newCategory'] }</ThemedText>
+                    <ThemedText style={ styles.title } weight='medium'>{ languages['newCategory'] }</ThemedText>
                     <View style={ styles.elements }>
                         <NewCategory onPress={ () => { router.push('/configuration/data/categories/add') } } />
                     </View>
                 </View>
 
                 <View style={[ styles.section, styles.transactionsSection ]}>
-                    <ThemedText style={ styles.title } weight='regular'>{ languages['categories'] }</ThemedText>
+                    <ThemedText style={ styles.title } weight='medium'>{ languages['categories'] }</ThemedText>
                     <View style={ styles.elementsScroll }>
                         {   loadingCategories ? 
                             <ActivityIndicator /> : 
@@ -88,7 +88,7 @@ const createStyles = (colors: ThemeColors) =>
 
         section: {
             flexDirection: 'column',
-            rowGap: 8,
+            rowGap: Values.rowGapSection,
         },
 
         transactionsSection: {

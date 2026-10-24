@@ -33,16 +33,18 @@ export default function ModifyElement({ active=false, title='Modify element', ti
 
     return (
         <View style={[ 
-            styles.popup,
+            styles.container,
             active ? { display: 'flex' } : { display: 'none' }
         ]}>
-            <ThemedText style={ styles.message } weight='light'>{ title }</ThemedText>
-            <ThemedInput value={ value } placeholder={ placeholder } type='text' onChange={ onChange } />
-            { error && <ThemedText weight='extraLight' style={ styles.error }>{ error }</ThemedText> }
+            <View style={ styles.popup }>
+                <ThemedText style={ styles.message } weight='regular'>{ title }</ThemedText>
+                <ThemedInput value={ value } placeholder={ placeholder } type='text' onChange={ onChange } />
+                { error && <ThemedText weight='light' style={ styles.error }>{ error }</ThemedText> }
 
-            <View style={ styles.buttons }>
-                <ThemedButton label={ titleButton in languages ? languages[titleButton as keyof typeof languages] : languages['name']} type='default' onPress={ modifyAction } />
-                <ThemedButton label={ languages['cancel'] } type='default' onPress={ cancelAction } />
+                <View style={ styles.buttons }>
+                    <ThemedButton label={ titleButton in languages ? languages[titleButton as keyof typeof languages] : languages['name']} type='default' onPress={ modifyAction } />
+                    <ThemedButton label={ languages['cancel'] } type='default' onPress={ cancelAction } />
+                </View>
             </View>
         </View>
     );
@@ -50,9 +52,16 @@ export default function ModifyElement({ active=false, title='Modify element', ti
 
 const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
+        container: {
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            backgroundColor: colors.popupBackground,
+        },
+
         popup: {
             position: 'absolute',
-            bottom: 90,
+            bottom: 0,
             display: 'flex',
             flexDirection: 'column',
             rowGap: 15,
@@ -83,6 +92,7 @@ const createStyles = (colors: ThemeColors) =>
             flexDirection: 'column',
             rowGap: 10,
             marginHorizontal: 'auto',
+            paddingTop: 5,
         },
         
         error: {
