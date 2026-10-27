@@ -34,6 +34,16 @@
           "image": "./assets/splash_icon.png",
           "imageWidth": 150
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableMinifyInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true,
+            "targetSdkVersion": 36
+          }
+        }
       ]
     ]
   }
