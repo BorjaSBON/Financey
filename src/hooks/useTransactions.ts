@@ -14,6 +14,7 @@ export function useTransactions() {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [transaction, setTransaction] = useState<Transaction>();
     const [lastTransaction, setLastTransaction] = useState<Transaction | null>();
+    const [lastTransactionAdded, setLastTransactionAdded] = useState<Transaction | null>();
 
     // Loading and error states
     const [loadingTransactions, setLoading] = useState(true);
@@ -217,6 +218,30 @@ export function useTransactions() {
         }
     }, []);
 
+    // GET THE LAST TRANSACTION ADDED
+    const getLastTransactionAdded = useCallback(async (): Promise<Transaction | null> => {
+        try {
+            // Set loading and error states
+            setLoading(true);
+            setError(null);
+
+            // Get the last transaction added
+            const data = await transactionsRepository.getLastTransactionAdded();
+            setLastTransactionAdded(data);
+
+            // Return the last transaction added
+            return data;
+        } catch (err) {
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error obtaining the last transaction added');
+            setError(error);
+            throw error;
+        } finally {
+            // Reset loading state
+            setLoading(false);
+        }
+    }, []);
+
     // GET THE AVAILABLE PERIODS
     const getAvailablePeriods = useCallback(async () => {
         try {
@@ -310,6 +335,7 @@ export function useTransactions() {
         transactions,
         transaction,
         lastTransaction,
+        lastTransactionAdded,
 
         loadingTransactions,
         errorTransactions,
@@ -325,6 +351,7 @@ export function useTransactions() {
 
         getBalance,
         getLastTransaction,
+        getLastTransactionAdded,
         getAvailablePeriods,
         getBalanceMonthly,
         getCategoriesAmount,

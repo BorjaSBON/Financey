@@ -17,6 +17,7 @@ export const LanguageEN = {
     reset: 'Reset',
     cancel: 'Cancel',
     enter: 'Enter',
+    filterAction: 'Filter',
 
     date: 'Date',
     dateFormat: 'en-GB',
@@ -26,10 +27,12 @@ export const LanguageEN = {
     
     errorInputs: 'Fill all the inputs',
     errorAmount: 'The amount is not a valid number',
+    errorPositiveAmount: 'The amount must be a positive value',
 
     // HOME
     welcome: 'Welcome',
     lastTransaction: 'Last transaction',
+    lastTransactionAdded: 'Last transaction added',
 
     // LOGIN
     quesionWelcome: 'What would you like us to call you?',

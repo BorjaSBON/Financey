@@ -49,21 +49,23 @@ const AccountInformation = () => {
                         </View>
                     </View>
                     
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='medium'>{ languages['accounts'] }</ThemedText>
-                        <View style={ styles.elements }>
-                            {
-                                profiles.map((profile) => ( 
-                                    profile.active === 1 || 
-                                    <AccountElement key={profile.id.toString() } username={ profile?.username || languages['username'] } last_action_date={ profile?.last_action_date || 'DD/MM/YYYY' } active={ profile?.active || 0 } onPress={ async () => {
-                                        await logout();
-                                        await loginById(profile.id);
-                                        router.push('/');
-                                    } } />
-                                )) 
-                            }
+                    { profiles.length > 1 &&
+                        <View style={ styles.section }>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['accounts'] }</ThemedText>
+                            <View style={ styles.elements }>
+                                {
+                                    profiles.map((profile) => ( 
+                                        profile.active === 1 || 
+                                        <AccountElement key={profile.id.toString() } username={ profile?.username || languages['username'] } last_action_date={ profile?.last_action_date || 'DD/MM/YYYY' } active={ profile?.active || 0 } onPress={ async () => {
+                                            await logout();
+                                            await loginById(profile.id);
+                                            router.push('/');
+                                        } } />
+                                    )) 
+                                }
+                            </View>
                         </View>
-                    </View>
+                    }
                 </View>
             </ScrollView>
         </View>

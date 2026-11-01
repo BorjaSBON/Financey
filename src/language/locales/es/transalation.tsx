@@ -17,6 +17,7 @@ export const LanguageES = {
     reset: 'Resetear',
     cancel: 'Cancelar',
     enter: 'Entrar',
+    filterAction: 'Filtrar',
 
     date: 'Fecha',
     dateFormat: 'es-ES',
@@ -26,10 +27,12 @@ export const LanguageES = {
     
     errorInputs: 'Rellene todos los campos',
     errorAmount: 'La cantidad debe ser un número válido',
+    errorPositiveAmount: 'La cantidad debe ser un valor positivo',
 
     // HOME
     welcome: '¡Bienvenido',
     lastTransaction: 'Última transacción',
+    lastTransactionAdded: 'Última transacción añadida',
 
     // LOGIN
     quesionWelcome: '¿Cómo quieres que te llamemos?',

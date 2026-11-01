@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { router, useNavigation } from 'expo-router';
+import { usePreventRemove, useRouter } from 'expo-router';
 
 import { Values } from '@constants/values';
 
@@ -31,16 +31,17 @@ const ConfigurationScreen = () => {
     const { languages } = useLanguage();
 
     // Change the router previous page
-    const navigation = useNavigation();
+    const router = useRouter();
+    const [preventRemoval, setPreventRemoval] = useState(true);
 
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('beforeRemove', (event) => {
-            event.preventDefault();
-            router.push('/');
-        });
-
-        return unsubscribe;
-    }, [navigation]);
+    const disablePrevention = usePreventRemove(
+        preventRemoval,
+        () => {
+            setPreventRemoval(false);
+            disablePrevention();
+            router.replace('/home');
+        }
+    );
 
     // Database
     const { profile, modifyProfileUsername, removeProfile, loadingProfiles } = useProfiles();

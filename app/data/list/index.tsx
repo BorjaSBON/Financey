@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, View, FlatList, ScrollView, ActivityIndicator } from 'react-native';
-import { router, useNavigation } from 'expo-router';
+import { usePreventRemove, useRouter } from 'expo-router';
 
 import { Values } from '@constants/values';
 
@@ -12,6 +12,7 @@ import { ThemedText } from '@ui/themed-text';
 import { ThemedInput } from '@ui/themed-input';
 import { ThemedSelectInput } from '@ui/themed-select-input';
 import { ThemedDateInput } from '@ui/themed-date-input';
+import { ThemedButton } from '@ui/themed-button';
 
 import BalanceResume from '@components/data/balance-resume';
 import { TransactionElement, NewTransaction, TransactionHeader, FilterTransactions, DisplayTransactions } from '@components/data/list-element';
@@ -28,25 +29,31 @@ const DataList = () => {
     // Traductions
     const { languages } = useLanguage();
 
+    // Content manager
+    const [displayFilter, setDisplayFilter] = useState<boolean>(false);
+
     // Change the router previous page
-    const navigation = useNavigation();
+    const router = useRouter();
+    const [preventRemoval, setPreventRemoval] = useState(true);
 
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('beforeRemove', (event) => {
-            event.preventDefault();
+    const disablePrevention = usePreventRemove(
+        preventRemoval,
+        () => {
+            if (displayFilter === true) {
+                setDisplayFilter(false);
+                return;
+            }
+            setPreventRemoval(false);
+            disablePrevention();
             router.push('/home');
-        });
-
-        return unsubscribe;
-    }, [navigation]);
+        }
+    );
 
     // Database
     const { transactions, getTransactions, loadingTransactions } = useTransactions();
     const { categories } = useCategories();
 
     // Filters
-    const [displayFilter, setDisplayFilter] = useState<boolean>(false);
-
     const [type, setType] = useState<'income' | 'expense' | ''>('');
     const [categoryId, setCategoryId] = useState('');
     const [orderBy, setOrderBy] = useState<'date' | 'amount'>('date');
@@ -255,6 +262,10 @@ const DataList = () => {
                                 <ThemedDateInput value={ dateMax } minimumDate={ dateMin } onChange={ setDateMax } />
                             </View>
                         </View>
+
+                        <View style={ styles.button }>
+                            <ThemedButton label={ languages['filterAction'] } type='default' onPress={ () => { setDisplayFilter(false); } } />
+                        </View>
                     </View>
                 </ScrollView>
             }
@@ -319,6 +330,11 @@ const createStyles = (colors: ThemeColors) =>
             flexDirection: 'row',
             columnGap: '8%',
             width: '48%',
+        },
+
+        button: {
+            marginHorizontal: 'auto',
+            marginTop: 10,
         },
     }
 );

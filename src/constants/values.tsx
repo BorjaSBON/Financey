@@ -5,5 +5,5 @@ export const Values = {
     topIfHeader: 90,
     topNotHeader: 60,
 
-    rowGapSection: 6,
+    rowGapSection: 8,
 } as const;

@@ -92,6 +92,7 @@ const DataAdd = () => {
 
     // Add button
     async function addTransaction() {
+        // Check if the inputs are filled
         if (!amount || !categorySelect || !dateStart) {
             setError(languages['errorInputs']);
             return;
@@ -99,12 +100,20 @@ const DataAdd = () => {
 
         setError(null);
 
+        // Check if the amount value is a number
         if (isNaN(Number(amount.replace(',', '.')))) {
             setError(languages['errorAmount']);
             return;
         }
 
-        const amountInCents = Math.round(Number(amount) * 100);
+        // Check if the amount value is positive
+        if (Number(amount.replace(',', '.')) <= 0) {
+            setError(languages['errorPositiveAmount']);
+            return;
+        }
+
+        // Convert the amount value to a valid number
+        const amountInCents = Math.round(Number(amount.replace(',', '.')) * 100);
 
         let currentDate = new Date(dateStart);
         if (repeatedSelect !== 'no' && dateEnd) {
@@ -169,7 +178,7 @@ const DataAdd = () => {
             </View>
 
             <View style={ styles.inputs }>
-                <Input name={ languages['category'] } type='select' addButton selectData={ categories_formatted } selectValue={ categorySelect } onSelect={ (item) => { setCategorySelect(item.value); }} />
+                <Input name={ languages['category'] } type='select' addButton params={{ categoryType: expenseActive ? 'expense' : 'income' }} selectData={ categories_formatted } selectValue={ categorySelect } onSelect={ (item) => { setCategorySelect(item.value); }} />
                 <Input name={ languages['date'] } type='date' dateValue={ dateStart } onChange={ setDateStart } />
                 <Input name={ languages['frequency'] } type='select' selectData={ repeat_options } selectValue={ repeatedSelect } onSelect={ (item) => { setRepeatedSelect(item.value); }} />
                 { repeatedSelect !== 'no' && <Input name={ languages['endDate'] } type='date' dateValue={ dateEnd } minimumDate={ dateStart } onChange={ setDateEnd } /> }

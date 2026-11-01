@@ -32,7 +32,7 @@ const HomeScreen = () => {
     const { languages } = useLanguage();
 
     // Database
-    const { lastTransaction, getLastTransaction, loadingTransactions } = useTransactions();
+    const { lastTransactionAdded, getLastTransactionAdded, loadingTransactions } = useTransactions();
     const { profile, loadingProfiles } = useProfiles();
 
     // Current date
@@ -57,7 +57,7 @@ const HomeScreen = () => {
             setLastActionDate(formatDate(profile.last_action_date));
 
             const loadTransaction = async () => {
-                const transaction = await getLastTransaction();
+                const transaction = await getLastTransactionAdded();
                 
                 if (transaction) {
                     setIdLastTransaction(transaction.id);
@@ -83,7 +83,7 @@ const HomeScreen = () => {
 
     // Check if the profile is loaded
     if (loadingTransactions || loadingProfiles) {
-        return <ActivityIndicator />;
+        return <View style={ styles.container }><ActivityIndicator /></View>;
     }
 
     return (
@@ -125,7 +125,7 @@ const HomeScreen = () => {
                             </Pressable>
 
                             <Pressable onPress={ () => router.push('/data/add') }>
-                                <AddIcon backgroundColor={ colors.iconColor } iconColor={colors.iconBackground} />
+                                <AddIcon size={ 44 } backgroundColor={ colors.iconColor } iconColor={colors.iconBackground} />
                             </Pressable>
 
                             <Pressable onPress={ () => router.push('/configuration/data/categories') }>
@@ -139,9 +139,9 @@ const HomeScreen = () => {
                     </View>
 
                     <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='medium'>{ languages['lastTransaction'] }</ThemedText>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['lastTransactionAdded'] }</ThemedText>
                         <View style={ styles.elements }>
-                            { lastTransaction == null ? <View style={ styles.emptyElement } /> :
+                            { lastTransactionAdded == null ? <View style={ styles.emptyElement } /> :
                                 <TransactionElement type={ typeLastTransaction } category={ categoryLastTransaction } value={ amountLastTransaction } date={ String(dateLastTransaction) } onPress={ () => { router.push({
                                     pathname: '/data/modify/[id]',
                                     params: {
@@ -224,11 +224,12 @@ const createStyles = (colors: ThemeColors) =>
             flexDirection: 'row',
             justifyContent: 'space-evenly',
             paddingHorizontal: Values.paddingElement,
+            paddingVertical: 10,
             alignItems: 'center',
             backgroundColor: colors.backgroundSecondary,
             borderRadius: 10,
             overflow: 'hidden',
-            height: 50,
+            minHeight: 50,
         },
 
         lastActionElement: {

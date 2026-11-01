@@ -336,6 +336,39 @@ export async function getLastTransaction(): Promise<Transaction | null> {
     return null;
 }
 
+// Get the last transaction
+export async function getLastTransactionAdded(): Promise<Transaction | null> {
+    const db = await dbPromise;
+
+    const row = await db.getFirstAsync(
+        `
+            SELECT
+                t.id,
+                t.type,
+                t.amount,
+                t.profile_id,
+                t.category_id,
+                c.name AS category_name,
+                t.date,
+                t.created_at,
+                t.updated_at
+            FROM transactions t
+            INNER JOIN categories c
+                ON c.id = t.category_id
+            INNER JOIN profiles p
+                ON p.id = t.profile_id
+            WHERE p.active = 1
+            ORDER BY t.id DESC
+        `,
+    );
+
+    if (row != null) {
+        return mapTransaction(row);
+    }
+
+    return null;
+}
+
 // Get the available period
 export async function getAvailablePeriods() {
     const db = await dbPromise;
@@ -470,6 +503,7 @@ export const transactionsRepository = {
 
     getBalance,
     getLastTransaction,
+    getLastTransactionAdded,
     getAvailablePeriods,
     getBalanceMonthly,
     getCategoriesAmount,

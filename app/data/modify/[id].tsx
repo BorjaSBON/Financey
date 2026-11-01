@@ -88,7 +88,7 @@ const DataModify = () => {
 
     // MODIFY TRANSACTION ACTION
     async function modidyTransactionAction() {
-        // Check if the values are valid
+        // Check if the inputs are filled
         if (!amount || !selectValue || !date) {
             setError(languages['errorInputs']);
             return;
@@ -96,13 +96,20 @@ const DataModify = () => {
 
         setError(null);
 
+        // Check if the amount value is a number
         if (isNaN(Number(amount.replace(',', '.')))) {
             setError(languages['errorAmount']);
             return;
         }
 
+        // Check if the amount value is positive
+        if (Number(amount.replace(',', '.')) <= 0) {
+            setError(languages['errorPositiveAmount']);
+            return;
+        }
+
         // Convert the amount value to a valid number
-        const amountInCents = Math.round(Number(amount) * 100);
+        const amountInCents = Math.round(Number(amount.replace(',', '.')) * 100);
 
         // Modify transaction
         await modifyTransaction({
@@ -157,7 +164,7 @@ const DataModify = () => {
                     </View>
 
                     <View style={ styles.inputs }>
-                        <Input name={ languages['category'] } type='select' addButton selectData={ categories_formatted } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
+                        <Input name={ languages['category'] } type='select' addButton params={{ categoryType: expenseActive ? 'expense' : 'income' }} selectData={ categories_formatted } selectValue={ selectValue } onSelect={ (item) => { setSelectValue(item.value); }} />
                         <Input name={ languages['date'] } type='date' dateValue={ date } onChange={ setDate } />
                     </View>
 

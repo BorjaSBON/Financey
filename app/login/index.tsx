@@ -63,7 +63,7 @@ const LoginScreen = () => {
                 await createCategory({ name: 'General', type: 'income' });
 
                 // Redirect
-                router.push('/home');
+                router.replace('/home');
             } catch (err) {
                 setError(languages['errorUsernameUnique']);
             }

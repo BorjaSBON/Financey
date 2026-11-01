@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { router, useNavigation } from 'expo-router';
 
 import { Values } from '@constants/values';
 
@@ -74,21 +73,6 @@ const DataCharts = () => {
         setYear(newYear);
         setMonth(period?.months[0] ?? null);
     };
-
-    // Go back to the previous page
-    const navigation = useNavigation();
-
-    useEffect(() => {
-        const unsubscribe = navigation.addListener(
-            'beforeRemove',
-            event => {
-                event.preventDefault();
-                router.push('/home');
-            }
-        );
-
-        return unsubscribe;
-    }, [navigation]);
 
     if (year === null || month === null || !selectedPeriod || availablePeriods.length === 0) {
         return (

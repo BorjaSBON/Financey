@@ -49,6 +49,7 @@ export interface ThemeColors {
     chartRulesColor: string;
     chartPositiveRange: string;
     chartNegativeRange: string;
+    chartLineBarColor: string;
 }
 
 export const LightColors: ThemeColors = {
@@ -102,6 +103,7 @@ export const LightColors: ThemeColors = {
     chartRulesColor: '#0F172A0D',
     chartPositiveRange: '#658109',
     chartNegativeRange: '#6D1102',
+    chartLineBarColor: '#0F172A',
 } as const;
 
 export const DarkColors: ThemeColors = {
@@ -155,6 +157,7 @@ export const DarkColors: ThemeColors = {
     chartRulesColor: '#FFFFFF0D',
     chartPositiveRange: '#658109',
     chartNegativeRange: '#6D1102',
+    chartLineBarColor: '#FFFFFF',
 } as const;
 
 export const Themes = {

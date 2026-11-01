@@ -22,6 +22,7 @@ interface Props {
     name: string;
     type?: 'text' | 'numeric' | 'date' | 'select';
     addButton?: boolean;
+    params?: {};
 
     // Text and numeric
     value?: string;
@@ -39,7 +40,7 @@ interface Props {
     onSelect?: (item: DropdownItem) => void;
 }
 
-export default function Input({ name, type='text', addButton=false, value='', placeholder='', onChangeText=()=>{}, dateValue=null, minimumDate=null, onChange=()=>{}, selectData=[], selectValue='', onSelect=()=>{} }: Props) {
+export default function Input({ name, type='text', addButton=false, params={}, value='', placeholder='', onChangeText=()=>{}, dateValue=null, minimumDate=null, onChange=()=>{}, selectData=[], selectValue='', onSelect=()=>{} }: Props) {
     // Theme
     const { colors } = useTheme();
 
@@ -48,7 +49,7 @@ export default function Input({ name, type='text', addButton=false, value='', pl
             { addButton ?
                 <View style={ styles.header }>
                     <ThemedText style={ styles.title } weight='medium'>{ name }</ThemedText>
-                    <Pressable onPress={ () => router.push('/configuration/data/categories/add') }>
+                    <Pressable onPress={ () => router.push({ pathname: '/configuration/data/categories/add', params: params, }) }>
                         <AddIcon size={ 14 } backgroundColor={ colors.iconColor } iconColor={colors.iconBackground} />
                     </Pressable>
                 </View> : <ThemedText style={ styles.title } weight='medium'>{ name }</ThemedText>

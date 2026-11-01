@@ -20,7 +20,7 @@ interface Props {
     to?: string,
 }
 
-export default function BalanceResume({ squareEnable=false, from='0000-01-01T00:00:00.000Z', to='9999-12-31T23:59:59.999Z' }: Props) {
+export default function BalanceResume({ squareEnable=false, from='0000-01-01T00:00:00.000Z', to='' }: Props) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
@@ -40,6 +40,11 @@ export default function BalanceResume({ squareEnable=false, from='0000-01-01T00:
 
     useEffect(() => {
         const loadBalance = async () => {
+            if (to === '') {
+                const now = new Date();
+                to = new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0, 0).toISOString();
+            }
+
             const balance = await getBalance(from, to);
 
             setIncome(balance.income);

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 
 import { Values } from '@constants/values';
 
@@ -29,8 +29,11 @@ const DataAdd = () => {
     const { createCategory, loadingCategories } = useCategories();
     const { modifyProfileLastAction, loadingProfiles } = useProfiles();
 
+    // Type active
+    const { categoryType } = useLocalSearchParams<{ categoryType: string }>();
+
     // Active type
-    const [expenseActive, setExpenseActive] = useState(true);
+    const [expenseActive, setExpenseActive] = useState(categoryType === 'income' ? false : true);
 
     const expenseActivation = () => {
         setExpenseActive(true);
