@@ -29,45 +29,47 @@ const AccountInformation = () => {
     }
 
     return (
-        <View style={ styles.container }>
-            <ScrollView>
-                <View style={ styles.sections }>
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='medium'>{ languages['newAccount'] }</ThemedText>
-                        <View style={ styles.elements }>
-                            <NewAccount onPress={ async () => {
-                                await logout();
-                                router.push('/login');
-                            } } />
-                        </View>
-                    </View>
-
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='medium'>{ languages['activeAccount'] }</ThemedText>
-                        <View style={ styles.elements }>
-                            <AccountElement username={ profile?.username || languages['username'] } last_action_date={ profile?.last_action_date || 'DD/MM/YYYY' } active={ profile?.active || 0 } />
-                        </View>
-                    </View>
-                    
-                    { profiles.length > 1 &&
+        <View style={{ height: '100%', width: '100%' }}>
+            <View style={ styles.container }>
+                <ScrollView>
+                    <View style={ styles.sections }>
                         <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='medium'>{ languages['accounts'] }</ThemedText>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['newAccount'] }</ThemedText>
                             <View style={ styles.elements }>
-                                {
-                                    profiles.map((profile) => ( 
-                                        profile.active === 1 || 
-                                        <AccountElement key={profile.id.toString() } username={ profile?.username || languages['username'] } last_action_date={ profile?.last_action_date || 'DD/MM/YYYY' } active={ profile?.active || 0 } onPress={ async () => {
-                                            await logout();
-                                            await loginById(profile.id);
-                                            router.push('/');
-                                        } } />
-                                    )) 
-                                }
+                                <NewAccount onPress={ async () => {
+                                    await logout();
+                                    router.push('/login');
+                                } } />
                             </View>
                         </View>
-                    }
-                </View>
-            </ScrollView>
+
+                        <View style={ styles.section }>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['activeAccount'] }</ThemedText>
+                            <View style={ styles.elements }>
+                                <AccountElement username={ profile?.username || languages['username'] } last_action_date={ profile?.last_action_date || 'DD/MM/YYYY' } active={ profile?.active || 0 } />
+                            </View>
+                        </View>
+                        
+                        { profiles.length > 1 &&
+                            <View style={ styles.section }>
+                                <ThemedText style={ styles.title } weight='medium'>{ languages['accounts'] }</ThemedText>
+                                <View style={ styles.elements }>
+                                    {
+                                        profiles.map((profile) => ( 
+                                            profile.active === 1 || 
+                                            <AccountElement key={profile.id.toString() } username={ profile?.username || languages['username'] } last_action_date={ profile?.last_action_date || 'DD/MM/YYYY' } active={ profile?.active || 0 } onPress={ async () => {
+                                                await logout();
+                                                await loginById(profile.id);
+                                                router.push('/');
+                                            } } />
+                                        )) 
+                                    }
+                                </View>
+                            </View>
+                        }
+                    </View>
+                </ScrollView>
+            </View>
         </View>
     );
 }
@@ -78,9 +80,7 @@ const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         container: {
             flex: 1,
-            top: Values.topIfHeader,
             width: '100%',
-            paddingTop: 5,
         },
         
         sections: {
@@ -88,7 +88,6 @@ const createStyles = (colors: ThemeColors) =>
             flexDirection: 'column',
             rowGap: 15,
             paddingHorizontal: Values.paddingApp,
-            paddingBottom: 125,
         },
 
         section: {

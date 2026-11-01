@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, View, TextInput, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Values } from '@constants/values';
 
@@ -157,40 +158,42 @@ const DataAdd = () => {
     };
 
     if (loadingCategories || loadingProfiles) {
-        return <ActivityIndicator />;
+        return <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}><ActivityIndicator /></SafeAreaView>;
     }
 
     return (
-        <View style={ styles.container }>
-            <TypeButtons expenseActive={ expenseActive } expenseOnPress={() => { setExpenseActive(true); }} incomeOnPress={() => { setExpenseActive(false); }} />
+        <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+            <View style={ styles.container }>
+                <TypeButtons expenseActive={ expenseActive } expenseOnPress={() => { setExpenseActive(true); }} incomeOnPress={() => { setExpenseActive(false); }} />
 
-            <View style={ styles.amountInput }>
-                <TextInput
-                    style={ styles.amountValue }
-                    value={ amount }
-                    placeholder='0000.00'
-                    onChangeText={ setAmount }
-                    inputMode='decimal'
-                    autoComplete='off'
-                    placeholderTextColor={ colors.fontSecondary }
-                />
-                <ThemedText style={ styles.amountUnit } weight='regular'>{ currencyInfo.symbol }</ThemedText>
+                <View style={ styles.amountInput }>
+                    <TextInput
+                        style={ styles.amountValue }
+                        value={ amount }
+                        placeholder='0000.00'
+                        onChangeText={ setAmount }
+                        inputMode='decimal'
+                        autoComplete='off'
+                        placeholderTextColor={ colors.fontSecondary }
+                    />
+                    <ThemedText style={ styles.amountUnit } weight='regular'>{ currencyInfo.symbol }</ThemedText>
+                </View>
+
+                <View style={ styles.inputs }>
+                    <Input name={ languages['category'] } type='select' addButton params={{ categoryType: expenseActive ? 'expense' : 'income' }} selectData={ categories_formatted } selectValue={ categorySelect } onSelect={ (item) => { setCategorySelect(item.value); }} />
+                    <Input name={ languages['date'] } type='date' dateValue={ dateStart } onChange={ setDateStart } />
+                    <Input name={ languages['frequency'] } type='select' selectData={ repeat_options } selectValue={ repeatedSelect } onSelect={ (item) => { setRepeatedSelect(item.value); }} />
+                    { repeatedSelect !== 'no' && <Input name={ languages['endDate'] } type='date' dateValue={ dateEnd } minimumDate={ dateStart } onChange={ setDateEnd } /> }
+                    
+                </View>
+
+                { error && <ThemedText weight='light' style={ styles.error }>{ error }</ThemedText> }
+
+                <View style={ styles.add }>
+                    <ThemedButton label={ languages['add'] } type='default' onPress={ addTransaction } />
+                </View>
             </View>
-
-            <View style={ styles.inputs }>
-                <Input name={ languages['category'] } type='select' addButton params={{ categoryType: expenseActive ? 'expense' : 'income' }} selectData={ categories_formatted } selectValue={ categorySelect } onSelect={ (item) => { setCategorySelect(item.value); }} />
-                <Input name={ languages['date'] } type='date' dateValue={ dateStart } onChange={ setDateStart } />
-                <Input name={ languages['frequency'] } type='select' selectData={ repeat_options } selectValue={ repeatedSelect } onSelect={ (item) => { setRepeatedSelect(item.value); }} />
-                { repeatedSelect !== 'no' && <Input name={ languages['endDate'] } type='date' dateValue={ dateEnd } minimumDate={ dateStart } onChange={ setDateEnd } /> }
-                
-            </View>
-
-            { error && <ThemedText weight='light' style={ styles.error }>{ error }</ThemedText> }
-
-            <View style={ styles.add }>
-                <ThemedButton label={ languages['add'] } type='default' onPress={ addTransaction } />
-            </View>
-        </View>
+        </SafeAreaView>
     );
 };
 
@@ -200,9 +203,9 @@ const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         container: {
             flex: 1,
-            top: Values.topNotHeader,
+            top: Values.topHeader,
             width: '100%',
-            paddingBottom: 125,
+            paddingBottom: Values.paddingBottom,
         },
 
         amountInput: {

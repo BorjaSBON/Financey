@@ -146,9 +146,7 @@ const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         container: {
             flex: 1,
-            top: Values.topIfHeader,
             width: '100%',
-            paddingBottom: 125,
         },
 
         amountInput: {

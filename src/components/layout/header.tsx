@@ -37,7 +37,6 @@ export default function Header({ title }: Props) {
 const styles = StyleSheet.create({
     header: {
         position: 'absolute',
-        top: 50,
         display: 'flex',
         flexDirection: 'row',
         width: '100%',

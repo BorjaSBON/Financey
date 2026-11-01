@@ -45,37 +45,39 @@ export default function AccountInformation() {
     }
 
     return (
-        <View style={ styles.container }>
-            <ScrollView>
-                <View style={ styles.sections }>
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='medium'>{ languages['profile'] }</ThemedText>
-                        <View style={ styles.elements }>
-                            <InformationElement title={ languages['username'] } data={ profile?.username || languages['username'] } />
-                            <InformationElement title={ languages['creationDate'] } data={ creationDate } />
+        <View style={{ height: '100%', width: '100%' }}>
+            <View style={ styles.container }>
+                <ScrollView>
+                    <View style={ styles.sections }>
+                        <View style={ styles.section }>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['profile'] }</ThemedText>
+                            <View style={ styles.elements }>
+                                <InformationElement title={ languages['username'] } data={ profile?.username || languages['username'] } />
+                                <InformationElement title={ languages['creationDate'] } data={ creationDate } />
+                            </View>
+                        </View>
+                        
+                        <View style={ styles.section }>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['actions'] }</ThemedText>
+                            <View style={ styles.elements }>
+                                <InformationElement title={ languages['lastActionDate'] } data={ lastActionDate } />
+                                <InformationElement title={ languages['lastAction'] } data={ profile?.last_action || 'actionEmpty' in languages ? languages[profile?.last_action as keyof typeof languages] : languages['actionEmpty']} />
+                                <InformationElement title={ languages['numberActions'] } data={ String(profile?.number_actions) || '000' } />
+                            </View>
+                        </View>
+                        
+                        <View style={ styles.section }>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['transactions'] }</ThemedText>
+                            <View style={ styles.elements }>
+                                <InformationElement title={ languages['currentNumberTransactions'] } data={ String(profile?.number_transactions) || '000' } />
+                                <InformationElement title={ languages['transactionsAdded'] } data={ String(profile?.number_transactions_added) || '000' } />
+                                <InformationElement title={ languages['transactionsModified'] } data={ String(profile?.number_transactions_modified) || '000' } />
+                                <InformationElement title={ languages['transactionsDeleted'] } data={ String(profile?.number_transactions_deleted) || '000' } />
+                            </View>
                         </View>
                     </View>
-                    
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='medium'>{ languages['actions'] }</ThemedText>
-                        <View style={ styles.elements }>
-                            <InformationElement title={ languages['lastActionDate'] } data={ lastActionDate } />
-                            <InformationElement title={ languages['lastAction'] } data={ profile?.last_action || 'actionEmpty' in languages ? languages[profile?.last_action as keyof typeof languages] : languages['actionEmpty']} />
-                            <InformationElement title={ languages['numberActions'] } data={ String(profile?.number_actions) || '000' } />
-                        </View>
-                    </View>
-                    
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='medium'>{ languages['transactions'] }</ThemedText>
-                        <View style={ styles.elements }>
-                            <InformationElement title={ languages['currentNumberTransactions'] } data={ String(profile?.number_transactions) || '000' } />
-                            <InformationElement title={ languages['transactionsAdded'] } data={ String(profile?.number_transactions_added) || '000' } />
-                            <InformationElement title={ languages['transactionsModified'] } data={ String(profile?.number_transactions_modified) || '000' } />
-                            <InformationElement title={ languages['transactionsDeleted'] } data={ String(profile?.number_transactions_deleted) || '000' } />
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </View>
         </View>
     );
 }
@@ -84,9 +86,7 @@ const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         container: {
             flex: 1,
-            top: Values.topIfHeader,
             width: '100%',
-            paddingTop: 5,
         },
 
         sections: {

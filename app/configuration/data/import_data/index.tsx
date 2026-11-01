@@ -20,13 +20,15 @@ const Categories = () => {
     const [selectFile, setSelectFile] = useState('');
 
     return (
-        <View style={ styles.container }>
-            <ScrollView>
-                <Input name='Category' type='text' value={ selectFile } placeholder='Select file' onChangeText={ setSelectFile } />
-                <View style={ styles.import }>
-                    <ThemedButton label='Import' type='default' />
-                </View>
-            </ScrollView>
+        <View style={{ height: '100%', width: '100%' }}>
+            <View style={ styles.container }>
+                <ScrollView>
+                    <Input name='Category' type='text' value={ selectFile } placeholder='Select file' onChangeText={ setSelectFile } />
+                    <View style={ styles.import }>
+                        <ThemedButton label='Import' type='default' />
+                    </View>
+                </ScrollView>
+            </View>
         </View>
     );
 };
@@ -37,9 +39,7 @@ const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         container: {
             flex: 1,
-            top: Values.topIfHeader,
             width: '100%',
-            marginTop: 10,
         },
             
         import: {

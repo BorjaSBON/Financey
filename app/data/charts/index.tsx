@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Values } from '@constants/values';
 
@@ -76,38 +77,42 @@ const DataCharts = () => {
 
     if (year === null || month === null || !selectedPeriod || availablePeriods.length === 0) {
         return (
-            <View style={styles.container}>
-                <BalanceResume squareEnable={ false } />
-                <ThemedText style={ styles.noData } weight='regular'>{ languages['noTransactions'] }</ThemedText>
-            </View>
+            <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+                <View style={styles.container}>
+                    <BalanceResume squareEnable={ false } />
+                    <ThemedText style={ styles.noData } weight='regular'>{ languages['noTransactions'] }</ThemedText>
+                </View>
+            </SafeAreaView>
         )
     };
 
     return (
-        <View style={styles.container}>
-            <ScrollView>
-                <View style={ styles.sections }>
-                    <View>
-                        <YearsPeriod range={ availablePeriods.map(period => period.year) } onChange={ handleYearChange } />
-                        <BalanceResume squareEnable={ false } from={new Date(Date.UTC(year, 0, 1)).toISOString() } to={ new Date(Date.UTC(year+1, 0, 1)).toISOString() } />
-                        <MonthlyBarChart year={year} />
-                    </View>
-
-                    <View>
+        <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+            <View style={styles.container}>
+                <ScrollView>
+                    <View style={ styles.sections }>
                         <View>
-                            <YearsPeriod range={ selectedPeriod.months } months onChange={ setMonth } />
-                            <BalanceResume squareEnable={ false } from={ new Date(Date.UTC(year, month-1, 1)).toISOString() } to={ new Date(Date.UTC(year, month, 1)).toISOString() } />
-                            <BalancePieChart year={ year } month={ month } />
+                            <YearsPeriod range={ availablePeriods.map(period => period.year) } onChange={ handleYearChange } />
+                            <BalanceResume squareEnable={ false } from={new Date(Date.UTC(year, 0, 1)).toISOString() } to={ new Date(Date.UTC(year+1, 0, 1)).toISOString() } />
+                            <MonthlyBarChart year={year} />
                         </View>
 
                         <View>
-                            <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => setExpenseActive(true) } incomeOnPress={ () => setExpenseActive(false) } />
-                            <CategoriesCharts year={ year } month={ month } type={ expenseActive ? 'expense' : 'income' } />
+                            <View>
+                                <YearsPeriod range={ selectedPeriod.months } months onChange={ setMonth } />
+                                <BalanceResume squareEnable={ false } from={ new Date(Date.UTC(year, month-1, 1)).toISOString() } to={ new Date(Date.UTC(year, month, 1)).toISOString() } />
+                                <BalancePieChart year={ year } month={ month } />
+                            </View>
+
+                            <View>
+                                <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => setExpenseActive(true) } incomeOnPress={ () => setExpenseActive(false) } />
+                                <CategoriesCharts year={ year } month={ month } type={ expenseActive ? 'expense' : 'income' } />
+                            </View>
                         </View>
                     </View>
-                </View>
-            </ScrollView>
-        </View>
+                </ScrollView>
+            </View>
+        </SafeAreaView>
     );
 };
 
@@ -117,12 +122,12 @@ const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         container: {
             flex: 1,
-            top: Values.topNotHeader,
+            top: Values.topHeader,
             width: '100%',
         },
 
         sections: {
-            paddingBottom: 75,
+            paddingBottom: Values.paddingBottom,
         },
 
         noData: {

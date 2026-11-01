@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, View, FlatList, ScrollView, ActivityIndicator } from 'react-native';
 import { usePreventRemove, useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Values } from '@constants/values';
 
@@ -169,107 +170,109 @@ const DataList = () => {
     }, [type, categoryId, order, amountMin, amountMax, dateMin, dateMax]);
 
     return (
-        <View style={ styles.container }>
-            <BalanceResume squareEnable={ false } />
+        <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+            <View style={ styles.container }>
+                <BalanceResume squareEnable={ false } />
 
-            { displayFilter === false ? 
-                <View style={ styles.sections }>
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='medium'>{ languages['filter'] }</ThemedText>
-                        <View style={ styles.elements }>
-                            <FilterTransactions onPress={ ()=>{ setDisplayFilter(true); }} />
-                        </View>
-                    </View>
-
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='medium'>{ languages['newTransaction'] }</ThemedText>
-                        <View style={ styles.elements }>
-                            <NewTransaction onPress={ () => { router.push('/data/add') }} />
-                        </View>
-                    </View>
-                    
-                    <View style={[ styles.section, styles.transactionsSection ]}>
-                        <ThemedText style={ styles.title } weight='medium'>{ languages['transactions'] }</ThemedText>
-                        <View style={ styles.elementsScroll }>
-                            {   loadingTransactions ? 
-                                <ActivityIndicator/> :
-                                <FlatList
-                                    data={ orderBy == 'date' ? addMonthHeaders(transactions) : transactions }
-                                    keyExtractor={ (item) => item.id.toString() }
-                                    renderItem={({ item }) => {
-                                        if (item.type === 'header') {
-                                            return (<TransactionHeader title={ item.title } />);
-                                        }
-
-                                        return (<TransactionElement type={ item.type } category={ item.categoryName } value={ item.amount } date={ item.date } onPress={ () =>
-                                            router.push({
-                                                pathname: '/data/modify/[id]',
-                                                params: { id: item.id.toString() },
-                                            })
-                                        } />);
-                                    }}
-                                />
-                            }
-                        </View>
-                    </View>
-                </View>
-                :
-                <ScrollView>
+                { displayFilter === false ? 
                     <View style={ styles.sections }>
                         <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='medium'>{ languages['transactions'] }</ThemedText>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['filter'] }</ThemedText>
                             <View style={ styles.elements }>
-                                <DisplayTransactions onPress={ ()=>{ setDisplayFilter(false); } } />
+                                <FilterTransactions onPress={ ()=>{ setDisplayFilter(true); }} />
                             </View>
                         </View>
 
                         <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='medium'>{ languages['orderBy'] }</ThemedText>
-                            <ThemedSelectInput data={ dropDownListOrder } value={ order } onSelect={ (item) => { setOrder(item.value); } } />
-                        </View>
-
-                        <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='medium'>{ languages['type'] }</ThemedText>
-                            <ThemedSelectInput data={ dropDownListType } value={ type } onSelect={ (item) => { 
-                                setType(item.value as "" | "income" | "expense");
-                                setCategoryId('');
-                            }} />
-                        </View>
-
-                        <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='medium'>{ languages['category'] }</ThemedText>
-                            <ThemedSelectInput data={ dropDownListCategory } value={ categoryId } maxHeight={ 200 } onSelect={ (item) => { setCategoryId(item.value); } } />
-                        </View>
-
-                        <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='medium'>
-                                { languages['amount'] }
-                                <ThemedText style={ styles.subtitle } weight='regular'> ({ languages['minMax'] })</ThemedText>
-                            </ThemedText>
-                            <View style={ styles.pairButtons }>
-                                <ThemedInput type='decimal' placeholder={ '0.000' } value={ amountMin } onChange={ setAmountMin } />
-                                <ThemedInput type='decimal' placeholder={ '0.000' } value={ amountMax } onChange={ setAmountMax } />
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['newTransaction'] }</ThemedText>
+                            <View style={ styles.elements }>
+                                <NewTransaction onPress={ () => { router.push('/data/add') }} />
                             </View>
                         </View>
+                        
+                        <View style={[ styles.section, styles.transactionsSection ]}>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['transactions'] }</ThemedText>
+                            <View style={ styles.elementsScroll }>
+                                {   loadingTransactions ? 
+                                    <ActivityIndicator/> :
+                                    <FlatList
+                                        data={ orderBy == 'date' ? addMonthHeaders(transactions) : transactions }
+                                        keyExtractor={ (item) => item.id.toString() }
+                                        renderItem={({ item }) => {
+                                            if (item.type === 'header') {
+                                                return (<TransactionHeader title={ item.title } />);
+                                            }
 
-                        <View style={ styles.section }>
-                            <ThemedText style={ styles.title } weight='medium'>
-                                { languages['dates'] }
-                                <ThemedText style={ styles.subtitle } weight='regular'> ({ languages['startEnd'] })</ThemedText>
-                            </ThemedText>
-                            <View style={ styles.pairButtons }>
-                                <ThemedDateInput value={ dateMin } onChange={ setDateMin } />
-                                <ThemedDateInput value={ dateMax } minimumDate={ dateMin } onChange={ setDateMax } />
+                                            return (<TransactionElement type={ item.type } category={ item.categoryName } value={ item.amount } date={ item.date } onPress={ () =>
+                                                router.push({
+                                                    pathname: '/data/modify/[id]',
+                                                    params: { id: item.id.toString() },
+                                                })
+                                            } />);
+                                        }}
+                                    />
+                                }
                             </View>
-                        </View>
-
-                        <View style={ styles.button }>
-                            <ThemedButton label={ languages['filterAction'] } type='default' onPress={ () => { setDisplayFilter(false); } } />
                         </View>
                     </View>
-                </ScrollView>
-            }
-        </View>
+                    :
+                    <ScrollView>
+                        <View style={ styles.sections }>
+                            <View style={ styles.section }>
+                                <ThemedText style={ styles.title } weight='medium'>{ languages['transactions'] }</ThemedText>
+                                <View style={ styles.elements }>
+                                    <DisplayTransactions onPress={ ()=>{ setDisplayFilter(false); } } />
+                                </View>
+                            </View>
+
+                            <View style={ styles.section }>
+                                <ThemedText style={ styles.title } weight='medium'>{ languages['orderBy'] }</ThemedText>
+                                <ThemedSelectInput data={ dropDownListOrder } value={ order } onSelect={ (item) => { setOrder(item.value); } } />
+                            </View>
+
+                            <View style={ styles.section }>
+                                <ThemedText style={ styles.title } weight='medium'>{ languages['type'] }</ThemedText>
+                                <ThemedSelectInput data={ dropDownListType } value={ type } onSelect={ (item) => { 
+                                    setType(item.value as "" | "income" | "expense");
+                                    setCategoryId('');
+                                }} />
+                            </View>
+
+                            <View style={ styles.section }>
+                                <ThemedText style={ styles.title } weight='medium'>{ languages['category'] }</ThemedText>
+                                <ThemedSelectInput data={ dropDownListCategory } value={ categoryId } maxHeight={ 200 } onSelect={ (item) => { setCategoryId(item.value); } } />
+                            </View>
+
+                            <View style={ styles.section }>
+                                <ThemedText style={ styles.title } weight='medium'>
+                                    { languages['amount'] }
+                                    <ThemedText style={ styles.subtitle } weight='regular'> ({ languages['minMax'] })</ThemedText>
+                                </ThemedText>
+                                <View style={ styles.pairButtons }>
+                                    <ThemedInput type='decimal' placeholder={ '0.000' } value={ amountMin } onChange={ setAmountMin } />
+                                    <ThemedInput type='decimal' placeholder={ '0.000' } value={ amountMax } onChange={ setAmountMax } />
+                                </View>
+                            </View>
+
+                            <View style={ styles.section }>
+                                <ThemedText style={ styles.title } weight='medium'>
+                                    { languages['dates'] }
+                                    <ThemedText style={ styles.subtitle } weight='regular'> ({ languages['startEnd'] })</ThemedText>
+                                </ThemedText>
+                                <View style={ styles.pairButtons }>
+                                    <ThemedDateInput value={ dateMin } onChange={ setDateMin } />
+                                    <ThemedDateInput value={ dateMax } minimumDate={ dateMin } onChange={ setDateMax } />
+                                </View>
+                            </View>
+
+                            <View style={ styles.button }>
+                                <ThemedButton label={ languages['filterAction'] } type='default' onPress={ () => { setDisplayFilter(false); } } />
+                            </View>
+                        </View>
+                    </ScrollView>
+                }
+            </View>
+        </SafeAreaView>
     );
 };
 
@@ -279,11 +282,11 @@ const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         container: {
             flex: 1,
-            top: Values.topNotHeader,
+            top: Values.topHeader,
             width: '100%',
             flexDirection: 'column',
             rowGap: 15,
-            paddingBottom: 100,
+            paddingBottom: Values.paddingBottom,
         },
 
         sections: {

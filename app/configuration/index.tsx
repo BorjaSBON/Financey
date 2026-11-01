@@ -55,26 +55,6 @@ const ConfigurationScreen = () => {
     const [username, setUsername] = useState('');
     const [error, setError] = useState<string | null>(null);
 
-    // Popups logic
-    const activeChangeUsernamePopup = () => {
-        setChangeUsernamePopup(prev => !prev);
-        setDeleteAccountPopup(false);
-        setResetAppPopup(false);
-        setUsername(profile?.username || '');
-    }
-    
-    const activeDeleteAccountPopup = () => {
-        setDeleteAccountPopup(prev => !prev);
-        setChangeUsernamePopup(false);
-        setResetAppPopup(false);
-    }
-    
-    const activeResetAppPopup = () => {
-        setResetAppPopup(prev => !prev);
-        setChangeUsernamePopup(false);
-        setDeleteAccountPopup(false);
-    }
-
     // CHANGE USERNAME ACTION
     // Get the username
     useEffect(() => {
@@ -167,8 +147,8 @@ const ConfigurationScreen = () => {
                             <View style={ styles.elements }>
                                 <ConfElement title={ languages['informationAccount'] } onPress={ () => router.push('/configuration/account/information') } />
                                 <ConfElement title={ languages['changeAccount'] } onPress={ () => router.push('/configuration/account/change_account') } />
-                                <ConfElement title={ languages['changeUsername'] } iconDisplay={ false } onPress={ activeChangeUsernamePopup } />
-                                <ConfElement title={ languages['deleteAccount'] } colorText={ colors.negative } iconDisplay={ false } onPress={ activeDeleteAccountPopup } />
+                                <ConfElement title={ languages['changeUsername'] } iconDisplay={ false } onPress={ () => { setChangeUsernamePopup(prev => !prev); }} />
+                                <ConfElement title={ languages['deleteAccount'] } colorText={ colors.negative } iconDisplay={ false } onPress={ () => { setDeleteAccountPopup(prev => !prev); }} />
                             </View>
                         </View>
                         
@@ -176,16 +156,16 @@ const ConfigurationScreen = () => {
                             <ThemedText style={ styles.title } weight='medium'>{ languages['app'] }</ThemedText>
                             <View style={ styles.elements }>
                                 <ConfElement title={ languages['informationApp'] } onPress={ () => router.push('/configuration/application') } />
-                                <ConfElement title={ languages['resetApp'] } colorText={ colors.negative } iconDisplay={ false } onPress={ activeResetAppPopup } />
+                                <ConfElement title={ languages['resetApp'] } colorText={ colors.negative } iconDisplay={ false } onPress={ () => { setResetAppPopup(prev => !prev); }} />
                             </View>
                         </View>
                     </View>
                 </ScrollView>
             </View>
             
-            <ModifyElement active={ changeUsernamePopup } title={ languages['changeUsername'] } value={ username } placeholder={ languages['newUsername'] } error={ error } modifyAction={ changeUsernameAction } cancelAction={ activeChangeUsernamePopup } onChange={ setUsername } />
-            <DeleteElement active={ deleteAccountPopup } title={ languages['deleteAccountTitle'] } titleButton='delete' deleteAction={ deleteAccountAction } cancelAction={ activeDeleteAccountPopup } />
-            <DeleteElement active={ resetAppPopup } title={ languages['resetAppTitle'] } titleButton='reset' deleteAction={ resetAppAction } cancelAction={ activeResetAppPopup } />
+            <ModifyElement active={ changeUsernamePopup } title={ languages['changeUsername'] } value={ username } placeholder={ languages['newUsername'] } error={ error } modifyAction={ changeUsernameAction } cancelAction={ () => { setChangeUsernamePopup(prev => !prev); }} onChange={ setUsername } />
+            <DeleteElement active={ deleteAccountPopup } title={ languages['deleteAccountTitle'] } titleButton='delete' deleteAction={ deleteAccountAction } cancelAction={ () => { setDeleteAccountPopup(prev => !prev); }} />
+            <DeleteElement active={ resetAppPopup } title={ languages['resetAppTitle'] } titleButton='reset' deleteAction={ resetAppAction } cancelAction={ () => { setResetAppPopup(prev => !prev); }} />
         </View>
     );
 };
@@ -197,7 +177,6 @@ const createStyles = (colors: ThemeColors) =>
         container: {
             position: 'relative',
             flex: 1,
-            top: Values.topIfHeader,
             width: '100%',
         },
 
@@ -206,7 +185,6 @@ const createStyles = (colors: ThemeColors) =>
             flexDirection: 'column',
             rowGap: 15,
             paddingHorizontal: Values.paddingApp,
-            paddingBottom: 125,
         },
 
         section: {

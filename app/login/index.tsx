@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
 import { router, useNavigation } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
@@ -72,42 +73,44 @@ const LoginScreen = () => {
 
     // Check if the profiles is loaded
     if (loadingProfiles) {
-        return <ActivityIndicator />;
+        return <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}><ActivityIndicator /></SafeAreaView>;
     }
 
     return (
-        <View style={ styles.container }>
-            <View style={ styles.presentation }>
-                <ThemedText weight='semiBold' style={ styles.title }>Financey</ThemedText>
+        <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+            <View style={ styles.container }>
+                <View style={ styles.presentation }>
+                    <ThemedText weight='semiBold' style={ styles.title }>Financey</ThemedText>
 
-                <View style={ styles.image }>
-                    <AppIcon size={ 75 }/>
+                    <View style={ styles.image }>
+                        <AppIcon size={ 75 }/>
+                    </View>
+                    
+
+                    <ThemedText weight='regular' style={ styles.description }>{ languages['quesionWelcome'] }</ThemedText>
                 </View>
-                
 
-                <ThemedText weight='regular' style={ styles.description }>{ languages['quesionWelcome'] }</ThemedText>
-            </View>
+                <View style={ styles.input }>
+                    <ThemedInput placeholder={ languages['username'] } type='text' value={ username } onChange={ setUsername } />
+                    { error && <ThemedText weight='light' style={ styles.error }>{ error }</ThemedText> }
+                </View>
 
-            <View style={ styles.input }>
-                <ThemedInput placeholder={ languages['username'] } type='text' value={ username } onChange={ setUsername } />
-                { error && <ThemedText weight='light' style={ styles.error }>{ error }</ThemedText> }
-            </View>
+                <View style={ styles.button }>
+                    <ThemedButton label={ languages['enter'] } type='default' onPress={ validateUsername } />
+                </View>
 
-            <View style={ styles.button }>
-                <ThemedButton label={ languages['enter'] } type='default' onPress={ validateUsername } />
+                <View style={[ styles.accounts, { height: Math.min(profiles.length * 50, 175)} ]}>
+                    <FlatList
+                        data={ profiles }
+                        keyExtractor={ (profile) => profile.id.toString() }
+                        renderItem={({ item }) => <AccountElement username={ item?.username || 'Username' } last_action_date={ item?.last_action_date || 'DD/MM/YYYY' } active={ item?.active || 0 } onPress={ async () => {
+                            await loginById(item.id);
+                            router.replace('/');
+                        } } />}
+                    />
+                </View>
             </View>
-
-            <View style={[ styles.accounts, { height: Math.min(profiles.length * 50, 175)} ]}>
-                <FlatList
-                    data={ profiles }
-                    keyExtractor={ (profile) => profile.id.toString() }
-                    renderItem={({ item }) => <AccountElement username={ item?.username || 'Username' } last_action_date={ item?.last_action_date || 'DD/MM/YYYY' } active={ item?.active || 0 } onPress={ async () => {
-                        await loginById(item.id);
-                        router.replace('/');
-                    } } />}
-                />
-            </View>
-        </View>
+        </SafeAreaView>
     );
 };
 

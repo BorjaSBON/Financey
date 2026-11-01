@@ -77,17 +77,19 @@ const DataAdd = () => {
     }
 
     return (
-        <View style={ styles.container }>
-            <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
+        <View style={{ height: '100%', width: '100%' }}>
+            <View style={ styles.container }>
+                <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
 
-            <View style={ styles.inputs }>
-                <Input name={ languages['name'] } type='text' placeholder={ languages['categoryPlaceholder'] } value={ name } onChangeText={ setName } />
-            </View>
+                <View style={ styles.inputs }>
+                    <Input name={ languages['name'] } type='text' placeholder={ languages['categoryPlaceholder'] } value={ name } onChangeText={ setName } />
+                </View>
 
-            { error && <ThemedText weight='light' style={ styles.error }>{ error }</ThemedText> }
+                { error && <ThemedText weight='light' style={ styles.error }>{ error }</ThemedText> }
 
-            <View style={ styles.add }>
-                <ThemedButton label={ languages['add'] } type='default' onPress={ addCategory } />
+                <View style={ styles.add }>
+                    <ThemedButton label={ languages['add'] } type='default' onPress={ addCategory } />
+                </View>
             </View>
         </View>
     );
@@ -99,9 +101,7 @@ const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         container: {
             flex: 1,
-            top: Values.topIfHeader,
             width: '100%',
-            paddingBottom: 125,
         },
 
         amountInput: {

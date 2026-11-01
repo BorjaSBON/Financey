@@ -1,5 +1,6 @@
 import { StyleSheet, View, ScrollView, Pressable } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Values } from '@constants/values';
 
@@ -24,59 +25,61 @@ const UnderConstruction = () => {
     const { information02 } = useLocalSearchParams<{ information02: string }>();
 
     return (
-        <View style={ styles.container }>
-            <ScrollView>
-                <View style={ styles.sections }>
-                    <ThemedText weight='semiBold' style={ styles.title }>{ languages['futureTitle'] }</ThemedText>
+        <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+            <View style={ styles.container }>
+                <ScrollView>
+                    <View style={ styles.sections }>
+                        <ThemedText weight='semiBold' style={ styles.title }>{ languages['futureTitle'] }</ThemedText>
 
-                    <View style={ styles.elements }>
-                        <View style={ styles.element }>
-                            <Pressable 
-                                style={({ pressed }) => [
-                                    styles.pressable,
-                                    pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
-                                ]}
-                            >
-                                <HelpIcon size={ 18 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
-                                <ThemedText style={ styles.elementText } weight='regular'>{ languages['futureInformation'] }</ThemedText>
-                            </Pressable>
+                        <View style={ styles.elements }>
+                            <View style={ styles.element }>
+                                <Pressable 
+                                    style={({ pressed }) => [
+                                        styles.pressable,
+                                        pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
+                                    ]}
+                                >
+                                    <HelpIcon size={ 18 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
+                                    <ThemedText style={ styles.elementText } weight='regular'>{ languages['futureInformation'] }</ThemedText>
+                                </Pressable>
+                            </View>
+
+                            { information01 && 
+                                <View style={ styles.element }>
+                                    <Pressable 
+                                        style={({ pressed }) => [
+                                            styles.pressable,
+                                            pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
+                                        ]}
+                                    >
+                                        <HelpIcon size={ 18 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
+                                        <ThemedText style={ styles.elementText } weight='regular'>{ information01 }</ThemedText>
+                                    </Pressable>
+                                </View>
+                            }
+
+                            { information02 && 
+                                <View style={ styles.element }>
+                                    <Pressable 
+                                        style={({ pressed }) => [
+                                            styles.pressable,
+                                            pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
+                                        ]}
+                                    >
+                                        <HelpIcon size={ 18 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
+                                        <ThemedText style={ styles.elementText } weight='regular'>{ information02 }</ThemedText>
+                                    </Pressable>
+                                </View>
+                            }
                         </View>
 
-                        { information01 && 
-                            <View style={ styles.element }>
-                                <Pressable 
-                                    style={({ pressed }) => [
-                                        styles.pressable,
-                                        pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
-                                    ]}
-                                >
-                                    <HelpIcon size={ 18 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
-                                    <ThemedText style={ styles.elementText } weight='regular'>{ information01 }</ThemedText>
-                                </Pressable>
-                            </View>
-                        }
-
-                        { information02 && 
-                            <View style={ styles.element }>
-                                <Pressable 
-                                    style={({ pressed }) => [
-                                        styles.pressable,
-                                        pressed ? { backgroundColor: colors.hoverElement } : { backgroundColor: 'transparent' },
-                                    ]}
-                                >
-                                    <HelpIcon size={ 18 } backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
-                                    <ThemedText style={ styles.elementText } weight='regular'>{ information02 }</ThemedText>
-                                </Pressable>
-                            </View>
-                        }
+                        <View style={ styles.button }>
+                            <ThemedButton label={ languages['goBack'] } type='default' onPress={ () => { router.back() } }/>
+                        </View>
                     </View>
-
-                    <View style={ styles.button }>
-                        <ThemedButton label={ languages['goBack'] } type='default' onPress={ () => { router.back() } }/>
-                    </View>
-                </View>
-            </ScrollView>
-        </View>
+                </ScrollView>
+            </View>
+        </SafeAreaView>
     );
 };
 
@@ -86,9 +89,8 @@ const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         container: {
             flex: 1,
-            top: Values.topNotHeader,
+            top: Values.topHeader,
             width: '100%',
-            paddingBottom: 100,
         },
 
         sections: {

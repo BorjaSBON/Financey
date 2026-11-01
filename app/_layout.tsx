@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { Slot, SplashScreen } from 'expo-router';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { initializeAppDatabase } from '@db/init';
 
@@ -65,13 +66,15 @@ const RootLayout = () => {
     if (!fontsLoaded && !error) return null;
 
     return (
-		<ThemeProvider>
-			<CurrencyProvider>
-				<LanguageProvider>
-					<RootLayoutContent />
-				</LanguageProvider>
-			</CurrencyProvider>
-		</ThemeProvider>
+		<SafeAreaProvider>
+			<ThemeProvider>
+				<CurrencyProvider>
+					<LanguageProvider>
+						<RootLayoutContent />
+					</LanguageProvider>
+				</CurrencyProvider>
+			</ThemeProvider>
+		</SafeAreaProvider>
 	);
 };
 

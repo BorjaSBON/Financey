@@ -68,6 +68,7 @@ const createStyles = (colors: ThemeColors) =>
             width: '100%',
             paddingTop: 25,
             paddingBottom: 45,
+            marginBottom: -40,
             paddingHorizontal: 50,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,

@@ -31,35 +31,37 @@ const Categories = () => {
     let categories_selected = categories.filter(item => item.type === (expenseActive ? 'expense' : 'income'));
     
     return (
-        <View style={ styles.container }>
-            <View style={ styles.sections }>
-                <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => { setExpenseActive(true); } } incomeOnPress={ () => { setExpenseActive(false); } } />
-                    
-                <View style={ styles.section }>
-                    <ThemedText style={ styles.title } weight='medium'>{ languages['newCategory'] }</ThemedText>
-                    <View style={ styles.elements }>
-                        <NewCategory onPress={ () => { router.push('/configuration/data/categories/add') } } />
+        <View style={{ height: '100%', width: '100%' }}>
+            <View style={ styles.container }>
+                <View style={ styles.sections }>
+                    <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => { setExpenseActive(true); } } incomeOnPress={ () => { setExpenseActive(false); } } />
+                        
+                    <View style={ styles.section }>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['newCategory'] }</ThemedText>
+                        <View style={ styles.elements }>
+                            <NewCategory onPress={ () => { router.push({ pathname: '/configuration/data/categories/add', params: { categoryType: expenseActive ? 'expense' : 'income' } })} } />
+                        </View>
                     </View>
-                </View>
 
-                <View style={[ styles.section, styles.transactionsSection ]}>
-                    <ThemedText style={ styles.title } weight='medium'>{ languages['categories'] }</ThemedText>
-                    <View style={ styles.elementsScroll }>
-                        {   loadingCategories ? 
-                            <ActivityIndicator /> : 
-                            <FlatList
-                                data={ categories_selected }
-                                keyExtractor={ (item) => item.id.toString() }
-                                renderItem={({ item }) => {
-                                    return (<CategoryElement key={ item.name } title={ item.name } type={ item.type } onPress={ () => {
-                                        router.push({
-                                            pathname: '/configuration/data/categories/modify/[id]',
-                                            params: { id: item.id.toString() },
-                                        })
-                                    }} />)
-                                }}
-                            />
-                        }
+                    <View style={[ styles.section, styles.transactionsSection ]}>
+                        <ThemedText style={ styles.title } weight='medium'>{ languages['categories'] }</ThemedText>
+                        <View style={ styles.elementsScroll }>
+                            {   loadingCategories ? 
+                                <ActivityIndicator /> : 
+                                <FlatList
+                                    data={ categories_selected }
+                                    keyExtractor={ (item) => item.id.toString() }
+                                    renderItem={({ item }) => {
+                                        return (<CategoryElement key={ item.name } title={ item.name } type={ item.type } onPress={ () => {
+                                            router.push({
+                                                pathname: '/configuration/data/categories/modify/[id]',
+                                                params: { id: item.id.toString() },
+                                            })
+                                        }} />)
+                                    }}
+                                />
+                            }
+                        </View>
                     </View>
                 </View>
             </View>
@@ -73,10 +75,7 @@ const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         container: {
             flex: 1,
-            top: Values.topIfHeader,
             width: '100%',
-            marginTop: 10,
-            paddingBottom: 125,
         },
             
         sections: {

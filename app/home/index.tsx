@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, View, ActivityIndicator, ScrollView, Pressable } from 'react-native';
 import { router, useNavigation } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Values } from '@constants/values';
 
@@ -83,85 +84,87 @@ const HomeScreen = () => {
 
     // Check if the profile is loaded
     if (loadingTransactions || loadingProfiles) {
-        return <View style={ styles.container }><ActivityIndicator /></View>;
+        return <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}><ActivityIndicator /></SafeAreaView>;
     }
 
     return (
-        <View style={ styles.container }>
-            <ScrollView>
-                <View style={ styles.sections }>
-                    <ThemedText weight='regular' style={ styles.welcome }>
-                        { languages['welcome'] } <ThemedText weight='medium'>{ profile?.username || 'username' }</ThemedText>!
-                    </ThemedText>
-                    
-                    <BalanceResume />
+        <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+            <View style={ styles.container }>
+                <ScrollView>
+                    <View style={ styles.sections }>
+                        <ThemedText weight='regular' style={ styles.welcome }>
+                            { languages['welcome'] } <ThemedText weight='medium'>{ profile?.username || 'username' }</ThemedText>!
+                        </ThemedText>
+                        
+                        <BalanceResume />
 
-                    <View style={ styles.sectionDoble }>
-                        <View style={ styles.sectionHalf }>
-                            <ThemedText style={ styles.title } weight='medium'>
-                                { languages['resume'] }
-                                <ThemedText style={ styles.subtitle } weight='regular'> ({ date.toLocaleString(languages['dateFormat'], { month: 'long' }) })</ThemedText>
-                            </ThemedText>
-                            <CategoriesPieChart year={ date.getUTCFullYear() } month={ date.getUTCMonth() + 1 } />
-                        </View>
-
-                        {/* <View style={ styles.sectionHalf }>
-                            <ThemedText style={ styles.title } weight='medium'>{ languages['evolution'] }</ThemedText>
-                            <View style={ styles.evolution }>
-
+                        <View style={ styles.sectionDoble }>
+                            <View style={ styles.sectionHalf }>
+                                <ThemedText style={ styles.title } weight='medium'>
+                                    { languages['resume'] }
+                                    <ThemedText style={ styles.subtitle } weight='regular'> ({ date.toLocaleString(languages['dateFormat'], { month: 'long' }) })</ThemedText>
+                                </ThemedText>
+                                <CategoriesPieChart year={ date.getUTCFullYear() } month={ date.getUTCMonth() + 1 } />
                             </View>
-                        </View> */}
-                    </View>
 
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='medium'>{ languages['actions'] }</ThemedText>
-                        <View style={ styles.actionElements }>
-                            <Pressable onPress={ () => router.push('/data/charts') }>
-                                <ChartsIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
-                            </Pressable>
+                            {/* <View style={ styles.sectionHalf }>
+                                <ThemedText style={ styles.title } weight='medium'>{ languages['evolution'] }</ThemedText>
+                                <View style={ styles.evolution }>
 
-                            <Pressable onPress={ () => router.push('/data/list') }>
-                                <ListIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
-                            </Pressable>
+                                </View>
+                            </View> */}
+                        </View>
 
-                            <Pressable onPress={ () => router.push('/data/add') }>
-                                <AddIcon size={ 44 } backgroundColor={ colors.iconColor } iconColor={colors.iconBackground} />
-                            </Pressable>
+                        <View style={ styles.section }>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['actions'] }</ThemedText>
+                            <View style={ styles.actionElements }>
+                                <Pressable onPress={ () => router.push('/data/charts') }>
+                                    <ChartsIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
+                                </Pressable>
 
-                            <Pressable onPress={ () => router.push('/configuration/data/categories') }>
-                                <CategoriesIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
-                            </Pressable>
+                                <Pressable onPress={ () => router.push('/data/list') }>
+                                    <ListIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
+                                </Pressable>
 
-                            <Pressable onPress={ () => router.push('/configuration') }>
-                                <ConfIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
-                            </Pressable>
+                                <Pressable onPress={ () => router.push('/data/add') }>
+                                    <AddIcon size={ 44 } backgroundColor={ colors.iconColor } iconColor={colors.iconBackground} />
+                                </Pressable>
+
+                                <Pressable onPress={ () => router.push('/configuration/data/categories') }>
+                                    <CategoriesIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
+                                </Pressable>
+
+                                <Pressable onPress={ () => router.push('/configuration') }>
+                                    <ConfIcon backgroundColor={ colors.iconBackground } iconColor={colors.iconColor} />
+                                </Pressable>
+                            </View>
+                        </View>
+
+                        <View style={ styles.section }>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['lastTransactionAdded'] }</ThemedText>
+                            <View style={ styles.elements }>
+                                { lastTransactionAdded == null ? <View style={ styles.emptyElement } /> :
+                                    <TransactionElement type={ typeLastTransaction } category={ categoryLastTransaction } value={ amountLastTransaction } date={ String(dateLastTransaction) } onPress={ () => { router.push({
+                                        pathname: '/data/modify/[id]',
+                                        params: {
+                                            id: idLastTransaction.toString(),
+                                        },
+                                    })} } />
+                                }
+                            </View>
+                        </View>
+
+                        <View style={ styles.section }>
+                            <ThemedText style={ styles.title } weight='medium'>{ languages['lastAction'] }</ThemedText>
+                            <View style={ styles.lastActionElement }>
+                                <ThemedText style={ styles.name } weight='regular'>{ profile?.last_action || 'name' in languages ? languages[profile?.last_action as keyof typeof languages] : languages['name']}</ThemedText>
+                                <ThemedText style={ styles.date } weight='light'>{ lastActionDate }</ThemedText>
+                            </View>
                         </View>
                     </View>
-
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='medium'>{ languages['lastTransactionAdded'] }</ThemedText>
-                        <View style={ styles.elements }>
-                            { lastTransactionAdded == null ? <View style={ styles.emptyElement } /> :
-                                <TransactionElement type={ typeLastTransaction } category={ categoryLastTransaction } value={ amountLastTransaction } date={ String(dateLastTransaction) } onPress={ () => { router.push({
-                                    pathname: '/data/modify/[id]',
-                                    params: {
-                                        id: idLastTransaction.toString(),
-                                    },
-                                })} } />
-                            }
-                        </View>
-                    </View>
-
-                    <View style={ styles.section }>
-                        <ThemedText style={ styles.title } weight='medium'>{ languages['lastAction'] }</ThemedText>
-                        <View style={ styles.lastActionElement }>
-                            <ThemedText style={ styles.name } weight='regular'>{ profile?.last_action || 'name' in languages ? languages[profile?.last_action as keyof typeof languages] : languages['name']}</ThemedText>
-                            <ThemedText style={ styles.date } weight='light'>{ lastActionDate }</ThemedText>
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>
-        </View>
+                </ScrollView>
+            </View>
+        </SafeAreaView>
     );
 };
 
@@ -171,7 +174,7 @@ const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         container: {
             flex: 1,
-            top: Values.topNotHeader,
+            top: Values.topHeader,
             width: '100%',
         },
 
@@ -179,7 +182,7 @@ const createStyles = (colors: ThemeColors) =>
             display: 'flex',
             flexDirection: 'column',
             rowGap: 15,
-            paddingBottom: 125,
+            paddingBottom: Values.paddingBottom,
         },
 
         section: {

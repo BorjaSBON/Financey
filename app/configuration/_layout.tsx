@@ -1,6 +1,10 @@
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Slot, usePathname } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Values } from '@constants/values';
+
+import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
 import { useLanguage } from '@language/useLanguage';
 
@@ -9,6 +13,7 @@ import Header from '@components/layout/header';
 const ConfigurationLayout = () => {
     // Theme
     const { colors } = useTheme();
+    const styles = createStyles(colors);
 
     // Traductions
     const { languages } = useLanguage();
@@ -42,11 +47,32 @@ const ConfigurationLayout = () => {
     };
 
     return (
-        <View style={{ flex: 1, backgroundColor: colors.backgroundPrimary }}>
-            <Header title={ getTitle() } />
-            <Slot />
-        </View>
+        <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+            <View style={ styles.container }>
+                <Header title={ getTitle() } />
+
+                <View style={ styles.slot }>
+                    <Slot />
+                </View>
+            </View>
+        </SafeAreaView>
     );
 };
 
 export default ConfigurationLayout;
+
+const createStyles = (colors: ThemeColors) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: colors.backgroundPrimary,
+            top: Values.topHeader,
+            paddingBottom: Values.paddingBottom,
+        },
+
+        slot: {
+            top: 40,
+            paddingBottom: 40,
+        },
+    }
+);
