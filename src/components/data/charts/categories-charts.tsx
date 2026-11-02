@@ -194,7 +194,6 @@ const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         container: {
             width: '100%',
-            paddingVertical: 15,
             display: 'flex',
             flexDirection: 'column',
             rowGap: 15,

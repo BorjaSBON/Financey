@@ -66,7 +66,7 @@ export default BalancePieChart;
 const createStyles = (colors: ThemeColors) =>
     StyleSheet.create({
         container: {
-            paddingVertical: 15,
+            paddingVertical: 5,
             marginHorizontal: 'auto',
         },
     }

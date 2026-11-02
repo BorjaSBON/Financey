@@ -86,7 +86,6 @@ const createStyles = (colors: ThemeColors) =>
             columnGap: 10,
             alignItems: 'center',
             marginHorizontal: 'auto',
-            marginBottom: 10,
         },
 
         icon: {

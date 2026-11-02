@@ -100,7 +100,7 @@ const MonthlyBarChart = ({ year }: Props) => {
                     initialSpacing: 7.5,
                     spacing: 17.5,
                 }}
-                showLine={ false }
+                showLine={ true }
             />
         </View>
     );
@@ -114,7 +114,6 @@ const createStyles = (colors: ThemeColors) =>
             backgroundColor: colors.backgroundSecondary,
             borderRadius: 10,
             marginHorizontal: Values.paddingApp,
-            marginVertical: 15,
             paddingVertical: 15
         },
 

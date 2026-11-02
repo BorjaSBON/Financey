@@ -10,6 +10,7 @@ import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 
+import ChartsTypeButtons from '@components/data/charts/charts-type-buttons';
 import YearsPeriod from '@components/data/years-period';
 import BalanceResume from '@components/data/balance-resume';
 import TypeButtons from '@components/data/type-buttons';
@@ -17,6 +18,7 @@ import TypeButtons from '@components/data/type-buttons';
 import MonthlyBarChart from '@components/data/charts/monthly-bar-chart';
 import BalancePieChart from '@components/data/charts/balance-pie-chart';
 import CategoriesCharts from '@components/data/charts/categories-charts';
+import EvolutionBarChart from '@components/data/charts/evolution-bar-chart';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
 
@@ -39,7 +41,9 @@ const DataCharts = () => {
 
     const [year, setYear] = useState<number | null>(null);
     const [month, setMonth] = useState<number | null>(null);
+    
     const [expenseActive, setExpenseActive] = useState(true);
+    const [resumeActive, setResumeActive] = useState(true);
 
     useEffect(() => {
         let cancelled = false;
@@ -92,23 +96,42 @@ const DataCharts = () => {
                 <ScrollView>
                     <View style={ styles.sections }>
                         <View>
-                            <YearsPeriod range={ availablePeriods.map(period => period.year) } onChange={ handleYearChange } />
-                            <BalanceResume squareEnable={ false } from={new Date(Date.UTC(year, 0, 1)).toISOString() } to={ new Date(Date.UTC(year+1, 0, 1)).toISOString() } />
-                            <MonthlyBarChart year={year} />
+                            <ChartsTypeButtons resumeActive={ resumeActive } resumeOnPress={ () => setResumeActive(true) } evolutionOnPress={ () => setResumeActive(false) } />
                         </View>
 
-                        <View>
-                            <View>
+                        <View style={ styles.section }>
+                            <YearsPeriod range={ availablePeriods.map(period => period.year) } onChange={ handleYearChange } />
+                            <BalanceResume squareEnable={ false } from={new Date(Date.UTC(year, 0, 1)).toISOString() } to={ new Date(Date.UTC(year+1, 0, 1)).toISOString() } />
+
+                            { resumeActive ? <MonthlyBarChart year={ year } /> : <EvolutionBarChart year={ year } /> }
+                        </View>
+
+                        { resumeActive &&
+                            <View style={ styles.section }>
                                 <YearsPeriod range={ selectedPeriod.months } months onChange={ setMonth } />
                                 <BalanceResume squareEnable={ false } from={ new Date(Date.UTC(year, month-1, 1)).toISOString() } to={ new Date(Date.UTC(year, month, 1)).toISOString() } />
                                 <BalancePieChart year={ year } month={ month } />
                             </View>
+                        }
 
-                            <View>
+                        { resumeActive && 
+                            <View style={ styles.section }>
                                 <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => setExpenseActive(true) } incomeOnPress={ () => setExpenseActive(false) } />
                                 <CategoriesCharts year={ year } month={ month } type={ expenseActive ? 'expense' : 'income' } />
                             </View>
-                        </View>
+                        }
+
+                        { !resumeActive &&
+                            <View style={ styles.section }>
+                                
+                            </View>
+                        }
+
+                        { !resumeActive &&
+                            <View style={ styles.section }>
+                                <YearsPeriod range={ selectedPeriod.months } months onChange={ setMonth } />
+                            </View>
+                        }
                     </View>
                 </ScrollView>
             </View>
@@ -128,6 +151,11 @@ const createStyles = (colors: ThemeColors) =>
 
         sections: {
             paddingBottom: Values.paddingBottom,
+            rowGap: 10,
+        },
+
+        section: {
+            rowGap: 10,
         },
 
         noData: {
