@@ -20,7 +20,10 @@ import BalancePieChart from '@components/data/charts/balance-pie-chart';
 import CategoriesCharts from '@components/data/charts/categories-charts';
 import EvolutionBarChart from '@components/data/charts/evolution-bar-chart';
 
+import { ThemedSelectInput } from '@ui/themed-select-input';
+
 import { useTransactions } from '@/src/hooks/useTransactions';
+import { useCategories } from '@/src/hooks/useCategories';
 
 type AvailablePeriod = {
     year: number;
@@ -36,6 +39,7 @@ const DataCharts = () => {
 
     // Database
     const { getAvailablePeriods } = useTransactions();
+    const { categories } = useCategories();
 
     const [availablePeriods, setAvailablePeriods] = useState<AvailablePeriod[]>([]);
 
@@ -44,6 +48,18 @@ const DataCharts = () => {
     
     const [expenseActive, setExpenseActive] = useState(true);
     const [resumeActive, setResumeActive] = useState(true);
+
+    // Categories
+    let categories_selected = categories.filter(item => item.type === 'expense');
+    let categories_formatted = categories_selected.map((item) => {
+        return {
+            value: item.name.toLowerCase(),
+            label: item.name,
+        };
+    });
+    
+    const [categorySelect, setCategorySelect] = useState('');
+    const selectedValue = categories_formatted.some(c => c.value === categorySelect) ? categorySelect : (categories_formatted[0]?.value ?? '');
 
     useEffect(() => {
         let cancelled = false;
@@ -123,6 +139,9 @@ const DataCharts = () => {
 
                         { !resumeActive &&
                             <View style={ styles.section }>
+                                <View style={ styles.inputSection }>
+                                    <ThemedSelectInput data={ categories_formatted } value={ selectedValue } onSelect={(item) => { setCategorySelect(item.value); }} maxHeight={ 200} />
+                                </View>
                                 
                             </View>
                         }
@@ -156,6 +175,11 @@ const createStyles = (colors: ThemeColors) =>
 
         section: {
             rowGap: 10,
+        },
+
+        inputSection: {
+            marginHorizontal: Values.paddingApp,
+            marginVertical: 10,
         },
 
         noData: {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
 
 import { Values } from '@constants/values';
@@ -41,7 +41,6 @@ const MonthlyBarChart = ({ year }: Props) => {
                     label: months[element.month - 1],
                     spacing: 1.5,
                     labelWidth: 10,
-                    labelTextStyle: styles.horizontalLabelText,
                     frontColor: colors.positive,
                 });
                 dataProcessed.push({ value: element.expense / 100, frontColor: colors.negative });
@@ -60,14 +59,17 @@ const MonthlyBarChart = ({ year }: Props) => {
 
     // Calculate the radius of the container
     const [containerWidth, setContainerWidth] = useState(0);
+    
+    const handleLayout = (e: LayoutChangeEvent) => setContainerWidth(e.nativeEvent.layout.width);
 
-    if (!chartData || !lineData || chartData.length === 0 || lineData.length === 0) {
-        return <View style={ styles.container }></View>;
+    if (!chartData || !lineData || chartData.length === 0 || lineData.length === 0 || containerWidth === 0) {
+        return <View style={ styles.container } onLayout={ handleLayout }></View>;
     }
 
     return (
-        <View style={ styles.container } onLayout={(event) => { setContainerWidth(event.nativeEvent.layout.width); }}>
+        <View style={ styles.container } onLayout={ handleLayout }>
             <BarChart
+                key={ `resume-${year}` }
                 data={ chartData }
                 
                 height={ 150 }
@@ -80,12 +82,14 @@ const MonthlyBarChart = ({ year }: Props) => {
                 rulesType='solid'
                 rulesColor={ colors.chartRulesColor }
                 rulesThickness={ 1 }
-                rulesLength={ containerWidth - 50 }
+                rulesLength={ containerWidth - 55 }
 
                 barWidth={ 4 }
                 barBorderRadius={ 1.5 }
 
-                xAxisThickness={ 0 }
+                xAxisThickness={ 1 }
+                xAxisColor={ colors.chartRulesColor }
+                xAxisLabelTextStyle={ styles.horizontalLabelText }
                 yAxisThickness={ 0 }
                 yAxisTextStyle={ styles.verticalLabelText}
 

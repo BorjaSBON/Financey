@@ -490,6 +490,58 @@ export async function getCategoriesAmount(year: number, month: number, type: 'in
     );
 }
 
+// Get the global evolution
+export async function getGlobalEvolution(year: number) {
+    const db = await dbPromise;
+
+    // Dates
+    const startDate = `${year}-01-01`;
+    const endDate = `${year + 1}-01-01`;
+
+    // Get the amounts
+    return db.getAllAsync<{ month: number; balance: number; }>(
+        `
+            WITH RECURSIVE months(month) AS (
+                SELECT 1
+                UNION ALL
+                SELECT month + 1
+                FROM months
+                WHERE month < 12
+            ),
+            monthly_totals AS (
+                SELECT
+                    CAST(strftime('%m', date) AS INTEGER) AS month,
+                    SUM(
+                        CASE
+                            WHEN type = 'income' THEN amount
+                            WHEN type = 'expense' THEN -amount
+                            ELSE 0
+                        END
+                    ) AS balance
+                FROM transactions
+                WHERE date >= ?
+                    AND date < ?
+                    AND profile_id IN (
+                        SELECT id
+                        FROM profiles
+                        WHERE active = 1
+                        LIMIT 1
+                    )
+                GROUP BY strftime('%m', date)
+            )
+            SELECT
+                months.month AS month,
+                COALESCE(monthly_totals.balance, 0) AS balance
+            FROM months
+            LEFT JOIN monthly_totals
+                ON months.month = monthly_totals.month
+            ORDER BY months.month ASC;
+        `,
+        startDate,
+        endDate
+    );
+}
+
 // Export the repository functions
 export const transactionsRepository = {
     getAll,
@@ -507,4 +559,5 @@ export const transactionsRepository = {
     getAvailablePeriods,
     getBalanceMonthly,
     getCategoriesAmount,
+    getGlobalEvolution,
 };

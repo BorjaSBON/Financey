@@ -101,12 +101,16 @@ const CategoriesPieChart = ({ year, month }: Props) => {
     return (
         <View style={ styles.container } onLayout={(event) => { setContainerWidth(event.nativeEvent.layout.width); }}>
             <PieChart
-                data={ chartPieData }
                 donut
+
+                data={ chartPieData }
+
                 sectionAutoFocus
                 focusOnPress
+
                 strokeWidth={ 0.5 }
                 strokeColor={ colors.backgroundSecondary }
+
                 onPress={ (item: { label: string, value: number }) => {
                     if (categoryPressed == item.label) {
                         const totalAmount = chartPieData.reduce((sum, item) => sum + item.value, 0);
@@ -117,6 +121,7 @@ const CategoriesPieChart = ({ year, month }: Props) => {
                         setAmountPressed(item.value);
                     }
                 }}
+                
                 radius={ radius }
                 innerRadius={ innerRadius }
                 innerCircleColor={ colors.backgroundSecondary }

@@ -121,10 +121,13 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
         <View style={ styles.container }>
             <View style={ styles.containerDonut }>
                 <PieChart
-                    data={ chartPieData }
                     donut
+
+                    data={ chartPieData }
+
                     sectionAutoFocus
                     focusOnPress
+
                     strokeWidth={ 1 }
                     strokeColor={ colors.backgroundPrimary }
                     onPress={ (item: { label: string, value: number }) => {
@@ -137,6 +140,7 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
                             setAmountPressed(item.value);
                         }
                     }}
+                    
                     radius={ 80 }
                     innerRadius={ 60 }
                     innerCircleColor={ colors.backgroundPrimary }

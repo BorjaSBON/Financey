@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { LineChart } from 'react-native-gifted-charts';
 
 import { Values } from '@constants/values';
@@ -20,29 +20,29 @@ const EvolutionBarChart = ({ year }: Props) => {
     const styles = createStyles(colors);
 
     // Database
-    const { getBalanceMonthly } = useTransactions();
+    const { getGlobalEvolution, getBalance } = useTransactions();
 
     // Balance Monthly
     const [lineData, setLineData] = useState<any[] | null>([]);
     const [lineSegments, setLineSegments] = useState<any[] | null>([]);
 
     useEffect(() => {
-        const loadBalanceMonthly = async () => {
-            const balanceMonthly = await getBalanceMonthly(year);
+        const loadGlobalEvolution = async () => {
+            const previousYearsBalance = await getBalance('0000-01-01T00:00:00.000Z', `${year}-01-01`);
+            const globalEvolution = await getGlobalEvolution(year);
 
             let dataProcessed:any[] = [];
             const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
 
-            balanceMonthly.forEach((element) => {
+            for (let i = 0; i <= globalEvolution.length - 1; i++) {
                 // Calculate bar data
                 dataProcessed.push({
-                    value: element.income / 100,
-                    label: months[element.month - 1],
+                    value: globalEvolution[i].balance / 100 + (i == 0 ? (previousYearsBalance.income - previousYearsBalance.expense) / 100 : dataProcessed[i-1].value),
+                    label: months[globalEvolution[i].month - 1],
                     labelWidth: 10,
-                    labelTextStyle: styles.horizontalLabelText,
                     dataPointColor: colors.positive,
                 });
-            });
+            }
 
             // Calculate the line segments
             const segments: any[] = [];
@@ -58,20 +58,23 @@ const EvolutionBarChart = ({ year }: Props) => {
             setLineSegments(segments);
         };
 
-        loadBalanceMonthly();
+        loadGlobalEvolution();
     }, [year]);
 
     // Calculate the radius of the container
     const [containerWidth, setContainerWidth] = useState(0);
 
-    if (!lineData || lineData.length === 0 || !lineSegments || lineSegments.length === 0) {
-        return <View style={ styles.container }></View>;
+    const handleLayout = (e: LayoutChangeEvent) => setContainerWidth(e.nativeEvent.layout.width);
+
+    if (!lineData || lineData.length === 0 || !lineSegments || lineSegments.length === 0 || containerWidth === 0) {
+        return <View style={ styles.container } onLayout={ handleLayout }></View>;
     }
 
     return (
-        <View style={ styles.container } onLayout={(event) => { setContainerWidth(event.nativeEvent.layout.width); }}>
+        <View style={ styles.container } onLayout={ handleLayout }>
             <LineChart
-                data={ lineData }
+                key={ `evolution-${year}` }
+                data={ lineData.map(d => ({ value: d.value, dataPointColor: d.dataPointColor, label: d.label, labelWidth: d.labelWidth })) }
                 
                 height={ 150 }
 
@@ -83,9 +86,11 @@ const EvolutionBarChart = ({ year }: Props) => {
                 rulesType='solid'
                 rulesColor={ colors.chartRulesColor }
                 rulesThickness={ 1 }
-                rulesLength={ containerWidth - 50 }
+                rulesLength={ containerWidth - 60 }
 
-                xAxisThickness={ 0 }
+                xAxisThickness={ 1 }
+                xAxisColor={ colors.chartRulesColor }
+                xAxisLabelTextStyle={ styles.horizontalLabelText }
                 yAxisThickness={ 0 }
                 yAxisTextStyle={ styles.verticalLabelText}
 

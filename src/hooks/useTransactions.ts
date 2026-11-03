@@ -327,6 +327,29 @@ export function useTransactions() {
         }
     }, []);
 
+    // GET THE GLOBAL EVOLUTION
+    const getGlobalEvolution = useCallback(async (year: number) => {
+        try {
+            // Set loading and error states
+            setLoading(true);
+            setError(null);
+
+            // Get the global evolution
+            const data = await transactionsRepository.getGlobalEvolution(year);
+
+            // Return the global evolution
+            return data;
+        } catch (err) {
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error obtaining the global evolution');
+            setError(error);
+            throw error;
+        } finally {
+            // Reset loading state
+            setLoading(false);
+        }
+    }, []);
+
     useEffect(() => {
         getTransactions();
     }, [getTransactions]);
@@ -355,5 +378,6 @@ export function useTransactions() {
         getAvailablePeriods,
         getBalanceMonthly,
         getCategoriesAmount,
+        getGlobalEvolution,
     };
 }
