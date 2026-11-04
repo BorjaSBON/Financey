@@ -9,6 +9,7 @@ import { useTheme } from '@theme/useTheme';
 import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
+import { ThemedSelectInput } from '@ui/themed-select-input';
 
 import ChartsTypeButtons from '@components/data/charts/charts-type-buttons';
 import YearsPeriod from '@components/data/years-period';
@@ -18,9 +19,9 @@ import TypeButtons from '@components/data/type-buttons';
 import MonthlyBarChart from '@components/data/charts/monthly-bar-chart';
 import BalancePieChart from '@components/data/charts/balance-pie-chart';
 import CategoriesCharts from '@components/data/charts/categories-charts';
-import EvolutionBarChart from '@components/data/charts/evolution-bar-chart';
 
-import { ThemedSelectInput } from '@ui/themed-select-input';
+import EvolutionBarChart from '@components/data/charts/evolution-bar-chart';
+import CategoryBarChart from '@components/data/charts/category-bar-chart';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
 import { useCategories } from '@/src/hooks/useCategories';
@@ -60,6 +61,10 @@ const DataCharts = () => {
     
     const [categorySelect, setCategorySelect] = useState('');
     const selectedValue = categories_formatted.some(c => c.value === categorySelect) ? categorySelect : (categories_formatted[0]?.value ?? '');
+
+    const categoryID = categories_selected.find(
+        item => item.name.toLowerCase() === selectedValue
+    )?.id;
 
     useEffect(() => {
         let cancelled = false;
@@ -140,9 +145,9 @@ const DataCharts = () => {
                         { !resumeActive &&
                             <View style={ styles.section }>
                                 <View style={ styles.inputSection }>
-                                    <ThemedSelectInput data={ categories_formatted } value={ selectedValue } onSelect={(item) => { setCategorySelect(item.value); }} maxHeight={ 200} />
+                                    <ThemedSelectInput data={ categories_formatted } value={ selectedValue } onSelect={(item) => { setCategorySelect(item.value); }} maxHeight={ 200 } />
                                 </View>
-                                
+                                { categoryID !== undefined && <CategoryBarChart year={ year } categoryID={ categoryID } /> }
                             </View>
                         }
 
@@ -179,7 +184,7 @@ const createStyles = (colors: ThemeColors) =>
 
         inputSection: {
             marginHorizontal: Values.paddingApp,
-            marginVertical: 10,
+            marginVertical: 5,
         },
 
         noData: {

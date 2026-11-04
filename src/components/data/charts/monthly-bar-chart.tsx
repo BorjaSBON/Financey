@@ -73,6 +73,7 @@ const MonthlyBarChart = ({ year }: Props) => {
                 data={ chartData }
                 
                 height={ 150 }
+                maxValue={ Math.max(...chartData.map(d => d.value)) }
 
                 spacing={ 12 }
                 initialSpacing={ 5 }

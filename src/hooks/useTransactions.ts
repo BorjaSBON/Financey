@@ -350,6 +350,29 @@ export function useTransactions() {
         }
     }, []);
 
+    // GET THE CATEGORY BALANCE
+    const getCategoryBalance = useCallback(async (year: number, categoryID: number) => {
+        try {
+            // Set loading and error states
+            setLoading(true);
+            setError(null);
+
+            // Get the category balance
+            const data = await transactionsRepository.getCategoryBalance(year, categoryID);
+
+            // Return the category balance
+            return data;
+        } catch (err) {
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error obtaining the category balance');
+            setError(error);
+            throw error;
+        } finally {
+            // Reset loading state
+            setLoading(false);
+        }
+    }, []);
+
     useEffect(() => {
         getTransactions();
     }, [getTransactions]);
@@ -379,5 +402,6 @@ export function useTransactions() {
         getBalanceMonthly,
         getCategoriesAmount,
         getGlobalEvolution,
+        getCategoryBalance,
     };
 }

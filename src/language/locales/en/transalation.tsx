@@ -5,6 +5,7 @@ export const LanguageEN = {
     income: 'Income',
     incomes: 'Incomes',
     balance: 'Balance',
+    budget: 'Budget',
 
     resume: 'Resume',
     evolution: 'Evolution',

@@ -7,7 +7,6 @@ import { Values } from '@constants/values';
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
 import { useLanguage } from '@language/useLanguage';
-
 import { useCurrency } from '@currency/useCurrency';
 
 import { ThemedText } from '@ui/themed-text';
@@ -163,8 +162,11 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
                     <View style={{ height: categoriesExtent, top: -50 }}>
                         <BarChart
                             data={ chartBarData }
+
                             horizontal
                             disableScroll
+                            
+                            maxValue={ Math.max(...chartBarData.map(d => d.value)) }
 
                             spacing={ BAR_SPACING }
                             initialSpacing={ INITIAL_SPACING }

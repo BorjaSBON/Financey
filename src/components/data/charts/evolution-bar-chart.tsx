@@ -77,6 +77,7 @@ const EvolutionBarChart = ({ year }: Props) => {
                 data={ lineData.map(d => ({ value: d.value, dataPointColor: d.dataPointColor, label: d.label, labelWidth: d.labelWidth })) }
                 
                 height={ 150 }
+                maxValue={ Math.max(...lineData.map(d => d.value)) }
 
                 spacing={ 22 }
                 initialSpacing={ 5 }

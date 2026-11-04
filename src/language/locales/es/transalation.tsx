@@ -5,6 +5,7 @@ export const LanguageES = {
     income: 'Ingresos',
     incomes: 'Ingresos',
     balance: 'Balance',
+    budget: 'Presupuesto',
 
     resume: 'Resumen',
     evolution: 'Evolución',
