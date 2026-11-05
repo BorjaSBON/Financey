@@ -596,6 +596,60 @@ export async function getCategoryBalance(year: number, categoryID: number) {
     );
 }
 
+// Get the category balance daily
+export async function getCategoryBalanceDaily(year: number, month: number, categoryID: number) {
+    const db = await dbPromise;
+
+    // Dates
+    const startDate = `${year}-${String(month).padStart(2, '0')}-01T00:00:00.000Z`;
+    const endDate = new Date(Date.UTC(year, month, 1)).toISOString();
+
+    // Get the amounts
+    return db.getAllAsync<{ day: number; balance: number }>(
+        `
+            WITH RECURSIVE days(day) AS (
+                SELECT 1
+                UNION ALL
+                SELECT day + 1
+                FROM days
+                WHERE day < CAST(strftime('%d', ?, '-1 day') AS INTEGER)
+            ),
+            daily_totals AS (
+                SELECT
+                    CAST(strftime('%d', date) AS INTEGER) AS day,
+                    SUM(
+                        CASE
+                            WHEN type = 'expense' THEN amount
+                            ELSE 0
+                        END
+                    ) AS balance
+                FROM transactions
+                WHERE date >= ?
+                    AND date < ?
+                    AND profile_id IN (
+                        SELECT id
+                        FROM profiles
+                        WHERE active = 1
+                        LIMIT 1
+                    )
+                    AND category_id = ?
+                GROUP BY strftime('%d', date)
+            )
+            SELECT
+                days.day AS day,
+                COALESCE(daily_totals.balance, 0) AS balance
+            FROM days
+            LEFT JOIN daily_totals
+                ON days.day = daily_totals.day
+            ORDER BY days.day ASC;
+        `,
+        endDate,
+        startDate,
+        endDate,
+        categoryID
+    );
+}
+
 // Export the repository functions
 export const transactionsRepository = {
     getAll,
@@ -615,4 +669,5 @@ export const transactionsRepository = {
     getCategoriesAmount,
     getGlobalEvolution,
     getCategoryBalance,
+    getCategoryBalanceDaily,
 };

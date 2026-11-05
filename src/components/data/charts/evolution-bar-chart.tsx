@@ -6,6 +6,7 @@ import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
 
@@ -18,6 +19,9 @@ const EvolutionBarChart = ({ year }: Props) => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+    
+    // Traductions
+    const { languages } = useLanguage();
 
     // Database
     const { getGlobalEvolution, getBalance } = useTransactions();
@@ -32,7 +36,7 @@ const EvolutionBarChart = ({ year }: Props) => {
             const globalEvolution = await getGlobalEvolution(year);
 
             let dataProcessed:any[] = [];
-            const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+            const months = languages['months'];
 
             for (let i = 0; i <= globalEvolution.length - 1; i++) {
                 // Calculate bar data
@@ -73,11 +77,12 @@ const EvolutionBarChart = ({ year }: Props) => {
     return (
         <View style={ styles.container } onLayout={ handleLayout }>
             <LineChart
-                key={ `evolution-${year}` }
+                key={ `evolution-${year}-${JSON.stringify(lineData)}` }
                 data={ lineData.map(d => ({ value: d.value, dataPointColor: d.dataPointColor, label: d.label, labelWidth: d.labelWidth })) }
                 
                 height={ 150 }
                 maxValue={ Math.max(...lineData.map(d => d.value)) }
+                isAnimated
 
                 spacing={ 22 }
                 initialSpacing={ 5 }

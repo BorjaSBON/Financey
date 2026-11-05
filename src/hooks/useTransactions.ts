@@ -373,6 +373,29 @@ export function useTransactions() {
         }
     }, []);
 
+    // GET THE CATEGORY BALANCE FOR EACH DAY OF A MONTH
+    const getCategoryBalanceDaily = useCallback(async (year: number, month: number, categoryID: number) => {
+        try {
+            // Set loading and error states
+            setLoading(true);
+            setError(null);
+
+            // Get the category balance daily
+            const data = await transactionsRepository.getCategoryBalanceDaily(year, month, categoryID);
+
+            // Return the category balance daily
+            return data;
+        } catch (err) {
+            // Error handling
+            const error = err instanceof Error ? err : new Error('Error obtaining the category balance daily');
+            setError(error);
+            throw error;
+        } finally {
+            // Reset loading state
+            setLoading(false);
+        }
+    }, []);
+
     useEffect(() => {
         getTransactions();
     }, [getTransactions]);
@@ -403,5 +426,6 @@ export function useTransactions() {
         getCategoriesAmount,
         getGlobalEvolution,
         getCategoryBalance,
+        getCategoryBalanceDaily,
     };
 }

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View, Pressable } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
 
 import { Values } from '@constants/values';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
 
@@ -18,6 +19,9 @@ const MonthlyBarChart = ({ year }: Props) => {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
+    
+    // Traductions
+    const { languages } = useLanguage();
 
     // Database
     const { getBalanceMonthly } = useTransactions();
@@ -26,13 +30,15 @@ const MonthlyBarChart = ({ year }: Props) => {
     const [chartData, setChartData] = useState<any[] | null>([]);
     const [lineData, setLineData] = useState<any[] | null>([]);
 
+    const [displayLine, setDisplayLine] = useState(false);
+
     useEffect(() => {
         const loadBalanceMonthly = async () => {
             const balanceMonthly = await getBalanceMonthly(year);
 
             let dataProcessed:any[] = [];
             let lineDataProcessed: any[] = [];
-            const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+            const months = languages['months'];
 
             balanceMonthly.forEach((element) => {
                 // Calculate bar data
@@ -68,45 +74,51 @@ const MonthlyBarChart = ({ year }: Props) => {
 
     return (
         <View style={ styles.container } onLayout={ handleLayout }>
-            <BarChart
-                key={ `resume-${year}` }
-                data={ chartData }
-                
-                height={ 150 }
-                maxValue={ Math.max(...chartData.map(d => d.value)) }
+            <Pressable onPress={ () => setDisplayLine(prev => !prev) }>
+                <View pointerEvents='none'>
+                <BarChart
+                    key={ `resume-${year}-${JSON.stringify(chartData)}` }
+                    data={ chartData }
+                    
+                    height={ 150 }
+                    maxValue={ Math.max(...chartData.map(d => d.value)) }
+                    isAnimated
 
-                spacing={ 12 }
-                initialSpacing={ 5 }
-                endSpacing={ 2.5 }
-                noOfSections={ 4 }
+                    spacing={ 12 }
+                    initialSpacing={ 5 }
+                    endSpacing={ 2.5 }
+                    noOfSections={ 4 }
+                    barMarginBottom={ 0 }
 
-                rulesType='solid'
-                rulesColor={ colors.chartRulesColor }
-                rulesThickness={ 1 }
-                rulesLength={ containerWidth - 55 }
+                    rulesType='solid'
+                    rulesColor={ colors.chartRulesColor }
+                    rulesThickness={ 1 }
+                    rulesLength={ containerWidth - 55 }
 
-                barWidth={ 4 }
-                barBorderRadius={ 1.5 }
+                    barWidth={ 4 }
+                    barBorderRadius={ 1.5 }
 
-                xAxisThickness={ 1 }
-                xAxisColor={ colors.chartRulesColor }
-                xAxisLabelTextStyle={ styles.horizontalLabelText }
-                yAxisThickness={ 0 }
-                yAxisTextStyle={ styles.verticalLabelText}
+                    xAxisThickness={ 1 }
+                    xAxisColor={ colors.chartRulesColor }
+                    xAxisLabelTextStyle={ styles.horizontalLabelText }
+                    yAxisThickness={ 0 }
+                    yAxisTextStyle={ styles.verticalLabelText}
 
-                lineData={ lineData }
-                lineConfig={{
-                    color: colors.chartLineBarColor,
-                    thickness: 1.5,
-                    curved: false,
-                    hideDataPoints: false,
-                    dataPointsRadius: 2,
-                    dataPointsColor: colors.chartLineBarColor,
-                    initialSpacing: 7.5,
-                    spacing: 17.5,
-                }}
-                showLine={ true }
-            />
+                    lineData={ lineData }
+                    lineConfig={{
+                        color: colors.chartLineBarColor,
+                        thickness: 1.5,
+                        curved: false,
+                        hideDataPoints: false,
+                        dataPointsRadius: 2,
+                        dataPointsColor: colors.chartLineBarColor,
+                        initialSpacing: 7.5,
+                        spacing: 17.5,
+                    }}
+                    showLine={ displayLine }
+                />
+                </View>
+            </Pressable>
         </View>
     );
 };

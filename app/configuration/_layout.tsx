@@ -10,6 +10,8 @@ import { useLanguage } from '@language/useLanguage';
 
 import Header from '@components/layout/header';
 
+import '@language/locales/calendar-locale';
+
 const ConfigurationLayout = () => {
     // Theme
     const { colors } = useTheme();

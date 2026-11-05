@@ -73,6 +73,8 @@ export const LanguageES = {
     // CHARTS
     total: 'Total',
     noTransactions: 'Transacciones no añadidas',
+    noBudget: 'Sin límites',
+    noCharges: 'Sin gastos',
 
     // CONFIGURATION
     // Header
@@ -181,4 +183,7 @@ export const LanguageES = {
     futureImportInfo2: 'Tendrá soporte con archivos de bancos',
     futureExportInfo: 'Permitirá exportar los datos almacenados',
     goBack: 'Volver',
+
+    // CALENDAR
+    months: ['E', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
 }

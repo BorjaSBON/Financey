@@ -1,5 +1,5 @@
-import { LanguageES } from './es/transalation';
-import { LanguageEN } from './en/transalation';
+import { LanguageES } from './es/translation';
+import { LanguageEN } from './en/translation';
 
 export const Languages = {
     es: LanguageES,

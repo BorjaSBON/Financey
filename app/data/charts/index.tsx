@@ -22,6 +22,7 @@ import CategoriesCharts from '@components/data/charts/categories-charts';
 
 import EvolutionBarChart from '@components/data/charts/evolution-bar-chart';
 import CategoryBarChart from '@components/data/charts/category-bar-chart';
+import CategoryMonthCalendar from '@components/data/charts/category-month-calendar';
 
 import { useTransactions } from '@/src/hooks/useTransactions';
 import { useCategories } from '@/src/hooks/useCategories';
@@ -62,9 +63,7 @@ const DataCharts = () => {
     const [categorySelect, setCategorySelect] = useState('');
     const selectedValue = categories_formatted.some(c => c.value === categorySelect) ? categorySelect : (categories_formatted[0]?.value ?? '');
 
-    const categoryID = categories_selected.find(
-        item => item.name.toLowerCase() === selectedValue
-    )?.id;
+    const categoryID = categories_selected.find(item => item.name.toLowerCase() === selectedValue)?.id;
 
     useEffect(() => {
         let cancelled = false;
@@ -127,21 +126,6 @@ const DataCharts = () => {
                             { resumeActive ? <MonthlyBarChart year={ year } /> : <EvolutionBarChart year={ year } /> }
                         </View>
 
-                        { resumeActive &&
-                            <View style={ styles.section }>
-                                <YearsPeriod range={ selectedPeriod.months } months onChange={ setMonth } />
-                                <BalanceResume squareEnable={ false } from={ new Date(Date.UTC(year, month-1, 1)).toISOString() } to={ new Date(Date.UTC(year, month, 1)).toISOString() } />
-                                <BalancePieChart year={ year } month={ month } />
-                            </View>
-                        }
-
-                        { resumeActive && 
-                            <View style={ styles.section }>
-                                <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => setExpenseActive(true) } incomeOnPress={ () => setExpenseActive(false) } />
-                                <CategoriesCharts year={ year } month={ month } type={ expenseActive ? 'expense' : 'income' } />
-                            </View>
-                        }
-
                         { !resumeActive &&
                             <View style={ styles.section }>
                                 <View style={ styles.inputSection }>
@@ -151,9 +135,16 @@ const DataCharts = () => {
                             </View>
                         }
 
-                        { !resumeActive &&
+                        <View style={ styles.section }>
+                            <YearsPeriod range={ selectedPeriod.months } months onChange={ setMonth } />
+                            { resumeActive && <BalanceResume squareEnable={ false } from={ new Date(Date.UTC(year, month-1, 1)).toISOString() } to={ new Date(Date.UTC(year, month, 1)).toISOString() } /> }
+                            { resumeActive ? <BalancePieChart year={ year } month={ month } /> : categoryID !== undefined && <CategoryMonthCalendar year={ year } month={ month } categoryID={ categoryID }/> }
+                        </View>
+
+                        { resumeActive && 
                             <View style={ styles.section }>
-                                <YearsPeriod range={ selectedPeriod.months } months onChange={ setMonth } />
+                                <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => setExpenseActive(true) } incomeOnPress={ () => setExpenseActive(false) } />
+                                <CategoriesCharts year={ year } month={ month } type={ expenseActive ? 'expense' : 'income' } />
                             </View>
                         }
                     </View>

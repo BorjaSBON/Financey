@@ -95,11 +95,12 @@ const CategoryBarChart = ({ year, categoryID }: Props) => {
         <View style={ styles.container }>
             <View style={ styles.containerChart } onLayout={ handleLayout }>
                 <BarChart
-                    key={ `category-${year}` }
+                    key={ `category-${year}-${JSON.stringify(lineData)}` }
                     data={ lineData.map(d => ({ value: d.value, frontColor: d.frontColor, label: d.label, labelWidth: d.labelWidth })) }
                     
                     height={ 150 }
                     maxValue={ heightChart }
+                    isAnimated
 
                     spacing={ 16 }
                     initialSpacing={ 5 }
@@ -133,13 +134,15 @@ const CategoryBarChart = ({ year, categoryID }: Props) => {
                 />
             </View>
 
-            { budgetValue && 
-                <ThemedText style={ styles.budgetText } weight='regular'>
-                    { languages['budget'] }:
-                    <ThemedText style={ styles.budgetTextValue } weight='medium'> { ReadableNumber(budgetValue) }</ThemedText>
-                    <ThemedText style={ styles.budgetTextCurrency } weight='regular'> { currencyInfo.symbol }</ThemedText>
-                </ThemedText>
-            }
+            <ThemedText style={ styles.budgetText } weight='regular'>
+                { languages['budget'] }:
+                { budgetValue ?
+                    <ThemedText style={ styles.budgetTextValue } weight='medium'> { ReadableNumber(budgetValue) }
+                        <ThemedText style={ styles.budgetTextCurrency } weight='regular'> { currencyInfo.symbol }</ThemedText>
+                    </ThemedText> : 
+                    <ThemedText style={ styles.budgetTextValue } weight='medium'> { languages['noBudget'] }</ThemedText>
+                }
+            </ThemedText>
         </View>
     );
 };
