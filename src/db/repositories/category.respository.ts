@@ -11,6 +11,7 @@ function mapCategory(row: any): Category {
         id: row.id,
         name: row.name,
         type: row.type,
+        budget: row.budget,
         profileId: row.profile_id,
     };
 }
@@ -20,7 +21,7 @@ export async function getAll(): Promise<Category[]> {
     const db = await dbPromise;
 
     const rows = await db.getAllAsync(`
-        SELECT c.id AS id, c.name AS name, c.type AS type, c.profile_id AS profile_id
+        SELECT c.id AS id, c.name AS name, c.type AS type, c.budget as  budget, c.profile_id AS profile_id
         FROM categories c
         INNER JOIN profiles p
             ON p.id = c.profile_id
@@ -88,11 +89,12 @@ export async function create(category: CreateCategory): Promise<number> {
         // Insert the category
         const result = await db.runAsync(
             `
-                INSERT INTO categories (name, type, profile_id)
-                VALUES (?, ?, ?)
+                INSERT INTO categories (name, type, budget, profile_id)
+                VALUES (?, ?, ?, ?)
             `,
             category.name,
             category.type,
+            category.budget,
             profile.id
         );
 
@@ -109,11 +111,12 @@ export async function modify(category: UpdateCategory): Promise<void> {
     await db.runAsync(
         `
             UPDATE categories
-            SET name = ?, type = ?
+            SET name = ?, type = ?, budget = ?
             WHERE id = ?
         `,
         category.name,
         category.type,
+        category.budget,
         category.id
     );
 }

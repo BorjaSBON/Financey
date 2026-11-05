@@ -33,7 +33,7 @@ const CategoryBarChart = ({ year, categoryID }: Props) => {
 
     // Database
     const { getCategoryBalance } = useTransactions();
-    const { category, getCategory } = useCategories();
+    const { getCategory } = useCategories();
 
     // Balance Monthly
     const [lineData, setLineData] = useState<any[] | null>([]);
@@ -43,15 +43,16 @@ const CategoryBarChart = ({ year, categoryID }: Props) => {
     useEffect(() => {
         const loadCategoryBalance = async () => {
             // Get the category limit
-            await getCategory(categoryID);
-            const budget = category?.budget ?? null;
+            const category = await getCategory(categoryID);
+            let budget = category?.budget ?? null;
+            if (budget && budget > 0) budget = budget / 100;
             setBudgetValue(budget);
 
             // Get the category expenses
             const categoryBalance = await getCategoryBalance(year, categoryID);
 
             let dataProcessed:any[] = [];
-            const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+            const months = languages['months'];
 
             for (let i = 0; i <= categoryBalance.length - 1; i++) {
                 // Calculate bar data

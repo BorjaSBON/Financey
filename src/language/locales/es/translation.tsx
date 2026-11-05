@@ -25,6 +25,7 @@ export const LanguageES = {
 
     name: 'Nombre',
     select: 'Seleccione',
+    optional: 'Opcional',
     
     errorInputs: 'Rellene todos los campos',
     errorAmount: 'La cantidad debe ser un número válido',

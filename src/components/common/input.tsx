@@ -4,6 +4,7 @@ import { router } from 'expo-router';
 import { Values } from '@constants/values';
 
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedInput } from '@ui/themed-input';
@@ -23,6 +24,7 @@ interface Props {
     type?: 'text' | 'numeric' | 'date' | 'select';
     addButton?: boolean;
     params?: {};
+    optional?: boolean;
 
     // Text and numeric
     value?: string;
@@ -40,19 +42,29 @@ interface Props {
     onSelect?: (item: DropdownItem) => void;
 }
 
-export default function Input({ name, type='text', addButton=false, params={}, value='', placeholder='', onChangeText=()=>{}, dateValue=null, minimumDate=null, onChange=()=>{}, selectData=[], selectValue='', onSelect=()=>{} }: Props) {
+export default function Input({ name, type='text', addButton=false, params={}, optional=false, value='', placeholder='', onChangeText=()=>{}, dateValue=null, minimumDate=null, onChange=()=>{}, selectData=[], selectValue='', onSelect=()=>{} }: Props) {
     // Theme
     const { colors } = useTheme();
+        
+    // Traductions
+    const { languages } = useLanguage();
 
     return (
         <View style={ styles.input }>
             { addButton ?
                 <View style={ styles.header }>
-                    <ThemedText style={ styles.title } weight='medium'>{ name }</ThemedText>
+                    <ThemedText style={ styles.title } weight='medium'>
+                        { name }
+                        { optional === true && <ThemedText style={ styles.title } weight='regular'> ({ languages['optional'] })</ThemedText> }
+                    </ThemedText>
                     <Pressable onPress={ () => router.push({ pathname: '/configuration/data/categories/add', params: params, }) }>
                         <AddIcon size={ 14 } backgroundColor={ colors.iconColor } iconColor={colors.iconBackground} />
                     </Pressable>
-                </View> : <ThemedText style={ styles.title } weight='medium'>{ name }</ThemedText>
+                </View> : 
+                <ThemedText style={ styles.title } weight='medium'>
+                    { name }
+                    { optional === true && <ThemedText style={ styles.optional } weight='regular'> ({ languages['optional'] })</ThemedText> }
+                </ThemedText>
             }
 
             { type === 'text' && <ThemedInput type='text' placeholder={ placeholder } value={ value } onChange={ onChangeText } /> }
@@ -74,6 +86,10 @@ const styles = StyleSheet.create({
 
     title: {
         fontSize: 13,
+    },
+
+    optional: {
+        fontSize: 11,
     },
 
     header: {

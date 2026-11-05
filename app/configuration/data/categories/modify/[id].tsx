@@ -46,16 +46,11 @@ const DataModify = () => {
     // Active type
     const [expenseActive, setExpenseActive] = useState(true);
 
-    const expenseActivation = () => {
-        setExpenseActive(true);
-    }
-
-    const incomeActivation = () => {
-        setExpenseActive(false);
-    }
-
     // Category name
     const [name, setName] = useState('');
+
+    // Budget amount
+    const [budget, setBudget] = useState('');
 
     // Delete popup
     const [deleteElementPopup, setDeleteElementPopup] = useState(false);
@@ -72,8 +67,13 @@ const DataModify = () => {
             return;
         }
 
+        // Get the budget
+        const budget = category.budget;
+
         setName(category.name);
         setExpenseActive(category.type === 'expense');
+
+        if (budget) setBudget(String(budget / 100));
     }, [category]);
 
     // MODIFY CATEGORY ACTION
@@ -86,8 +86,27 @@ const DataModify = () => {
 
         setError(null);
 
+        let budgetInCents:null | number = null;
+
+        if (budget && expenseActive) {
+            // Check if the budget value is a number
+            if (isNaN(Number(budget.replace(',', '.')))) {
+                setError(languages['errorAmount']);
+                return;
+            }
+
+            // Check if the budget value is positive
+            if (Number(budget.replace(',', '.')) <= 0) {
+                setError(languages['errorPositiveAmount']);
+                return;
+            }
+
+            // Convert the budget value to a valid number
+            budgetInCents = Math.round(Number(budget.replace(',', '.')) * 100);
+        }
+
         // Modify category
-        await modifyCategory({ id: Number(id), name: name, type: expenseActive ? 'expense' : 'income' });
+        await modifyCategory({ id: Number(id), name: name, type: expenseActive ? 'expense' : 'income', budget: budgetInCents });
 
         // Modify profile
         await modifyProfileLastAction({ lastAction: 'modifyCategory' });
@@ -120,10 +139,11 @@ const DataModify = () => {
     return (
         <View style={{ height: '100%', width: '100%' }}>
             <View style={ styles.container }>
-                <TypeButtons expenseActive={ expenseActive } expenseOnPress={ expenseActivation } incomeOnPress={ incomeActivation } />
+                <TypeButtons expenseActive={ expenseActive } expenseOnPress={ () => setExpenseActive(true) } incomeOnPress={ () => setExpenseActive(false) } />
 
                 <View style={ styles.inputs }>
                     <Input name={ languages['name'] } type='text' placeholder={ languages['categoryPlaceholder'] } value={ name } onChangeText={ setName } />
+                    { expenseActive && <Input name={ languages['budget'] } type='numeric' placeholder='0000.00' value={ budget } onChangeText={ setBudget } optional={ true } /> }
                 </View>
 
                 { error && <ThemedText weight='light' style={ styles.error }>{ error }</ThemedText> }
@@ -168,7 +188,7 @@ const createStyles = (colors: ThemeColors) =>
             display: 'flex',
             flexDirection: 'column',
             rowGap: 10,
-            marginTop: 25,
+            marginTop: 15,
             marginHorizontal: 'auto',
         },
         

@@ -29,6 +29,7 @@ export async function initializeDatabase() {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             type TEXT NOT NULL CHECK (type IN ('income', 'expense')),
+            budget INTEGER,
             profile_id INTEGER NOT NULL,
 
             FOREIGN KEY (profile_id)
@@ -72,14 +73,20 @@ export async function initializeDatabase() {
         name: string;
     }>(`PRAGMA table_info(categories)`);
 
-    const hasType = columns.some(
-        (column) => column.name === 'type'
-    );
+    const hasType = columns.some((column) => column.name === 'type');
+    const hasBudget = columns.some((column) => column.name === 'budget');
 
     if (!hasType) {
         await db.execAsync(`
             ALTER TABLE categories
             ADD COLUMN type TEXT NOT NULL DEFAULT 'expense';
+        `);
+    }
+
+    if (!hasBudget) {
+        await db.execAsync(`
+            ALTER TABLE categories
+            ADD COLUMN budget INTEGER;
         `);
     }
 }
