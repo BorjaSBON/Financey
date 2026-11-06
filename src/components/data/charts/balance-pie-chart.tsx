@@ -51,7 +51,7 @@ const BalancePieChart = ({ year, month }: Props) => {
 
     // Check if the transactions are laoded
     if (loadingTransactions) {
-        return <ActivityIndicator />;
+        return <View style={ styles.container }><ActivityIndicator /></View>;
     }
 
     return (

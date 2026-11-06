@@ -180,9 +180,7 @@ const DataModify = () => {
                     </View>
                 </View>
 
-                <View style={{ marginBottom: 15 }}>
-                    <DeleteElement active={ deleteElementPopup } title={ languages['deleteTransactionText'] } titleButton='delete' deleteAction={ deleteTransactionAction } cancelAction={ activeDeleteElementPopup } />
-                </View>
+                <DeleteElement active={ deleteElementPopup } title={ languages['deleteTransactionText'] } titleButton='delete' deleteAction={ deleteTransactionAction } cancelAction={ activeDeleteElementPopup } />
             </View>
         </SafeAreaView>
     );

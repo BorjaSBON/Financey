@@ -1,4 +1,5 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Dimensions } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
@@ -31,10 +32,15 @@ export default function ModifyElement({ active=false, title='Modify element', ti
     // Traductions
     const { languages } = useLanguage();
 
+    // Safe area
+    const insets = useSafeAreaInsets();
+    const { height } = Dimensions.get('window');
+
     return (
         <View style={[ 
             styles.container,
-            active ? { display: 'flex' } : { display: 'none' }
+            active ? { display: 'flex' } : { display: 'none' },
+            { height: height + insets.top + insets.bottom, bottom: 0 }
         ]}>
             <View style={ styles.popup }>
                 <ThemedText style={ styles.message } weight='regular'>{ title }</ThemedText>
@@ -55,7 +61,6 @@ const createStyles = (colors: ThemeColors) =>
         container: {
             position: 'absolute',
             width: '100%',
-            height: '100%',
             backgroundColor: colors.popupBackground,
         },
 

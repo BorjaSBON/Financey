@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, LayoutChangeEvent } from 'react-native';
 import { PieChart } from 'react-native-gifted-charts';
 
 import { ThemeColors } from '@theme/colors';
@@ -93,13 +93,15 @@ const CategoriesPieChart = ({ year, month }: Props) => {
     const radius = Math.max(0, ((containerWidth - 15) * 0.95) / 2);
     const innerRadius = radius * 0.725;
 
+    const handleLayout = (e: LayoutChangeEvent) => setContainerWidth(e.nativeEvent.layout.width);
+
     // Check if the transactions are laoded
     if (loadingTransactions) {
-        return <ActivityIndicator />;
+        return <View style={ styles.container } onLayout={ handleLayout }><ActivityIndicator /></View>;
     }
 
     return (
-        <View style={ styles.container } onLayout={(event) => { setContainerWidth(event.nativeEvent.layout.width); }}>
+        <View style={ styles.container } onLayout={ handleLayout }>
             <PieChart
                 donut
 
