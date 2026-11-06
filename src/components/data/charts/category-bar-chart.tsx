@@ -89,7 +89,7 @@ const CategoryBarChart = ({ year, categoryID }: Props) => {
     }
 
     if (!lineData || lineData.length === 0 || containerWidth === 0) {
-        return <View style={ styles.container } onLayout={ handleLayout }></View>;
+        return <View style={[ styles.container, { height: 150 } ]} onLayout={ handleLayout }></View>;
     }
 
     return (

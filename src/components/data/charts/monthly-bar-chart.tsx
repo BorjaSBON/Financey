@@ -69,7 +69,7 @@ const MonthlyBarChart = ({ year }: Props) => {
     const handleLayout = (e: LayoutChangeEvent) => setContainerWidth(e.nativeEvent.layout.width);
 
     if (!chartData || !lineData || chartData.length === 0 || lineData.length === 0 || containerWidth === 0) {
-        return <View style={ styles.container } onLayout={ handleLayout }></View>;
+        return <View style={[ styles.container, { height: 150 } ]} onLayout={ handleLayout }></View>;
     }
 
     return (

@@ -3,7 +3,7 @@
     "name": "Financey",
     "slug": "financey",
     "scheme": "financey",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "orientation": "portrait",
     "icon": "./assets/app_icon.png",
     "extra": {

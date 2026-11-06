@@ -71,8 +71,13 @@ const EvolutionBarChart = ({ year }: Props) => {
     const handleLayout = (e: LayoutChangeEvent) => setContainerWidth(e.nativeEvent.layout.width);
 
     if (!lineData || lineData.length === 0 || !lineSegments || lineSegments.length === 0 || containerWidth === 0) {
-        return <View style={ styles.container } onLayout={ handleLayout }></View>;
+        return <View style={[ styles.container, { height: 150 } ]} onLayout={ handleLayout }></View>;
     }
+
+    const values = lineData.map(d => d.value);
+    const maxValue = Math.max(...values, 0);
+    const minValue = Math.min(...values, 0);
+    const hasNegative = minValue < 0;
 
     return (
         <View style={ styles.container } onLayout={ handleLayout }>
@@ -81,13 +86,16 @@ const EvolutionBarChart = ({ year }: Props) => {
                 data={ lineData.map(d => ({ value: d.value, dataPointColor: d.dataPointColor, label: d.label, labelWidth: d.labelWidth })) }
                 
                 height={ 150 }
-                maxValue={ Math.max(...lineData.map(d => d.value)) }
+                maxValue={ maxValue > Math.abs(minValue) ? maxValue : Math.abs(minValue) }
+                mostNegativeValue={ minValue }
                 isAnimated
 
                 spacing={ 22 }
                 initialSpacing={ 5 }
                 endSpacing={ 2.5 }
+
                 noOfSections={ 4 }
+                noOfSectionsBelowXAxis={ hasNegative ? 4 : 0 }
 
                 rulesType='solid'
                 rulesColor={ colors.chartRulesColor }
