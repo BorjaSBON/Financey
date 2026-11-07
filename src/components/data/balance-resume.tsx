@@ -40,15 +40,19 @@ export default function BalanceResume({ squareEnable=false, from='0000-01-01T00:
 
     useEffect(() => {
         const loadBalance = async () => {
-            if (to === '') {
-                const now = new Date();
-                to = new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0, 0).toISOString();
+            try {
+                if (to === '') {
+                    const now = new Date();
+                    to = new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0, 0).toISOString();
+                }
+
+                const balance = await getBalance(from, to);
+
+                setIncome(balance.income);
+                setExpense(balance.expense);
+            } catch (error) {
+                console.log('Error while loading balance data:', error);
             }
-
-            const balance = await getBalance(from, to);
-
-            setIncome(balance.income);
-            setExpense(balance.expense);
         };
 
         loadBalance();

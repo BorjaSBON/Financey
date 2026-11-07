@@ -42,44 +42,48 @@ const CategoryBarChart = ({ year, categoryID }: Props) => {
 
     useEffect(() => {
         const loadCategoryBalance = async () => {
-            // Get the category limit
-            const category = await getCategory(categoryID);
-            let budget = category?.budget ?? null;
-            if (budget && budget > 0) budget = budget / 100;
-            setBudgetValue(budget);
+            try {
+                // Get the category limit
+                const category = await getCategory(categoryID);
+                let budget = category?.budget ?? null;
+                if (budget && budget > 0) budget = budget / 100;
+                setBudgetValue(budget);
 
-            // Get the category expenses
-            const categoryBalance = await getCategoryBalance(year, categoryID);
+                // Get the category expenses
+                const categoryBalance = await getCategoryBalance(year, categoryID);
 
-            let dataProcessed:any[] = [];
-            const months = languages['months'];
+                let dataProcessed:any[] = [];
+                const months = languages['months'] ?? ['J','F','M','A','M','J','J','A','S','O','N','D'];
 
-            for (let i = 0; i <= categoryBalance.length - 1; i++) {
-                // Calculate bar data
-                dataProcessed.push({
-                    value: Math.abs(categoryBalance[i].balance / 100),
-                    label: months[categoryBalance[i].month - 1],
-                    labelWidth: 6,
-                    frontColor: colors.negative,
-                });
-            }
+                for (let i = 0; i <= categoryBalance.length - 1; i++) {
+                    // Calculate bar data
+                    dataProcessed.push({
+                        value: Math.abs(categoryBalance[i].balance / 100),
+                        label: months[categoryBalance[i].month - 1],
+                        labelWidth: 6,
+                        frontColor: colors.negative,
+                    });
+                }
 
-            setLineData(dataProcessed);
+                setLineData(dataProcessed);
 
-            // Get max value of the chart
-            let maxValue = Math.max(...dataProcessed.map(d => d.value));
+                // Get max value of the chart
+                let maxValue = Math.max(...dataProcessed.map(d => d.value));
 
-            if (budget && budget > maxValue) {
-                setHeightChart(budget);
-            } else {
-                setHeightChart(maxValue);
+                if (budget && budget > maxValue) {
+                    setHeightChart(budget);
+                } else {
+                    setHeightChart(maxValue);
+                }
+            } catch (error) {
+                console.log('Error while loading category bar data:', error);
             }
         };
 
         loadCategoryBalance();
     }, [year, categoryID]);
 
-    // Calculate the radius of the container
+    // Calculate the width of the container
     const [containerWidth, setContainerWidth] = useState(0);
 
     const handleLayout = (e: LayoutChangeEvent) => setContainerWidth(e.nativeEvent.layout.width);
@@ -96,14 +100,13 @@ const CategoryBarChart = ({ year, categoryID }: Props) => {
         <View style={ styles.container }>
             <View style={ styles.containerChart } onLayout={ handleLayout }>
                 <BarChart
-                    key={ `category-${year}-${JSON.stringify(lineData)}` }
+                    key={ `category-${year}` }
                     data={ lineData.map(d => ({ value: d.value, frontColor: d.frontColor, label: d.label, labelWidth: d.labelWidth })) }
                     
                     height={ 150 }
                     maxValue={ heightChart }
-                    isAnimated
 
-                    spacing={ 16 }
+                    spacing={ (containerWidth - 7.5 - 6 * 12 - 40) / 12 }
                     initialSpacing={ 5 }
                     endSpacing={ 2.5 }
                     noOfSections={ 4 }

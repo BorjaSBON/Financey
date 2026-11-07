@@ -45,11 +45,15 @@ const CategoryMonthCalendar = ({ year, month, categoryID }: Props) => {
 
     useEffect(() => {
         const loadCategoryBalanceDaily = async () => {
-            // Get the category expenses daily
-            const categoryBalance = await getCategoryBalanceDaily(year, month, categoryID);
-            setCalendarData(categoryBalance);
-            setSelectedDay('');
-            setExpenseDay(0);
+            try {
+                // Get the category expenses daily
+                const categoryBalance = await getCategoryBalanceDaily(year, month, categoryID);
+                setCalendarData(categoryBalance);
+                setSelectedDay('');
+                setExpenseDay(0);
+            } catch (error) {
+                console.log('Error while loading category month calendar data:', error);
+            }
         };
 
         loadCategoryBalanceDaily();

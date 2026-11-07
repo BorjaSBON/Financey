@@ -14,6 +14,8 @@ import { CurrencyProvider } from '@currency/CurrencyContext';
 
 import { LanguageProvider } from '@language/LanguageContext';
 
+import '@language/locales/calendar-locale';
+
 SplashScreen.preventAutoHideAsync();
 
 const RootLayoutContent = () => {

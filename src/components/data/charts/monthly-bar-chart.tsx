@@ -34,36 +34,40 @@ const MonthlyBarChart = ({ year }: Props) => {
 
     useEffect(() => {
         const loadBalanceMonthly = async () => {
-            const balanceMonthly = await getBalanceMonthly(year);
+            try {
+                const balanceMonthly = await getBalanceMonthly(year);
 
-            let dataProcessed:any[] = [];
-            let lineDataProcessed: any[] = [];
-            const months = languages['months'];
+                let dataProcessed:any[] = [];
+                let lineDataProcessed: any[] = [];
+                const months = languages['months'] ?? ['J','F','M','A','M','J','J','A','S','O','N','D'];
 
-            balanceMonthly.forEach((element) => {
-                // Calculate bar data
-                dataProcessed.push({
-                    value: element.income / 100,
-                    label: months[element.month - 1],
-                    spacing: 1.5,
-                    labelWidth: 10,
-                    frontColor: colors.positive,
+                balanceMonthly.forEach((element) => {
+                    // Calculate bar data
+                    dataProcessed.push({
+                        value: element.income / 100,
+                        label: months[element.month - 1],
+                        spacing: 1.5,
+                        labelWidth: 10,
+                        frontColor: colors.positive,
+                    });
+                    dataProcessed.push({ value: element.expense / 100, frontColor: colors.negative });
+                    
+                    // Calcaulte line data
+                    let balance = (element.income - element.expense) / 100;
+                    lineDataProcessed.push({ value: balance >= 0 ? balance : 0 });
                 });
-                dataProcessed.push({ value: element.expense / 100, frontColor: colors.negative });
-                
-                // Calcaulte line data
-                let balance = (element.income - element.expense) / 100;
-                lineDataProcessed.push({ value: balance >= 0 ? balance : 0 });
-            });
 
-            setChartData(dataProcessed);
-            setLineData(lineDataProcessed);
+                setChartData(dataProcessed);
+                setLineData(lineDataProcessed);
+            } catch (error) {
+                console.log('Error while loading monthly bar data:', error);
+            }
         };
 
         loadBalanceMonthly();
     }, [year]);
 
-    // Calculate the radius of the container
+    // Calculate the width of the container
     const [containerWidth, setContainerWidth] = useState(0);
     
     const handleLayout = (e: LayoutChangeEvent) => setContainerWidth(e.nativeEvent.layout.width);
@@ -77,14 +81,13 @@ const MonthlyBarChart = ({ year }: Props) => {
             <Pressable onPress={ () => setDisplayLine(prev => !prev) }>
                 <View pointerEvents='none'>
                 <BarChart
-                    key={ `resume-${year}-${JSON.stringify(chartData)}` }
+                    key={ `resume-${year}` }
                     data={ chartData }
                     
                     height={ 150 }
                     maxValue={ Math.max(...chartData.map(d => d.value)) }
-                    isAnimated
 
-                    spacing={ 12 }
+                    spacing={ (containerWidth - 7.5 - 42 - (4*2 + 1.5) * 12) / 12 }
                     initialSpacing={ 5 }
                     endSpacing={ 2.5 }
                     noOfSections={ 4 }
@@ -113,7 +116,7 @@ const MonthlyBarChart = ({ year }: Props) => {
                         dataPointsRadius: 2,
                         dataPointsColor: colors.chartLineBarColor,
                         initialSpacing: 7.5,
-                        spacing: 17.5,
+                        spacing: (containerWidth - 7.5 - 89.5) / 12,
                     }}
                     showLine={ displayLine }
                 />

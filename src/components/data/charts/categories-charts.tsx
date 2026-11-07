@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { PieChart, BarChart } from 'react-native-gifted-charts';
 
 import { Values } from '@constants/values';
@@ -73,29 +73,33 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
 
     useEffect(() => {
         const loadCategoriesAmount = async () => {
-            const categoriesAmount = await getCategoriesAmount(year, month, type);
-            
-            let dataDonutProcessed:any[] = [];
-            let dataBarProcessed:any[] = [];
+            try {
+                const categoriesAmount = await getCategoriesAmount(year, month, type);
+                
+                let dataDonutProcessed:any[] = [];
+                let dataBarProcessed:any[] = [];
 
-            categoriesAmount.forEach((element, index) => {
-                dataDonutProcessed.push({ value: element.amount, label: element.category, color: interpolateColor((index + 1) / categoriesAmount.length) });
-                dataBarProcessed.push({
-                    value: element.amount / 100,
-                    label: element.category,
-                    spacing: 10,
-                    labelTextStyle: styles.horizontalLabelText,
-                    frontColor: interpolateColor((index + 1) / categoriesAmount.length),
+                categoriesAmount.forEach((element, index) => {
+                    dataDonutProcessed.push({ value: element.amount, label: element.category, color: interpolateColor((index + 1) / categoriesAmount.length) });
+                    dataBarProcessed.push({
+                        value: element.amount / 100,
+                        label: element.category,
+                        spacing: 10,
+                        labelTextStyle: styles.horizontalLabelText,
+                        frontColor: interpolateColor((index + 1) / categoriesAmount.length),
+                    });
                 });
-            });
 
-            const totalAmount = dataDonutProcessed.reduce((sum, item) => sum + item.value, 0);
+                const totalAmount = dataDonutProcessed.reduce((sum, item) => sum + item.value, 0);
 
-            setChartPieData(dataDonutProcessed);
-            setChartBarData(dataBarProcessed);
+                setChartPieData(dataDonutProcessed);
+                setChartBarData(dataBarProcessed);
 
-            setAmountPressed(totalAmount);
-            setCategoryPressed(languages['total']);
+                setAmountPressed(totalAmount);
+                setCategoryPressed(languages['total']);
+            } catch (error) {
+                console.log('Error while loading categories data:', error);
+            }
         };
 
         loadCategoriesAmount();
@@ -110,6 +114,11 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
 
     // Extension of the axis of the categories
     const categoriesExtent = INITIAL_SPACING + (chartBarData.length + 3) * (BAR_WIDTH + BAR_SPACING) + END_SPACING;
+    
+    // Calculate the width of the container
+    const [containerWidth, setContainerWidth] = useState(0);
+
+    const handleLayout = (e: LayoutChangeEvent) => setContainerWidth(e.nativeEvent.layout.width);
 
     // Check if the transactions are laoded
     if (loadingTransactions) {
@@ -158,13 +167,14 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
             </View>
 
             { chartBarData.length !== 0 &&
-                <View style={ styles.containerBar }>
+                <View style={ styles.containerBar } onLayout={ handleLayout }>
                     <View style={{ height: categoriesExtent, top: -50 }}>
                         <BarChart
                             data={ chartBarData }
 
                             horizontal
                             disableScroll
+                            width={ containerWidth - 115 }
                             
                             maxValue={ Math.max(...chartBarData.map(d => d.value)) }
 

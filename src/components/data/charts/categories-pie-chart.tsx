@@ -70,18 +70,22 @@ const CategoriesPieChart = ({ year, month }: Props) => {
 
     useEffect(() => {
         const loadCategoriesAmount = async () => {
-            const categoriesAmount = await getCategoriesAmount(year, month, 'expense');
-            let dataDonutProcessed:any[] = [];
+            try {
+                const categoriesAmount = await getCategoriesAmount(year, month, 'expense');
+                let dataDonutProcessed:any[] = [];
 
-            categoriesAmount.forEach((element, index) => {
-                dataDonutProcessed.push({ value: element.amount, label: element.category, color: interpolateColor((index + 1) / categoriesAmount.length) });
-            });
+                categoriesAmount.forEach((element, index) => {
+                    dataDonutProcessed.push({ value: element.amount, label: element.category, color: interpolateColor((index + 1) / categoriesAmount.length) });
+                });
 
-            const totalAmount = dataDonutProcessed.reduce((sum, item) => sum + item.value, 0);
+                const totalAmount = dataDonutProcessed.reduce((sum, item) => sum + item.value, 0);
 
-            setChartPieData(dataDonutProcessed);
-            setAmountPressed(totalAmount);
-            setCategoryPressed(languages['total']);
+                setChartPieData(dataDonutProcessed);
+                setAmountPressed(totalAmount);
+                setCategoryPressed(languages['total']);
+            } catch (error) {
+                console.log('Error while loading categories pie data:', error);
+            }
         };
 
         loadCategoriesAmount();

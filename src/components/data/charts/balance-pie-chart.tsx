@@ -33,10 +33,14 @@ const BalancePieChart = ({ year, month }: Props) => {
 
     useEffect(() => {
         const loadBalance = async () => {
-            const balance = await getBalance(new Date(Date.UTC(year, month-1, 1)).toISOString(), new Date(Date.UTC(year, month, 1)).toISOString());
-            
-            setExpense(balance.expense);
-            setDifference(balance.income < balance.expense ? 0 : balance.income - balance.expense);
+            try {
+                const balance = await getBalance(new Date(Date.UTC(year, month-1, 1)).toISOString(), new Date(Date.UTC(year, month, 1)).toISOString());
+                
+                setExpense(balance.expense);
+                setDifference(balance.income < balance.expense ? 0 : balance.income - balance.expense);
+            } catch (error) {
+                console.log('Error while loading balance pie data:', error);
+            }
         };
 
         loadBalance();

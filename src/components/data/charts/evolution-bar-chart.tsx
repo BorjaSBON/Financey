@@ -32,40 +32,44 @@ const EvolutionBarChart = ({ year }: Props) => {
 
     useEffect(() => {
         const loadGlobalEvolution = async () => {
-            const previousYearsBalance = await getBalance('0000-01-01T00:00:00.000Z', `${year}-01-01`);
-            const globalEvolution = await getGlobalEvolution(year);
+            try {
+                const previousYearsBalance = await getBalance('0000-01-01T00:00:00.000Z', `${year}-01-01`) ?? { income: 0, expense: 0};
+                const globalEvolution = await getGlobalEvolution(year) ?? [];
 
-            let dataProcessed:any[] = [];
-            const months = languages['months'];
+                let dataProcessed:any[] = [];
+                const months = languages['months'] ?? ['J','F','M','A','M','J','J','A','S','O','N','D'];
 
-            for (let i = 0; i <= globalEvolution.length - 1; i++) {
-                // Calculate bar data
-                dataProcessed.push({
-                    value: globalEvolution[i].balance / 100 + (i == 0 ? (previousYearsBalance.income - previousYearsBalance.expense) / 100 : dataProcessed[i-1].value),
-                    label: months[globalEvolution[i].month - 1],
-                    labelWidth: 10,
-                    dataPointColor: colors.positive,
-                });
+                for (let i = 0; i <= globalEvolution.length - 1; i++) {
+                    // Calculate bar data
+                    dataProcessed.push({
+                        value: globalEvolution[i].balance / 100 + (i == 0 ? (previousYearsBalance.income - previousYearsBalance.expense) / 100 : dataProcessed[i-1].value),
+                        label: months[globalEvolution[i].month - 1],
+                        labelWidth: 10,
+                        dataPointColor: colors.positive,
+                    });
+                }
+
+                // Calculate the line segments
+                const segments: any[] = [];
+
+                for (let i = 0; i < dataProcessed.length - 1; i++) {
+                    const isDecreasing = dataProcessed[i].value > dataProcessed[i + 1].value;
+
+                    segments.push({ startIndex: i, endIndex: i + 1, color: isDecreasing ? colors.chartNegativeClear : colors.chartPositiveClear });
+                    dataProcessed[i+1].dataPointColor = isDecreasing ? colors.negative : colors.positive;
+                }
+
+                setLineData(dataProcessed);
+                setLineSegments(segments);
+            } catch (error) {
+                console.log('Error while loading evolution bar data:', error);
             }
-
-            // Calculate the line segments
-            const segments: any[] = [];
-
-            for (let i = 0; i < dataProcessed.length - 1; i++) {
-                const isDecreasing = dataProcessed[i].value > dataProcessed[i + 1].value;
-
-                segments.push({ startIndex: i, endIndex: i + 1, color: isDecreasing ? colors.chartNegativeClear : colors.chartPositiveClear });
-                dataProcessed[i+1].dataPointColor = isDecreasing ? colors.negative : colors.positive;
-            }
-
-            setLineData(dataProcessed);
-            setLineSegments(segments);
         };
 
         loadGlobalEvolution();
     }, [year]);
 
-    // Calculate the radius of the container
+    // Calculate the width of the container
     const [containerWidth, setContainerWidth] = useState(0);
 
     const handleLayout = (e: LayoutChangeEvent) => setContainerWidth(e.nativeEvent.layout.width);
@@ -82,15 +86,14 @@ const EvolutionBarChart = ({ year }: Props) => {
     return (
         <View style={ styles.container } onLayout={ handleLayout }>
             <LineChart
-                key={ `evolution-${year}-${JSON.stringify(lineData)}` }
+                key={ `evolution-${year}` }
                 data={ lineData.map(d => ({ value: d.value, dataPointColor: d.dataPointColor, label: d.label, labelWidth: d.labelWidth })) }
                 
                 height={ 150 }
                 maxValue={ maxValue > Math.abs(minValue) ? maxValue : Math.abs(minValue) }
                 mostNegativeValue={ minValue }
-                isAnimated
 
-                spacing={ 22 }
+                spacing={ (containerWidth - 7.5 - 40) / 12 }
                 initialSpacing={ 5 }
                 endSpacing={ 2.5 }
 

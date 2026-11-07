@@ -33,6 +33,7 @@ type AvailablePeriod = {
 };
 
 const DataCharts = () => {
+    // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
 
