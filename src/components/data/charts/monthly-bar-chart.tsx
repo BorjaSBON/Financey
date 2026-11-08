@@ -80,46 +80,49 @@ const MonthlyBarChart = ({ year }: Props) => {
         <View style={ styles.container } onLayout={ handleLayout }>
             <Pressable onPress={ () => setDisplayLine(prev => !prev) }>
                 <View pointerEvents='none'>
-                <BarChart
-                    key={ `resume-${year}` }
-                    data={ chartData }
-                    
-                    height={ 150 }
-                    maxValue={ Math.max(...chartData.map(d => d.value)) }
+                    <BarChart
+                        key={ `resume-${year}-${JSON.stringify(chartData)}` }
+                        data={ chartData }
 
-                    spacing={ (containerWidth - 7.5 - 42 - (4*2 + 1.5) * 12) / 12 }
-                    initialSpacing={ 5 }
-                    endSpacing={ 2.5 }
-                    noOfSections={ 4 }
-                    barMarginBottom={ 0 }
+                        isAnimated
+                        animationDuration={ 700 }
+                        
+                        height={ 150 }
+                        maxValue={ Math.max(...chartData.map(d => d.value), 1) }
 
-                    rulesType='solid'
-                    rulesColor={ colors.chartRulesColor }
-                    rulesThickness={ 1 }
-                    rulesLength={ containerWidth - 55 }
+                        spacing={ (containerWidth - 7.5 - 42 - (4*2 + 1.5) * 12) / 12 }
+                        initialSpacing={ 5 }
+                        endSpacing={ 2.5 }
+                        noOfSections={ 4 }
+                        barMarginBottom={ 0 }
 
-                    barWidth={ 4 }
-                    barBorderRadius={ 1.5 }
+                        rulesType='solid'
+                        rulesColor={ colors.chartRulesColor }
+                        rulesThickness={ 1 }
+                        rulesLength={ containerWidth - 55 }
 
-                    xAxisThickness={ 1 }
-                    xAxisColor={ colors.chartRulesColor }
-                    xAxisLabelTextStyle={ styles.horizontalLabelText }
-                    yAxisThickness={ 0 }
-                    yAxisTextStyle={ styles.verticalLabelText}
+                        barWidth={ 4 }
+                        barBorderRadius={ 1.5 }
 
-                    lineData={ lineData }
-                    lineConfig={{
-                        color: colors.chartLineBarColor,
-                        thickness: 1.5,
-                        curved: false,
-                        hideDataPoints: false,
-                        dataPointsRadius: 2,
-                        dataPointsColor: colors.chartLineBarColor,
-                        initialSpacing: 7.5,
-                        spacing: (containerWidth - 7.5 - 89.5) / 12,
-                    }}
-                    showLine={ displayLine }
-                />
+                        xAxisThickness={ 1 }
+                        xAxisColor={ colors.chartRulesColor }
+                        xAxisLabelTextStyle={ styles.horizontalLabelText }
+                        yAxisThickness={ 0 }
+                        yAxisTextStyle={ styles.verticalLabelText}
+
+                        lineData={ lineData }
+                        lineConfig={{
+                            color: colors.chartLineBarColor,
+                            thickness: 1.5,
+                            curved: false,
+                            hideDataPoints: false,
+                            dataPointsRadius: 2,
+                            dataPointsColor: colors.chartLineBarColor,
+                            initialSpacing: 7.5,
+                            spacing: (containerWidth - 7.5 - 89.5) / 12,
+                        }}
+                        showLine={ displayLine }
+                    />
                 </View>
             </Pressable>
         </View>

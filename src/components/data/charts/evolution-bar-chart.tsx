@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { LineChart } from 'react-native-gifted-charts';
 
@@ -86,8 +86,11 @@ const EvolutionBarChart = ({ year }: Props) => {
     return (
         <View style={ styles.container } onLayout={ handleLayout }>
             <LineChart
-                key={ `evolution-${year}` }
+                key={ `evolution-${year}-${JSON.stringify(lineData)}` }
                 data={ lineData.map(d => ({ value: d.value, dataPointColor: d.dataPointColor, label: d.label, labelWidth: d.labelWidth })) }
+
+                isAnimated
+                animationDuration={ 700 }
                 
                 height={ 150 }
                 maxValue={ maxValue > Math.abs(minValue) ? maxValue : Math.abs(minValue) }

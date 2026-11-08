@@ -2,6 +2,9 @@ import { View, TextInput, StyleSheet, InputModeOptions } from 'react-native';
 
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
+import { useCurrency } from '@currency/useCurrency';
+
+import { ThemedText } from '@ui/themed-text';
 
 interface Props {
     // Variables
@@ -18,6 +21,9 @@ export function ThemedInput({ value='', placeholder='', type='text', onChange=()
     const { colors } = useTheme();
     const styles = createStyles(colors);
 
+    // Currency
+    const { currencyInfo } = useCurrency();
+
     return (
         <View style={ styles.container }>
             <TextInput
@@ -29,6 +35,10 @@ export function ThemedInput({ value='', placeholder='', type='text', onChange=()
                 autoComplete='off'
                 placeholderTextColor={ colors.inputFontPlaceholder }
             />
+
+            { type === 'decimal' &&
+                <ThemedText weight='regular' style={[ styles.currency ]}>{ currencyInfo.symbol }</ThemedText>
+            }
         </View>
     );
 }
@@ -38,7 +48,7 @@ const createStyles = (colors: ThemeColors) =>
         container: {
             position: 'relative',
             width: '100%',
-            height: 40,
+            height: 36,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
@@ -55,13 +65,14 @@ const createStyles = (colors: ThemeColors) =>
             borderRadius: 12,
             fontFamily: 'MontserratRegular',
             includeFontPadding: false,
-            fontSize: 13,
+            fontSize: 12,
         },
 
-        icon: {
+        currency: {
             position: 'absolute',
-            right: 15,
-            width: 20
+            fontSize: 12,
+            color: colors.inputFont,
+            right: 20,
         },
     }
 );

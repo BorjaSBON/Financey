@@ -100,8 +100,11 @@ const CategoryBarChart = ({ year, categoryID }: Props) => {
         <View style={ styles.container }>
             <View style={ styles.containerChart } onLayout={ handleLayout }>
                 <BarChart
-                    key={ `category-${year}` }
+                    key={ `category-${year}-${categoryID}-${JSON.stringify(lineData)}` }
                     data={ lineData.map(d => ({ value: d.value, frontColor: d.frontColor, label: d.label, labelWidth: d.labelWidth })) }
+
+                    isAnimated
+                    animationDuration={ 700 }
                     
                     height={ 150 }
                     maxValue={ heightChart }

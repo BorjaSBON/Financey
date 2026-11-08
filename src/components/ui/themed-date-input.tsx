@@ -64,7 +64,7 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         input: {
-            height: 40,
+            height: 36,
             width: '100%',
             paddingLeft: 15,
             paddingRight: 10,
@@ -77,7 +77,7 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         text: {
-            fontSize: 13,
+            fontSize: 12,
             color: colors.inputFont,
         },
 

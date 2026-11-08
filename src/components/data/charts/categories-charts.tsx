@@ -109,7 +109,7 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
     const BAR_WIDTH = 8;
     const BAR_SPACING = 10;
     const INITIAL_SPACING = 2.5;
-    const END_SPACING = 10;
+    const END_SPACING = 12.5;
     const Y_LABEL_WIDTH = 30;
 
     // Extension of the axis of the categories
@@ -121,7 +121,7 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
     const handleLayout = (e: LayoutChangeEvent) => setContainerWidth(e.nativeEvent.layout.width);
 
     // Check if the transactions are laoded
-    if (loadingTransactions) {
+    if (loadingTransactions || !chartPieData) {
         return <View style={ styles.container }><ActivityIndicator /></View>;
     }
 
@@ -129,9 +129,9 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
         <View style={ styles.container }>
             <View style={ styles.containerDonut }>
                 <PieChart
-                    donut
-
+                    key={ `categories-pie-${year}-${month}-${type}-${JSON.stringify(chartPieData)}` }
                     data={ chartPieData }
+                    donut
 
                     sectionAutoFocus
                     focusOnPress
@@ -168,36 +168,41 @@ const CategoriesCharts = ({ year, month, type }: Props) => {
 
             { chartBarData.length !== 0 &&
                 <View style={ styles.containerBar } onLayout={ handleLayout }>
-                    <View style={{ height: categoriesExtent, top: -50 }}>
-                        <BarChart
-                            data={ chartBarData }
+                    { containerWidth > 0 &&
+                        <View style={{ height: categoriesExtent, top: -50 }}>
+                            <BarChart
+                                key={ `categories-${year}-${month}-${type}-${JSON.stringify(chartBarData)}` }
+                                data={ chartBarData }
 
-                            horizontal
-                            disableScroll
-                            width={ containerWidth - 115 }
-                            
-                            maxValue={ Math.max(...chartBarData.map(d => d.value)) }
+                                isAnimated
 
-                            spacing={ BAR_SPACING }
-                            initialSpacing={ INITIAL_SPACING }
-                            endSpacing={ END_SPACING }
-                            barWidth={ BAR_WIDTH }
-                            barBorderRadius={ 2.5 }
+                                horizontal
+                                disableScroll
+                                width={ containerWidth - 115 }
+                                
+                                maxValue={ Math.max(...chartBarData.map(d => d.value), 1) }
 
-                            noOfSections={ 4 }
-                            rulesType='solid'
-                            rulesColor={ colors.chartRulesColor }
-                            rulesThickness={ 1 }
-                            rulesLength={ categoriesExtent - 65 }
+                                spacing={ BAR_SPACING }
+                                initialSpacing={ INITIAL_SPACING }
+                                endSpacing={ END_SPACING }
+                                barWidth={ BAR_WIDTH }
+                                barBorderRadius={ 2.5 }
 
-                            xAxisThickness={ 0 }
-                            yAxisThickness={ 0 }
-                            yAxisLabelWidth={ Y_LABEL_WIDTH }
-                            yAxisTextStyle={ styles.verticalLabelText }
-                            yAxisTextNumberOfLines={ 2 }
-                            xAxisLabelsVerticalShift={ 50 }
-                        />
-                    </View>
+                                noOfSections={ 4 }
+                                rulesType='solid'
+                                rulesColor={ colors.chartRulesColor }
+                                rulesThickness={ 1 }
+                                rulesLength={ categoriesExtent - 65 }
+
+                                xAxisThickness={ 0 }
+                                yAxisThickness={ 0 }
+                                yAxisLabelWidth={ Y_LABEL_WIDTH }
+                                yAxisTextStyle={ styles.verticalLabelText }
+                                yAxisTextNumberOfLines={ 2 }
+                                xAxisLabelsVerticalShift={ 50 }
+                            />
+                        </View>
+                    }
                 </View>
             }
         </View>
