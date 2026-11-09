@@ -8,8 +8,9 @@ import { Values } from '@constants/values';
 import { ThemeColors } from '@theme/colors';
 import { useTheme } from '@theme/useTheme';
 import { useLanguage } from '@language/useLanguage';
-
 import { useCurrency } from '@currency/useCurrency';
+
+import { checkBudgetAfterTransaction } from '@services/budgetAlerts';
 
 import { ThemedText } from '@ui/themed-text';
 import { ThemedButton } from '@ui/themed-button';
@@ -153,6 +154,13 @@ const DataAdd = () => {
 
             await modifyProfileDataAdded();
         }
+
+        // Check budget limit
+        await checkBudgetAfterTransaction(
+            categories_selected.find(item => item.name.toLowerCase() === categorySelect)?.id || 1,
+            { title: languages['exceededTitle'], message: languages['exceededMessage']},
+            { title: languages['warningTitle'], message: languages['warningMessage']},
+        );
 
         router.push('/data/list');
     };

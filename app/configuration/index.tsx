@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { ScrollView, StyleSheet, View, ActivityIndicator, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { usePreventRemove, useRouter } from 'expo-router';
 
@@ -129,6 +129,7 @@ const ConfigurationScreen = () => {
                             <View style={ styles.elements }>
                                 <ConfThemeSelect />
                                 <ConfLanguageSelect />
+                                <ConfElement title={ languages['notifications'] } onPress={ () => Linking.openSettings() } />
                             </View>
                         </View>
 

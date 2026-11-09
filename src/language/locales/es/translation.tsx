@@ -187,4 +187,11 @@ export const LanguageES = {
 
     // CALENDAR
     months: ['E', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
+
+    // NOTIFICATIONS
+    notifications: 'Notificaciones',
+    exceededTitle: 'Presupuesto superado',
+    exceededMessage: 'Has superado el presupuesto de este mes',
+    warningTitle: 'Cerca del límite',
+    warningMessage: 'Estás cerca de superar el presupuesto de este mes',
 }

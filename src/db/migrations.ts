@@ -6,6 +6,7 @@ export async function initializeDatabase() {
     // DROP TABLE IF EXISTS categories;
     // DROP TABLE IF EXISTS transactions;
     // DROP TABLE IF EXISTS profiles;
+    // DROP TABLE IF EXISTS budget_alerts;
 
     await db.execAsync(`
         PRAGMA journal_mode = WAL;
@@ -67,6 +68,13 @@ export async function initializeDatabase() {
 
         CREATE INDEX IF NOT EXISTS idx_transactions_type
             ON transactions(type);
+        
+        CREATE TABLE IF NOT EXISTS budget_alerts (
+            category_id INTEGER NOT NULL,
+            month TEXT NOT NULL,
+            level TEXT NOT NULL,
+            PRIMARY KEY (category_id, month, level)
+        );
     `);
 
     const columns = await db.getAllAsync<{

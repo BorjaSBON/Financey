@@ -27,6 +27,9 @@
 			"@language/*": [
 				"./src/language/*"
 			],
+			"@services/*": [
+				"./src/services/*"
+			],
 			"@assets/*": [
 				"./assets/svg/*"
 			],
