@@ -188,7 +188,7 @@ const DataModify = () => {
                     </View>
                 </View>
 
-                <DeleteElement active={ deleteElementPopup } title={ languages['deleteTransactionText'] } titleButton='delete' deleteAction={ deleteTransactionAction } cancelAction={ activeDeleteElementPopup } />
+                <DeleteElement active={ deleteElementPopup } title={ languages['deleteTransactionText'] } titleButton='delete' isConfiguration={ false } deleteAction={ deleteTransactionAction } cancelAction={ activeDeleteElementPopup } />
             </View>
         </SafeAreaView>
     );

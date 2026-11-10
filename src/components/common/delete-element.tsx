@@ -13,13 +13,14 @@ interface Props {
     active?: boolean;
     title?: string;
     titleButton?: string;
+    isConfiguration?: boolean;
 
     // Methods
     deleteAction?: () => void;
     cancelAction?: () => void;
 }
 
-export default function DeleteElement({ active=false, title='', titleButton='delete', deleteAction, cancelAction }: Props) {
+export default function DeleteElement({ active=false, title='', titleButton='delete', isConfiguration=true, deleteAction, cancelAction }: Props) {
     // Theme
     const { colors } = useTheme();
     const styles = createStyles(colors);
@@ -38,7 +39,7 @@ export default function DeleteElement({ active=false, title='', titleButton='del
             active ? { display: 'flex' } : { display: 'none' },
             { height: totalHeight, bottom: 0 }
         ]}>
-            <View style={ styles.popup }>
+            <View style={[ styles.popup, { bottom: isConfiguration ? 40 : 20 } ]}>
                 <ThemedText style={ styles.message } weight='regular'>{ title }</ThemedText>
 
                 <View style={ styles.buttons }>
@@ -60,7 +61,6 @@ const createStyles = (colors: ThemeColors) =>
 
         popup: {
             position: 'absolute',
-            bottom: 0,
             display: 'flex',
             flexDirection: 'column',
             rowGap: 20,

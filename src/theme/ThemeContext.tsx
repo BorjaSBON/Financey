@@ -11,6 +11,7 @@ interface ThemeContextType {
     themePreference: ThemePreference;
     resolvedTheme: ThemeName;
     colors: typeof Themes.light;
+    isReady: boolean;
 
     // Methods
     setThemePreference: (preference: ThemePreference) => Promise<void>;
@@ -19,6 +20,8 @@ interface ThemeContextType {
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode; }) {
+    const [isReady, setIsReady] = useState(false);
+
     const systemTheme = useColorScheme();
 
     const [themePreference, setThemePreferenceState] = useState<ThemePreference>('system');
@@ -31,15 +34,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode; }) {
         try {
             const savedTheme = await AsyncStorage.getItem(THEME_STORAGE_KEY);
 
-            if (
-                savedTheme === 'light' ||
-                savedTheme === 'dark' ||
-                savedTheme === 'system'
-            ) {
+            if (savedTheme === 'light' || savedTheme === 'dark' || savedTheme === 'system') {
                 setThemePreferenceState(savedTheme);
             }
         } catch (error) {
             console.error('Error loading theme preference:', error);
+        } finally {
+            setIsReady(true);
         }
     };
 
@@ -68,6 +69,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode; }) {
                 themePreference,
                 resolvedTheme,
                 colors,
+                isReady,
                 setThemePreference,
             }}
         >

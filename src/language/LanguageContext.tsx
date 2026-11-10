@@ -11,6 +11,7 @@ interface LanguageContextType {
     languagePreference: LanguagePreference;
     resolvedLanguage: LanguageName;
     languages: typeof Languages.es;
+    isReady: boolean;
 
     // Methods
     setLanguagePreference: (preference: LanguagePreference) => Promise<void>;
@@ -19,6 +20,8 @@ interface LanguageContextType {
 export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: React.ReactNode; }) {
+    const [isReady, setIsReady] = useState(false);
+
     const systemLanguage = getLocales()[0].languageCode;
 
     const [languagePreference, setLanguagePreferenceState] = useState<LanguagePreference>('en');
@@ -39,6 +42,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode; }) {
             }
         } catch (error) {
             console.error('Error loading language preference:', error);
+        } finally {
+            setIsReady(true);
         }
     };
 
@@ -62,6 +67,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode; }) {
                 languagePreference,
                 resolvedLanguage,
                 languages,
+                isReady,
                 setLanguagePreference,
             }}
         >

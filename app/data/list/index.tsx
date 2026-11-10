@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { StyleSheet, View, FlatList, ScrollView, ActivityIndicator } from 'react-native';
-import { usePreventRemove, useRouter } from 'expo-router';
+import { usePreventRemove, useRouter, useFocusEffect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Values } from '@constants/values';
@@ -53,6 +53,17 @@ const DataList = () => {
     // Database
     const { transactions, getTransactions, loadingTransactions } = useTransactions();
     const { categories } = useCategories();
+
+    // Load the transactions
+    useFocusEffect(
+        useCallback(() => {
+            const loadTransactions = async () => {
+                await getTransactions();
+            };
+
+            loadTransactions();
+        }, [])
+    );
 
     // Filters
     const [type, setType] = useState<'income' | 'expense' | ''>('');

@@ -10,6 +10,7 @@ interface CurrencyContextType {
     currency: CurrencyCode;
     currencyInfo: (typeof CURRENCIES)[CurrencyCode];
     loading: boolean;
+    isReady: boolean;
 
     // Methods
     setCurrency: (currency: CurrencyCode) => Promise<void>;
@@ -18,6 +19,8 @@ interface CurrencyContextType {
 export const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
 
 export function CurrencyProvider({ children }: { children: React.ReactNode; }) {
+    const [isReady, setIsReady] = useState(false);
+
     const [currency, setCurrencyState] = useState<CurrencyCode>('EUR');
     const [loading, setLoading] = useState(true);
 
@@ -38,6 +41,8 @@ export function CurrencyProvider({ children }: { children: React.ReactNode; }) {
                 if (active) {
                     setLoading(false);
                 }
+
+                setIsReady(true);
             }
         }
 
@@ -61,6 +66,7 @@ export function CurrencyProvider({ children }: { children: React.ReactNode; }) {
                 currency,
                 currencyInfo: CURRENCIES[currency],
                 loading,
+                isReady,
                 setCurrency,
             }}
         >

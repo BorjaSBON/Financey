@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import { Slot, usePathname } from 'expo-router';
+import { Stack, usePathname } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Values } from '@constants/values';
@@ -54,7 +54,14 @@ const ConfigurationLayout = () => {
                 <Header title={ getTitle() } />
 
                 <View style={ styles.slot }>
-                    <Slot />
+                    <Stack
+                        screenOptions={{
+                            headerShown: false,
+                            contentStyle: { backgroundColor: 'transparent', padding: 0, margin: 0 },
+                            animation: 'fade',
+                            gestureEnabled: true,
+                        }}
+                    />
                 </View>
             </View>
         </SafeAreaView>
@@ -73,8 +80,8 @@ const createStyles = (colors: ThemeColors) =>
         },
 
         slot: {
+            flex: 1,
             top: 40,
-            paddingBottom: 40,
         },
     }
 );

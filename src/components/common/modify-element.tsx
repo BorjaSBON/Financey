@@ -66,7 +66,7 @@ const createStyles = (colors: ThemeColors) =>
 
         popup: {
             position: 'absolute',
-            bottom: 0,
+            bottom: 40,
             display: 'flex',
             flexDirection: 'column',
             rowGap: 15,

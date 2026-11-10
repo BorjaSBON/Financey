@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, View, ActivityIndicator, ScrollView, Pressable } from 'react-native';
-import { router, useNavigation } from 'expo-router';
+import { router, useNavigation, useFocusEffect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Values } from '@constants/values';
@@ -49,17 +49,19 @@ const HomeScreen = () => {
     const [ amountLastTransaction, setAmountLastTransaction ] = useState(0);
     const [ dateLastTransaction, setDateLastTransaction ] = useState(new Date());
 
-    useEffect(() => {
-        if (profile) {
+    useFocusEffect(
+        useCallback(() => {
+            if (!profile) return;
+
             const formatDate = (date: string) => {
-                return (new Date(date)).toLocaleDateString(languages['dateFormat'], { month: 'long', day: '2-digit', year: 'numeric' }) + ' - ' + new Date(date).toLocaleTimeString(languages['dateFormat']);
+                return new Date(date).toLocaleDateString(languages['dateFormat'], { month: 'long', day: '2-digit', year: 'numeric' }) + ' - ' + new Date(date).toLocaleTimeString(languages['dateFormat']);
             };
 
             setLastActionDate(formatDate(profile.last_action_date));
 
             const loadTransaction = async () => {
                 const transaction = await getLastTransactionAdded();
-                
+
                 if (transaction) {
                     setIdLastTransaction(transaction.id);
                     setTypeLastTransaction(transaction.type);
@@ -70,8 +72,8 @@ const HomeScreen = () => {
             };
 
             loadTransaction();
-        }
-    }, [profile]);
+        }, [profile, languages])
+    );
 
     // Routes
     const navigation = useNavigation();

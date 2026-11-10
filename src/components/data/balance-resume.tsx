@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { useFocusEffect } from 'expo-router';
 
 import { Values } from '@constants/values';
 
@@ -38,8 +39,9 @@ export default function BalanceResume({ squareEnable=false, from='0000-01-01T00:
     const [income, setIncome] = useState(0);
     const [expense, setExpense] = useState(0);
 
-    useEffect(() => {
-        const loadBalance = async () => {
+    useFocusEffect(
+        useCallback(() => {
+            const loadBalance = async () => {
             try {
                 if (to === '') {
                     const now = new Date();
@@ -56,7 +58,8 @@ export default function BalanceResume({ squareEnable=false, from='0000-01-01T00:
         };
 
         loadBalance();
-    }, [getBalance, from, to]);
+        }, [getBalance, from, to])
+    );
 
     // Function to transform the values in readable text
     function ReadableNumber(value: number) {

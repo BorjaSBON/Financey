@@ -2,13 +2,15 @@ import { useEffect } from 'react';
 import { View } from 'react-native';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
-import { Slot, SplashScreen } from 'expo-router';
+import { Stack, SplashScreen } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { initializeAppDatabase } from '@db/init';
 
 import { ThemeProvider } from '@theme/ThemeContext';
 import { useTheme } from '@theme/useTheme';
+import { useLanguage } from '@language/useLanguage';
+import { useCurrency } from '@currency/useCurrency';
 
 import { CurrencyProvider } from '@currency/CurrencyContext';
 
@@ -22,9 +24,28 @@ const RootLayoutContent = () => {
 	// Theme
     const { colors, resolvedTheme } = useTheme();
 
+	const { isReady: themeReady } = useTheme();
+    const { isReady: languageReady } = useLanguage();
+    const { isReady: currencyReady } = useCurrency();
+
+    const allReady = themeReady && languageReady && currencyReady;
+
+    useEffect(() => {
+        if (allReady) SplashScreen.hideAsync();
+    }, [allReady]);
+	
+    if (!allReady) return null;
+
     return (
         <View style={{ flex: 1, backgroundColor: colors.backgroundPrimary }}>
-            <Slot />
+            <Stack
+				screenOptions={{
+					headerShown: false,
+					contentStyle: { backgroundColor: colors.backgroundPrimary },
+                    animation: 'slide_from_right',
+					presentation: 'card',
+				}}
+			/>
             <StatusBar style={ resolvedTheme === 'dark' ? 'light' : 'dark'} />
         </View>
     );
@@ -61,8 +82,6 @@ const RootLayout = () => {
 	// Handle font loading and errors
 	useEffect(() => {
         if (error) throw error;
-
-        if (fontsLoaded) SplashScreen.hideAsync();
     }, [fontsLoaded, error]);
 
     if (!fontsLoaded && !error) return null;
