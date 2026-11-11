@@ -125,7 +125,7 @@ const CategoryMonthCalendar = ({ year, month, categoryID }: Props) => {
 
                                 <ThemedText 
                                     style={[ styles.dayText, { color: date.state === 'today' ? colors.chartToday : colors.fontPrimary } ]}
-                                    weight={ isSelected ? 'bold' : 'regular' }
+                                    weight={ isSelected ? 'bold' : date.state === 'today' ? 'semiBold' : 'regular' }
                                 >
                                     { date.date?.day }
                                 </ThemedText>

@@ -34,7 +34,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode; }) {
         try {
             const savedTheme = await AsyncStorage.getItem(THEME_STORAGE_KEY);
 
-            if (savedTheme === 'light' || savedTheme === 'dark' || savedTheme === 'system') {
+            if (savedTheme === 'light' || savedTheme === 'dark' || savedTheme === 'pixie' || savedTheme === 'system') {
                 setThemePreferenceState(savedTheme);
             }
         } catch (error) {

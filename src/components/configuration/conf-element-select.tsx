@@ -28,6 +28,7 @@ export function ConfThemeSelect() {
     let dataSelect: ThemeSelectItem[] = [
         { label: languages['light'], value: 'light' },
         { label: languages['dark'], value: 'dark' },
+        { label: 'Pixie', value: 'pixie' },
         { label: languages['system'], value: 'system' },
     ];
 

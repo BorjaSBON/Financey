@@ -43,9 +43,7 @@ export function ThemedSelectInput({ data, value, maxHeight=390, onSelect }: Drop
 
     const selectRef = useRef<View>(null);
 
-    const selectedItem = data.find(
-        item => item.value === value
-    );
+    const selectedItem = data.find(item => item.value === value);
 
     const openDropdown = () => {
         selectRef.current?.measureInWindow(
@@ -105,7 +103,14 @@ export function ThemedSelectInput({ data, value, maxHeight=390, onSelect }: Drop
                             showsVerticalScrollIndicator
                             keyboardShouldPersistTaps="handled"
                             renderItem={({ item }) => (
-                                <Pressable style={[ styles.option, item.value === value && styles.selectedOption ]} onPress={ () => handleSelect(item) }>
+                                <Pressable 
+                                    style={({ pressed }) => [
+                                        styles.option,
+                                        (pressed && item.value != value) ? { backgroundColor: colors.inputSelected } : { backgroundColor: 'transparent' },
+                                        item.value === value && styles.selectedOption,
+                                    ]}
+                                    onPress={ () => handleSelect(item) }
+                                >
                                     <ThemedText style={[ styles.optionText, item.value === value && styles.selectedOptionText ]} weight='regular'>{ item.label }</ThemedText>
                                 </Pressable>
                             )}

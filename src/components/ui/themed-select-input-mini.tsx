@@ -37,9 +37,7 @@ export function ThemedSelectInputMini<T extends string = string>({ data, value, 
 
     const selectRef = useRef<View>(null);
 
-    const selectedItem = data.find(
-        item => item.value === value
-    );
+    const selectedItem = data.find(item => item.value === value);
 
     const openDropdown = () => {
         selectRef.current?.measureInWindow(
@@ -93,7 +91,14 @@ export function ThemedSelectInputMini<T extends string = string>({ data, value, 
                             showsVerticalScrollIndicator
                             keyboardShouldPersistTaps="handled"
                             renderItem={({ item }) => (
-                                <Pressable style={[ styles.option, item.value === value && styles.selectedOption ]} onPress={ () => handleSelect(item) }>
+                                <Pressable 
+                                    style={({ pressed }) => [
+                                        styles.option,
+                                        (pressed && item.value != value) ? { backgroundColor: colors.inputMiniSelected } : { backgroundColor: 'transparent' },
+                                        item.value === value && styles.selectedOption,
+                                    ]}
+                                    onPress={ () => handleSelect(item) }
+                                >
                                     <ThemedText style={[ styles.optionText, item.value === value && styles.selectedOptionText ]} weight='light'>{ item.label }</ThemedText>
                                 </Pressable>
                             )}

@@ -26,6 +26,7 @@ export interface ThemeColors {
     inputBackground: string;
     inputBackgroundDropdown: string;
     inputBorderDropdown: string;
+    inputSelected: string;
 
     // Input Mini
     inputMiniFont: string;
@@ -33,6 +34,7 @@ export interface ThemeColors {
     inputMiniBackground: string;
     inputMiniBackgroundDropdown: string;
     inputMiniBorderDropdown: string;
+    inputMiniSelected: string;
 
     // Hover
     hoverElement: string;
@@ -83,6 +85,7 @@ export const LightColors: ThemeColors = {
     inputBackground: '#D9D9D966',
     inputBackgroundDropdown: '#FFFFFF',
     inputBorderDropdown: '#0F172A20',
+    inputSelected: '#D9D9D940',
 
     // Input Mini
     inputMiniFont: '#0F172A',
@@ -90,6 +93,7 @@ export const LightColors: ThemeColors = {
     inputMiniBackground: '#D9D9D966',
     inputMiniBackgroundDropdown: '#FFFFFF',
     inputMiniBorderDropdown: '#0F172A20',
+    inputMiniSelected: '#D9D9D940',
 
     // Hover
     hoverElement: '#111A301A',
@@ -140,6 +144,7 @@ export const DarkColors: ThemeColors = {
     inputBackground: '#FFFFFF30',
     inputBackgroundDropdown: '#0F172A',
     inputBorderDropdown: '#FFFFFF20',
+    inputSelected: '#FFFFFF15',
 
     // Input Mini
     inputMiniFont: '#FFFFFF',
@@ -147,6 +152,7 @@ export const DarkColors: ThemeColors = {
     inputMiniBackground: '#5EEAD426',
     inputMiniBackgroundDropdown: '#0F172A',
     inputMiniBorderDropdown: '#FFFFFF20',
+    inputMiniSelected: '#5EEAD41A',
 
     // Hover
     hoverElement: '#FFFFFF1A',
@@ -169,9 +175,69 @@ export const DarkColors: ThemeColors = {
     chartToday: '#3FBED1',
 } as const;
 
+export const PixieColors: ThemeColors = {
+    // General
+    mainColor: '#0F172A',
+
+    // Background
+    backgroundPrimary: '#FFE0F0',
+    backgroundSecondary: '#FFF3F9',
+
+    // Fonts
+    fontPrimary: '#0F172A',
+    fontSecondary: '#0F172A80',
+
+    // +/-
+    positive: '#AED136',
+    negative: '#F15A29',
+
+    // Button
+    buttonFont: '#FFFFFF',
+    buttonBackgroundPrimary: '#111A30',
+    buttonBackgroundSecondary: '#111A3080',
+    buttonBackgroundWarning: '#F15A29',
+
+    // Input
+    inputFont: '#0F172A',
+    inputFontPlaceholder: '#0F172A80',
+    inputBackground: '#FFECF6',
+    inputBackgroundDropdown: '#FFFAFC',
+    inputBorderDropdown: '#FFFFFF',
+    inputSelected: '#FFF2F8',
+
+    // Input Mini
+    inputMiniFont: '#0F172A',
+    inputMiniFontPlaceholder: '#0F172A80',
+    inputMiniBackground: '#FFE5F3',
+    inputMiniBackgroundDropdown: '#FFFAFC',
+    inputMiniBorderDropdown: '#FFFFFF',
+    inputMiniSelected: '#FFEFF7',
+
+    // Hover
+    hoverElement: '#FFFFFFA1',
+
+    // Popup
+    popupShadow: '#111A3040',
+    popupBackground: '#0F172A40',
+
+    // Icon
+    iconColor: '#FFFFFF',
+    iconBackground: '#111A30',
+
+    // Charts
+    chartRulesColor: '#0F172A0D',
+    chartPositiveRange: '#658109',
+    chartNegativeRange: '#6D1102',
+    chartLineBarColor: '#0F172A',
+    chartPositiveClear: '#AED13680',
+    chartNegativeClear: '#F15A2980',
+    chartToday: '#FF98CD',
+} as const;
+
 export const Themes = {
     light: LightColors,
     dark: DarkColors,
+    pixie: PixieColors,
 } as const;
 
 export type ThemeName = keyof typeof Themes;
