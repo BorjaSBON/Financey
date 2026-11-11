@@ -144,6 +144,13 @@ const DataModify = () => {
         // Modify the profile
         await modifyProfileDataDeleted();
 
+        // Check budget limit
+        await checkBudgetAfterTransaction(
+            categories_selected.find(item => item.name.toLowerCase() === selectValue)?.id || 1,
+            { title: languages['exceededTitle'], message: languages['exceededMessage']},
+            { title: languages['warningTitle'], message: languages['warningMessage']},
+        );
+
         // Return to the prevous page
         router.back();
     }

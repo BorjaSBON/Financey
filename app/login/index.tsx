@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
-import { router, useNavigation } from 'expo-router';
+import { useEffect, useState, useCallback } from 'react';
+import { StyleSheet, View, FlatList, ActivityIndicator, BackHandler } from 'react-native';
+import { router, useFocusEffect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemeColors } from '@theme/colors';
@@ -26,15 +26,17 @@ const LoginScreen = () => {
     // Traductions
     const { languages } = useLanguage();
 
-    // Router
-    const navigation = useNavigation();
-    
-    useEffect(() => {
-        if (navigation.canGoBack()) {
-            router.dismissAll();
-            router.replace('/login')
-        }
-    }, [navigation]);
+    // No back page
+    useFocusEffect(
+        useCallback(() => {
+            const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+                BackHandler.exitApp();
+                return true; // evita que se ejecute el retroceso normal
+            });
+
+            return () => subscription.remove();
+        }, [])
+    );
 
     // Variables
     const [username, setUsername] = useState('');
@@ -60,8 +62,8 @@ const LoginScreen = () => {
                 await CreateProfile({ username: username });
 
                 // Create the default categories
-                await createCategory({ name: 'General', type: 'expense' });
-                await createCategory({ name: 'General', type: 'income' });
+                await createCategory({ name: 'General', type: 'expense', budget: null });
+                await createCategory({ name: 'General', type: 'income', budget: null });
 
                 // Redirect
                 router.replace('/home');

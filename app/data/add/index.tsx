@@ -162,7 +162,7 @@ const DataAdd = () => {
             { title: languages['warningTitle'], message: languages['warningMessage']},
         );
 
-        router.push('/data/list');
+        router.back();
     };
 
     if (loadingCategories || loadingProfiles) {

@@ -1,9 +1,14 @@
 import { useEffect } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { Stack, SplashScreen } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import Transition, { type ScreenTransitionConfig, } from 'react-native-screen-transitions';
+import { interpolate } from 'react-native-reanimated';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BlankStack } from "react-native-screen-transitions/expo-router";
 
 import { initializeAppDatabase } from '@db/init';
 
@@ -24,6 +29,7 @@ const RootLayoutContent = () => {
 	// Theme
     const { colors, resolvedTheme } = useTheme();
 
+	// Systems ready
 	const { isReady: themeReady } = useTheme();
     const { isReady: languageReady } = useLanguage();
     const { isReady: currencyReady } = useCurrency();
@@ -36,18 +42,45 @@ const RootLayoutContent = () => {
 	
     if (!allReady) return null;
 
+    const horizontalTransition: ScreenTransitionConfig = {
+        gestureEnabled: Platform.OS === 'ios',
+        gestureDirection: 'horizontal',
+        transitionSpec: {
+            open: Transition.Specs.DefaultSpec,
+            close: {
+				stiffness: 150,
+				damping: 25,
+				mass: 1,
+				overshootClamping: true,
+			},
+        },
+        screenStyleInterpolator: ({ current, progress }) => {
+            'worklet';
+
+            const width = current.layouts.screen.width;
+            const translateX = interpolate(
+                progress,
+                [0, 1, 2],
+                [width, 0, -width * 0.3],
+                'clamp'
+            );
+
+            return {
+                content: {
+                    backgroundColor: colors.backgroundPrimary,
+                    transform: [{ translateX }],
+                },
+            };
+        },
+    };
+
     return (
-        <View style={{ flex: 1, backgroundColor: colors.backgroundPrimary }}>
-            <Stack
-				screenOptions={{
-					headerShown: false,
-					contentStyle: { backgroundColor: colors.backgroundPrimary },
-                    animation: 'slide_from_right',
-					presentation: 'card',
-				}}
-			/>
-            <StatusBar style={ resolvedTheme === 'dark' ? 'light' : 'dark'} />
-        </View>
+        <GestureHandlerRootView
+            style={{ flex: 1, backgroundColor: colors.backgroundPrimary }}
+        >
+            <BlankStack screenOptions={horizontalTransition} />
+            <StatusBar style={resolvedTheme === 'dark' ? 'light' : 'dark'} />
+        </GestureHandlerRootView>
     );
 };
 

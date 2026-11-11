@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, View, ActivityIndicator, ScrollView, Pressable } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, ScrollView, Pressable, BackHandler  } from 'react-native';
 import { router, useNavigation, useFocusEffect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -75,14 +75,17 @@ const HomeScreen = () => {
         }, [profile, languages])
     );
 
-    // Routes
-    const navigation = useNavigation();
+    // No back page
+    useFocusEffect(
+        useCallback(() => {
+            const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+                BackHandler.exitApp();
+                return true; // evita que se ejecute el retroceso normal
+            });
 
-    useEffect(() => {
-        if (navigation.canGoBack()) {
-            router.dismissAll();
-        }
-    }, [navigation]);
+            return () => subscription.remove();
+        }, [])
+    );
 
     // Check if the profile is loaded
     if (loadingTransactions || loadingProfiles) {

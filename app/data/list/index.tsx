@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { StyleSheet, View, FlatList, ScrollView, ActivityIndicator } from 'react-native';
-import { usePreventRemove, useRouter, useFocusEffect } from 'expo-router';
+import { usePreventRemove, useFocusEffect, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Values } from '@constants/values';
@@ -33,22 +33,10 @@ const DataList = () => {
     // Content manager
     const [displayFilter, setDisplayFilter] = useState<boolean>(false);
 
-    // Change the router previous page
-    const router = useRouter();
-    const [preventRemoval, setPreventRemoval] = useState(true);
-
-    const disablePrevention = usePreventRemove(
-        preventRemoval,
-        () => {
-            if (displayFilter === true) {
-                setDisplayFilter(false);
-                return;
-            }
-            setPreventRemoval(false);
-            disablePrevention();
-            router.push('/home');
-        }
-    );
+    // Change the router previous page when filtering
+    usePreventRemove(displayFilter, () => {
+        setDisplayFilter(false);
+    });
 
     // Database
     const { transactions, getTransactions, loadingTransactions } = useTransactions();
